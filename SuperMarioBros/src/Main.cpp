@@ -1,4 +1,6 @@
 #include <Windows.h>
+#include <memory>
+#include "Graphics/DirectX.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -58,8 +60,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	ShowWindow(hwnd, nShowCmd);
 
-	MSG msg = { 0 };
+	std::auto_ptr<DirectX> directXGraphics(new DirectX(hwnd));
 
+	MSG msg = { 0 };
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -69,8 +72,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		else
 		{
-			// Update
-			// Draw
+			// Update graphics
+			directXGraphics->BeginFrame();
+			directXGraphics->EndFrame();
 		}
 	}
 
