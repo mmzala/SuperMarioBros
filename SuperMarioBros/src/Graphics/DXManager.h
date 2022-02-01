@@ -1,22 +1,28 @@
-#include <Windows.h>
-#include <d3d11.h> // ID3D11Device and ID3D11DeviceContext
-#include <dxgi.h> // IDXGISwapChain
+#pragma once
+
+#include <d3d11.h> // DirectX classes
+
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "D3DCompiler.lib")
 
 /// <summary>
-/// Used to render graphics on screen
+/// Manages DirectX objects
 /// </summary>
-class DirectX
+class DXManager
 {
 public:
-	DirectX(HWND hwnd);
-	~DirectX();
+	DXManager(HWND hwnd);
+	~DXManager();
 
 	void BeginFrame();
 	void EndFrame();
 
+	ID3D11Device* GetDevice();
+	ID3D11DeviceContext* GetDeviceContext();
+
 private:
 	/// <summary>
-	/// Creates device, context and swap chain by calling "D3D11CreateDeviceAndSwapChain()"
+	/// Creates device, device context and swap chain by calling "D3D11CreateDeviceAndSwapChain()"
 	/// </summary>
 	/// <param name="hwnd"> Hanlde to window </param>
 	/// <param name="width"> Width of the client </param>

@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <memory>
-#include "Graphics/DirectX.h"
+#include "Graphics/DXManager.h"
+#include "Game/Game.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -60,7 +61,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	ShowWindow(hwnd, nShowCmd);
 
-	std::auto_ptr<DirectX> directXGraphics(new DirectX(hwnd));
+	std::auto_ptr<DXManager> directXGraphics(new DXManager(hwnd));
+	std::auto_ptr<Game> game(new Game(directXGraphics.get()));
 
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT)
@@ -72,8 +74,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		else
 		{
-			// Update graphics
+			// Update everything
 			directXGraphics->BeginFrame();
+			game->Update(0.0f);
 			directXGraphics->EndFrame();
 		}
 	}

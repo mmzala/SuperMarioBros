@@ -1,10 +1,10 @@
-#include "DirectX.h"
-#include <d3dcommon.h> // Driver types and feature levels
+#include "DXManager.h"
+#include <d3dcompiler.h> // D3DCOMPILE Constants
 
 // Prefer 'enum class' over 'enum' warning (thanks Microsoft >_<)
 #pragma warning(disable : 26812)
 
-DirectX::DirectX(HWND hwnd)
+DXManager::DXManager(HWND hwnd)
 	:
 	device(nullptr),
 	deviceContext(nullptr),
@@ -24,7 +24,7 @@ DirectX::DirectX(HWND hwnd)
 	CreateViewport(width, height);
 }
 
-DirectX::~DirectX()
+DXManager::~DXManager()
 {
 	if (backBufferTarget) backBufferTarget->Release();
 	if (swapChain) swapChain->Release();
@@ -32,19 +32,29 @@ DirectX::~DirectX()
 	if (device) device->Release();
 }
 
-void DirectX::BeginFrame()
+void DXManager::BeginFrame()
 {
 	float color[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
 	deviceContext->ClearRenderTargetView(backBufferTarget, color);
 }
 
-void DirectX::EndFrame()
+void DXManager::EndFrame()
 {
 	swapChain->Present(0, 0);
 }
 
+ID3D11Device* DXManager::GetDevice()
+{
+	return device;
+}
+
+ID3D11DeviceContext* DXManager::GetDeviceContext()
+{
+	return deviceContext;
+}
+
 #pragma region Creation Methods
-bool DirectX::CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned int height)
+bool DXManager::CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned int height)
 {
 	// Specifying driver types
 	const D3D_DRIVER_TYPE driverTypes[] =
@@ -108,7 +118,7 @@ bool DirectX::CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned i
 	return false;
 }
 
-bool DirectX::CreateRenderTargetView()
+bool DXManager::CreateRenderTargetView()
 {
 	ID3D11Texture2D* backBufferTexture;
 
@@ -140,7 +150,7 @@ bool DirectX::CreateRenderTargetView()
 	return true;
 }
 
-void DirectX::CreateViewport(unsigned int width, unsigned int height)
+void DXManager::CreateViewport(unsigned int width, unsigned int height)
 {
 	D3D11_VIEWPORT viewport;
 	viewport.Width = static_cast<float>(width);
