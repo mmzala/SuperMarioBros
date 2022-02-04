@@ -1,20 +1,26 @@
 #include "Game.h"
-#include "../Graphics/DXManager.h"
-#include "../Graphics/Sprite.h"
+#include <DirectXMath.h> // XMFLOAT2
+#include "GameObjects/GameObject.h"
 
-Game::Game(DXManager* graphics)
-	:
-	graphics(graphics)
+Game::Game()
 {
-	sprite = new Sprite("assets/goomba.png", graphics->GetDevice());
+	object = new GameObject("assets/goomba.png");
+	object->SetPosition(DirectX::XMFLOAT2(600.0f, 300.0f));
+	//object->SetScale(DirectX::XMFLOAT2(1.5f, 3.0f));
+
+	object2 = new GameObject("assets/p3_front.png");
+	object2->SetPosition(DirectX::XMFLOAT2(400.0f, 200.0f));
+	object2->SetRotation(2.0f);
 }
 
 Game::~Game()
 {
-	delete sprite;
+	delete object;
+	delete object2;
 }
 
 void Game::Update(float deltaTime)
 {
-	sprite->Draw(graphics->GetDeviceContext());
+	object->Update(deltaTime);
+	object2->Update(deltaTime);
 }

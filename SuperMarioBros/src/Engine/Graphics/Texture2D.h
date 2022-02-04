@@ -5,11 +5,14 @@
 class Texture2D
 {
 public:
-	Texture2D(const char* file, ID3D11Device* device);
+	Texture2D(const char* file);
 	~Texture2D();
 
 	ID3D11ShaderResourceView** GetShaderResourceViewPP();
 	ID3D11SamplerState** GetSamplerStatePP();
+
+	int GetWidth();
+	int GetHeight();
 
 private:
 	void CreateTexture(const char* file, ID3D11Device* device);

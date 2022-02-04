@@ -1,7 +1,6 @@
 #pragma once
 
-class DXManager;
-class Sprite;
+class GameObject;
 
 /// <summary>
 /// Manages the game itself
@@ -9,13 +8,13 @@ class Sprite;
 class Game
 {
 public:
-	Game(DXManager* DXManage);
+	Game();
 	~Game();
 
 	void Update(float deltaTime);
 
 private:
-	DXManager* graphics;
-	Sprite* sprite;
+	GameObject* object;
+	GameObject* object2;
 };
 

@@ -1,16 +1,19 @@
 #include "Quad.h"
+#include "../../SMBEngine.h" // Getting engine
+#include "../DXManager.h" // Getting device
 #include <d3dcompiler.h> // D3DReadFileToBlob
 
-Quad::Quad(ID3D11Device* device)
+Quad::Quad(DirectX::XMFLOAT2 size)
 	:
 	vertexShader(nullptr),
 	pixelShader(nullptr),
 	inputLayout(nullptr),
 	vertexBuffer(nullptr)
 {
+	ID3D11Device* device = SMBEngine::GetInstance()->GetGraphics()->GetDevice();
 	CreateVertexShader(device);
 	CreatePixelShader(device);
-	CreateVertexBuffer(device);
+	CreateVertexBuffer(device, size);
 }
 
 Quad::~Quad()
@@ -19,6 +22,11 @@ Quad::~Quad()
 	if (pixelShader) pixelShader->Release();
 	if (inputLayout) inputLayout->Release();
 	if (vertexBuffer) vertexBuffer->Release();
+
+	vertexShader = 0;
+	pixelShader = 0;
+	inputLayout = 0;
+	vertexBuffer = 0;
 }
 
 ID3D11VertexShader* Quad::GetVertexShader()
@@ -49,7 +57,7 @@ unsigned int Quad::GetSizeOfVertex()
 void Quad::CreateVertexShader(ID3D11Device* device)
 {
 	ID3DBlob* vsBuffer = nullptr;
-	HRESULT d3dResult = D3DReadFileToBlob(L"src/Graphics/Shaders/Precompiled/VertexShader.cso", &vsBuffer);
+	HRESULT d3dResult = D3DReadFileToBlob(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso", &vsBuffer);
 
 	if (FAILED(d3dResult))
 	{
@@ -76,7 +84,7 @@ void Quad::CreateVertexShader(ID3D11Device* device)
 void Quad::CreatePixelShader(ID3D11Device* device)
 {
 	ID3DBlob* psBuffer = nullptr;
-	HRESULT d3dResult = D3DReadFileToBlob(L"src/Graphics/Shaders/Precompiled/PixelShader.cso", &psBuffer);
+	HRESULT d3dResult = D3DReadFileToBlob(L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso", &psBuffer);
 
 	if (FAILED(d3dResult))
 	{
@@ -118,17 +126,20 @@ void Quad::CreateInputLayout(ID3D11Device* device, ID3DBlob* vsBuffer)
 	}
 }
 
-void Quad::CreateVertexBuffer(ID3D11Device* device)
+void Quad::CreateVertexBuffer(ID3D11Device* device, DirectX::XMFLOAT2 size)
 {
+	float halfWidth = (float)size.x / 2.0f;
+	float halfHeight = (float)size.y / 2.0f;
+
 	Vertex vertices[] =
 	{
-		{ DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(halfWidth, halfHeight, 1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(halfWidth, -halfHeight, 1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-halfWidth, -halfHeight, 1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
 
-		{ DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.0f, 1.0f, 1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(-halfWidth, -halfHeight, 1.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-halfWidth, halfHeight, 1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(halfWidth, halfHeight, 1.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
 	};
 
 	D3D11_BUFFER_DESC vertexDesc;

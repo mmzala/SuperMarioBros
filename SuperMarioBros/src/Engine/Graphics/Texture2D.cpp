@@ -1,8 +1,10 @@
 #include "Texture2D.h"
+#include "../SMBEngine.h" // Getting engine
+#include "DXManager.h" // Gettings device
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h" // stbi_load / image data loader
 
-Texture2D::Texture2D(const char* file, ID3D11Device* device)
+Texture2D::Texture2D(const char* file)
 	:
 	width(0),
 	height(0),
@@ -10,6 +12,7 @@ Texture2D::Texture2D(const char* file, ID3D11Device* device)
 	colorMap(nullptr),
 	colorMapSampler(nullptr)
 {
+	ID3D11Device* device = SMBEngine::GetInstance()->GetGraphics()->GetDevice();
 	CreateTexture(file, device);
 	CreateShaderResourceView(device);
 	CreateSamplerState(device);
@@ -20,6 +23,10 @@ Texture2D::~Texture2D()
 	if (colorMapSampler) colorMapSampler->Release();
 	if (colorMap) colorMap->Release();
 	if (texture) texture->Release();
+
+	colorMapSampler = 0;
+	colorMap = 0;
+	texture = 0;
 }
 
 ID3D11ShaderResourceView** Texture2D::GetShaderResourceViewPP()
@@ -30,6 +37,16 @@ ID3D11ShaderResourceView** Texture2D::GetShaderResourceViewPP()
 ID3D11SamplerState** Texture2D::GetSamplerStatePP()
 {
 	return &colorMapSampler;
+}
+
+int Texture2D::GetWidth()
+{
+	return width;
+}
+
+int Texture2D::GetHeight()
+{
+	return height;
 }
 
 void Texture2D::CreateTexture(const char* file, ID3D11Device* device)

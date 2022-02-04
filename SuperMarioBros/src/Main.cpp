@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <memory>
-#include "Graphics/DXManager.h"
+#include "Engine/SMBEngine.h"
 #include "Game/Game.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -47,7 +47,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		return -1;
 	}
 
-	RECT rc = { 0, 0, 640, 480 };
+	RECT rc = { 0, 0, 800, 600 };
 	AdjustWindowRect(&rc, WS_EX_OVERLAPPEDWINDOW, FALSE);
 
 	HWND hwnd = CreateWindowA("SMB", "Super Mario Bros", WS_EX_OVERLAPPEDWINDOW,
@@ -61,8 +61,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	ShowWindow(hwnd, nShowCmd);
 
-	std::auto_ptr<DXManager> directXGraphics(new DXManager(hwnd));
-	std::auto_ptr<Game> game(new Game(directXGraphics.get()));
+	std::auto_ptr<SMBEngine> engine(new SMBEngine());
+	engine->Initialize(hwnd);
 
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT)
@@ -74,10 +74,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 		else
 		{
-			// Update everything
-			directXGraphics->BeginFrame();
-			game->Update(0.0f);
-			directXGraphics->EndFrame();
+			engine->Update();
 		}
 	}
 

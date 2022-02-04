@@ -11,7 +11,7 @@
 class DXManager
 {
 public:
-	DXManager(HWND hwnd);
+	DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned int clientHeight);
 	~DXManager();
 
 	void BeginFrame();

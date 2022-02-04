@@ -4,7 +4,7 @@
 // Prefer 'enum class' over 'enum' warning (thanks Microsoft >_<)
 #pragma warning(disable : 26812)
 
-DXManager::DXManager(HWND hwnd)
+DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned int clientHeight)
 	:
 	device(nullptr),
 	deviceContext(nullptr),
@@ -13,15 +13,9 @@ DXManager::DXManager(HWND hwnd)
 	driverType(D3D_DRIVER_TYPE_NULL),
 	featureLevel(D3D_FEATURE_LEVEL_11_0)
 {
-	RECT dimensions;
-	GetClientRect(hwnd, &dimensions);
-
-	const unsigned int width = dimensions.right - dimensions.left;
-	const unsigned int height = dimensions.bottom - dimensions.top;
-
-	if (!CreateDeviceAndSwapChain(hwnd, width, height)) return;
+	if (!CreateDeviceAndSwapChain(hwnd, clientWidth, clientHeight)) return;
 	if(!CreateRenderTargetView()) return;
-	CreateViewport(width, height);
+	CreateViewport(clientWidth, clientHeight);
 }
 
 DXManager::~DXManager()
@@ -30,6 +24,11 @@ DXManager::~DXManager()
 	if (swapChain) swapChain->Release();
 	if (deviceContext) deviceContext->Release();
 	if (device) device->Release();
+
+	backBufferTarget = 0;
+	swapChain = 0;
+	deviceContext = 0;
+	device = 0;
 }
 
 void DXManager::BeginFrame()

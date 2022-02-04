@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3d11.h> // DirectX classes
-#include <DirectXMath.h>
+#include <DirectXMath.h> // XMFLOAT2
 
 /// <summary>
 /// A flat surface to draw a texture on
@@ -9,7 +9,7 @@
 class Quad
 {
 public:
-	Quad(ID3D11Device* device);
+	Quad(DirectX::XMFLOAT2 size);
 	~Quad();
 
 	ID3D11VertexShader* GetVertexShader();
@@ -27,7 +27,7 @@ private:
 	void CreateVertexShader(ID3D11Device* device);
 	void CreatePixelShader(ID3D11Device* device);
 	void CreateInputLayout(ID3D11Device* device, ID3DBlob* vsBuffer);
-	void CreateVertexBuffer(ID3D11Device* device);
+	void CreateVertexBuffer(ID3D11Device* device, DirectX::XMFLOAT2 size);
 
 private:
 	struct Vertex
