@@ -4,8 +4,6 @@
 #include "../Engine/SMBEngine.h" // Getting engine
 #include "../Engine/Graphics/Camera.h" // Getting camera
 
-// TODO: Shader class with vertex shader and pixel shader (in SMBEngine)
-
 Game::Game()
 	:
 	camPosX(0.0f)

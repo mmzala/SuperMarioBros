@@ -12,9 +12,6 @@ public:
 	Quad(DirectX::XMFLOAT2 size);
 	~Quad();
 
-	ID3D11VertexShader* GetVertexShader();
-	ID3D11PixelShader* GetPixelShader();
-	ID3D11InputLayout* GetInputLayout();
 	ID3D11Buffer** GetVertexBufferPP();
 
 	/// <summary>
@@ -24,9 +21,6 @@ public:
 	unsigned int GetSizeOfVertex();
 
 private:
-	void CreateVertexShader(ID3D11Device* device);
-	void CreatePixelShader(ID3D11Device* device);
-	void CreateInputLayout(ID3D11Device* device, ID3DBlob* vsBuffer);
 	void CreateVertexBuffer(ID3D11Device* device, DirectX::XMFLOAT2 size);
 
 private:
@@ -36,9 +30,6 @@ private:
 		DirectX::XMFLOAT2 tex0;
 	};
 
-	ID3D11VertexShader* vertexShader;
-	ID3D11PixelShader* pixelShader;
-	ID3D11InputLayout* inputLayout;
 	ID3D11Buffer* vertexBuffer;
 };
 

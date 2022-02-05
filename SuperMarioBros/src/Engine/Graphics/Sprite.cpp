@@ -5,6 +5,7 @@
 #include "../SMBEngine.h" // Getting enigne
 #include "DXManager.h" // Getting graphics
 #include "Camera.h" // GetViewportProjectionMatrix()
+#include "Shaders/Shader.h"
 
 Sprite::Sprite(const char* textureFile)
 	:
@@ -35,14 +36,15 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 	unsigned int stride = quad->GetSizeOfVertex();
 	unsigned int offset = 0;
 
+	Shader* shader = SMBEngine::GetInstance()->GetTextureShader();
 	ID3D11DeviceContext* deviceContext = SMBEngine::GetInstance()->GetGraphics()->GetDeviceContext();
 
-	deviceContext->IASetInputLayout(quad->GetInputLayout());
+	deviceContext->IASetInputLayout(shader->GetInputLayout());
 	deviceContext->IASetVertexBuffers(0, 1, quad->GetVertexBufferPP(), &stride, &offset);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	deviceContext->VSSetShader(quad->GetVertexShader(), 0, 0);
-	deviceContext->PSSetShader(quad->GetPixelShader(), 0, 0);
+	deviceContext->VSSetShader(shader->GetVertexShader(), 0, 0);
+	deviceContext->PSSetShader(shader->GetPixelShader(), 0, 0);
 
 	deviceContext->PSSetShaderResources(0, 1, texture->GetShaderResourceViewPP());
 	deviceContext->PSSetSamplers(0, 1, texture->GetSamplerStatePP());
@@ -88,7 +90,7 @@ void Sprite::CreateBlendState(DXManager* graphics)
 	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = 0x0F;
 
-	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	const float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	HRESULT d3dResult = graphics->GetDevice()->CreateBlendState(&blendDesc, &alphaBlendState);
 
 	if (FAILED(d3dResult))

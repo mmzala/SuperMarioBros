@@ -2,6 +2,7 @@
 #include "Graphics/DXManager.h"
 #include "../Game/Game.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Shaders/Shader.h"
 
 SMBEngine* SMBEngine::engine = nullptr;
 
@@ -9,7 +10,8 @@ SMBEngine::SMBEngine()
 	:
 	graphics(nullptr),
 	game(nullptr),
-	camera(nullptr)
+	camera(nullptr),
+	textureShader(nullptr)
 {
 	if (engine == nullptr)
 	{
@@ -28,6 +30,8 @@ SMBEngine::~SMBEngine()
 	delete camera;
 	delete game;
 	delete graphics;
+
+	delete textureShader;
 }
 
 void SMBEngine::Initialize(HWND hwnd)
@@ -41,6 +45,9 @@ void SMBEngine::Initialize(HWND hwnd)
 	graphics = new DXManager(hwnd, clientWidth, clientHeight);
 	game = new Game();
 	camera = new Camera(clientWidth, clientHeight);
+
+	textureShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso",
+		L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso");
 }
 
 void SMBEngine::Update()
@@ -63,4 +70,9 @@ DXManager* SMBEngine::GetGraphics()
 Camera* SMBEngine::GetCamera()
 {
 	return camera;
+}
+
+Shader* SMBEngine::GetTextureShader()
+{
+	return textureShader;
 }
