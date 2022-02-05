@@ -10,13 +10,10 @@
 Sprite::Sprite(const char* textureFile)
 	:
 	constantBuffer(nullptr),
-	alphaBlendState(nullptr),
 	texture(new Texture2D(textureFile)),
 	quad(new Quad(DirectX::XMFLOAT2((float)texture->GetWidth(), (float)texture->GetHeight())))
 {
-	DXManager* graphics = SMBEngine::GetInstance()->GetGraphics();
-	CreateConstantBuffer(graphics->GetDevice());
-	CreateBlendState(graphics);
+	CreateConstantBuffer();
 }
 
 Sprite::~Sprite()
@@ -25,10 +22,8 @@ Sprite::~Sprite()
 	delete quad;
 
 	if (constantBuffer) constantBuffer->Release();
-	if (alphaBlendState) alphaBlendState->Release();
 
 	constantBuffer = 0;
-	alphaBlendState = 0;
 }
 
 void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
@@ -59,7 +54,7 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 	deviceContext->Draw(6, 0);
 }
 
-void Sprite::CreateConstantBuffer(ID3D11Device* device)
+void Sprite::CreateConstantBuffer()
 {
 	D3D11_BUFFER_DESC constDesc;
 	ZeroMemory(&constDesc, sizeof(constDesc));
@@ -67,6 +62,7 @@ void Sprite::CreateConstantBuffer(ID3D11Device* device)
 	constDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
 	constDesc.Usage = D3D11_USAGE_DEFAULT;
 
+	ID3D11Device* device = SMBEngine::GetInstance()->GetGraphics()->GetDevice();
 	HRESULT d3dResult = device->CreateBuffer(&constDesc, 0, &constantBuffer);
 
 	if (FAILED(d3dResult))
@@ -75,30 +71,4 @@ void Sprite::CreateConstantBuffer(ID3D11Device* device)
 		PostQuitMessage(0);
 		return;
 	}
-}
-
-void Sprite::CreateBlendState(DXManager* graphics)
-{
-	D3D11_BLEND_DESC blendDesc;
-	ZeroMemory(&blendDesc, sizeof(blendDesc));
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = 0x0F;
-
-	const float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	HRESULT d3dResult = graphics->GetDevice()->CreateBlendState(&blendDesc, &alphaBlendState);
-
-	if (FAILED(d3dResult))
-	{
-		MessageBox(NULL, L"Error creating blend state!", L"Error!", MB_OK);
-		PostQuitMessage(0);
-		return;
-	}
-
-	graphics->GetDeviceContext()->OMSetBlendState(alphaBlendState, blendFactor, 0xFFFFFFFF);
 }

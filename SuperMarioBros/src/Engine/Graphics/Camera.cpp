@@ -4,7 +4,7 @@ Camera::Camera(const unsigned int clientWidth, const unsigned int clientHeight)
 	:
 	clientWidth((float)clientWidth),
 	clientHeight((float)clientHeight),
-	position(DirectX::XMFLOAT2(-200.0f, -200.0f)),
+	position(DirectX::XMFLOAT2(0.0f, 0.0f)),
 	viewportProjectionMatrix(DirectX::XMMATRIX())
 {
 	UpdateViewportProjectionMatrix();

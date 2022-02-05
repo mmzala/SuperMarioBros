@@ -10,21 +10,25 @@ DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned i
 	deviceContext(nullptr),
 	swapChain(nullptr),
 	backBufferTarget(nullptr),
+	alphaBlendState(nullptr),
 	driverType(D3D_DRIVER_TYPE_NULL),
 	featureLevel(D3D_FEATURE_LEVEL_11_0)
 {
 	if (!CreateDeviceAndSwapChain(hwnd, clientWidth, clientHeight)) return;
 	if(!CreateRenderTargetView()) return;
 	CreateViewport(clientWidth, clientHeight);
+	CreateBlendState();
 }
 
 DXManager::~DXManager()
 {
+	if (alphaBlendState) alphaBlendState->Release();
 	if (backBufferTarget) backBufferTarget->Release();
 	if (swapChain) swapChain->Release();
 	if (deviceContext) deviceContext->Release();
 	if (device) device->Release();
 
+	alphaBlendState = 0;
 	backBufferTarget = 0;
 	swapChain = 0;
 	deviceContext = 0;
@@ -33,7 +37,7 @@ DXManager::~DXManager()
 
 void DXManager::BeginFrame()
 {
-	float color[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
+	float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	deviceContext->ClearRenderTargetView(backBufferTarget, color);
 }
 
@@ -160,5 +164,31 @@ void DXManager::CreateViewport(unsigned int width, unsigned int height)
 	viewport.TopLeftY = 0.0f;
 
 	deviceContext->RSSetViewports(1, &viewport);
+}
+
+void DXManager::CreateBlendState()
+{
+	D3D11_BLEND_DESC blendDesc;
+	ZeroMemory(&blendDesc, sizeof(blendDesc));
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = 0x0F;
+	
+	HRESULT d3dResult = device->CreateBlendState(&blendDesc, &alphaBlendState);
+
+	if (FAILED(d3dResult))
+	{
+		MessageBox(NULL, L"Error creating blend state!", L"Error!", MB_OK);
+		PostQuitMessage(0);
+		return;
+	}
+
+	const float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	deviceContext->OMSetBlendState(alphaBlendState, blendFactor, 0xFFFFFFFF);
 }
 #pragma endregion Creating DirectX objects

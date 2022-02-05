@@ -26,7 +26,7 @@ Game::~Game()
 void Game::Update(float deltaTime)
 {
 	camPosX += 0.01f;
-	SMBEngine::GetInstance()->GetCamera()->SetPosition(DirectX::XMFLOAT2(camPosX, 0.0f));
+	//SMBEngine::GetInstance()->GetCamera()->SetPosition(DirectX::XMFLOAT2(camPosX, 0.0f));
 
 	object->Update(deltaTime);
 	object2->Update(deltaTime);
