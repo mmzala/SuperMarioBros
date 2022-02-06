@@ -171,6 +171,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Input\Input.cpp" />
     <ClCompile Include="src\Engine\Graphics\Shaders\Shader.cpp" />
     <ClCompile Include="src\Engine\SMBEngine.cpp" />
     <ClCompile Include="src\Engine\Graphics\Camera.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="src\Engine\Graphics\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Input\Input.h" />
     <ClInclude Include="src\Engine\Graphics\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\SMBEngine.h" />
     <ClInclude Include="src\Engine\Graphics\Camera.h" />

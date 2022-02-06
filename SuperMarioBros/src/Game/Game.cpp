@@ -3,6 +3,7 @@
 #include "GameObjects/GameObject.h"
 #include "../Engine/SMBEngine.h" // Getting engine
 #include "../Engine/Graphics/Camera.h" // Getting camera
+#include "../Engine/Input/Input.h" // Checking input
 
 Game::Game()
 	:
@@ -25,8 +26,16 @@ Game::~Game()
 
 void Game::Update(float deltaTime)
 {
-	camPosX += 0.01f;
-	//SMBEngine::GetInstance()->GetCamera()->SetPosition(DirectX::XMFLOAT2(camPosX, 0.0f));
+	if (Input::GetInstance()->GetKey(DIK_A))
+	{
+		camPosX -= 0.01f;
+	}
+	if (Input::GetInstance()->GetKey(DIK_D))
+	{
+		camPosX += 0.01f;
+	}
+	
+	SMBEngine::GetInstance()->GetCamera()->SetPosition(DirectX::XMFLOAT2(camPosX, 0.0f));
 
 	object->Update(deltaTime);
 	object2->Update(deltaTime);

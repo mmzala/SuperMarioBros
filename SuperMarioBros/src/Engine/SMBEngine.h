@@ -5,15 +5,15 @@
 class DXManager;
 class Game;
 class Camera;
+class Input;
 class Shader;
 
 class SMBEngine
 {
 public:
-	SMBEngine();
+	SMBEngine(HWND hwnd);
 	~SMBEngine();
 
-	void Initialize(HWND hwnd);
 	void Update();
 
 	static SMBEngine* GetInstance();
@@ -23,11 +23,15 @@ public:
 	Shader* GetTextureShader();
 
 private:
-	static SMBEngine* engine;
+	void Initialize(HWND hwnd);
+
+private:
+	static SMBEngine* instance;
 
 	DXManager* graphics;
 	Game* game;
 	Camera* camera;
+	Input* input;
 
 	Shader* textureShader;
 };

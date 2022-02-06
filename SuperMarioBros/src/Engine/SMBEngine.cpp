@@ -2,20 +2,22 @@
 #include "Graphics/DXManager.h"
 #include "../Game/Game.h"
 #include "Graphics/Camera.h"
+#include "Input/Input.h"
 #include "Graphics/Shaders/Shader.h"
 
-SMBEngine* SMBEngine::engine = nullptr;
+SMBEngine* SMBEngine::instance = nullptr;
 
-SMBEngine::SMBEngine()
+SMBEngine::SMBEngine(HWND hwnd)
 	:
 	graphics(nullptr),
 	game(nullptr),
 	camera(nullptr),
+	input(nullptr),
 	textureShader(nullptr)
 {
-	if (engine == nullptr)
+	if (instance == nullptr)
 	{
-		engine = this;
+		instance = this;
 	}
 	else
 	{
@@ -23,31 +25,18 @@ SMBEngine::SMBEngine()
 		PostQuitMessage(0);
 		return;
 	}
+
+	Initialize(hwnd);
 }
 
 SMBEngine::~SMBEngine()
 {
+	delete input;
 	delete camera;
 	delete game;
 	delete graphics;
 
 	delete textureShader;
-}
-
-void SMBEngine::Initialize(HWND hwnd)
-{
-	RECT dimensions;
-	GetClientRect(hwnd, &dimensions);
-
-	const unsigned int clientWidth = dimensions.right - dimensions.left;
-	const unsigned int clientHeight = dimensions.bottom - dimensions.top;
-
-	graphics = new DXManager(hwnd, clientWidth, clientHeight);
-	game = new Game();
-	camera = new Camera(clientWidth, clientHeight);
-
-	textureShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso",
-		L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso");
 }
 
 void SMBEngine::Update()
@@ -59,7 +48,7 @@ void SMBEngine::Update()
 
 SMBEngine* SMBEngine::GetInstance()
 {
-	return engine;
+	return instance;
 }
 
 DXManager* SMBEngine::GetGraphics()
@@ -75,4 +64,21 @@ Camera* SMBEngine::GetCamera()
 Shader* SMBEngine::GetTextureShader()
 {
 	return textureShader;
+}
+
+void SMBEngine::Initialize(HWND hwnd)
+{
+	RECT dimensions;
+	GetClientRect(hwnd, &dimensions);
+
+	const unsigned int clientWidth = dimensions.right - dimensions.left;
+	const unsigned int clientHeight = dimensions.bottom - dimensions.top;
+
+	graphics = new DXManager(hwnd, clientWidth, clientHeight);
+	game = new Game();
+	camera = new Camera(clientWidth, clientHeight);
+	input = new Input(hwnd);
+
+	textureShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso",
+		L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso");
 }

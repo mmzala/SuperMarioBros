@@ -61,8 +61,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	ShowWindow(hwnd, nShowCmd);
 
-	std::auto_ptr<SMBEngine> engine(new SMBEngine());
-	engine->Initialize(hwnd);
+	std::auto_ptr<SMBEngine> engine(new SMBEngine(hwnd));
 
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT)
