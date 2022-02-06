@@ -6,7 +6,8 @@ Input::Input(HWND hwnd)
 	:
 	directInput(NULL),
 	keyboard(NULL),
-	keyboardState()
+	keyboardState(),
+	controller()
 {
 	if (instance == nullptr)
 	{
@@ -35,6 +36,20 @@ Input::~Input()
 	directInput = 0;
 }
 
+void Input::Update()
+{
+	// Update keyboard state
+	keyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
+
+	// Update controller state
+	ZeroMemory(&controller, sizeof(XINPUT_STATE));
+
+	XINPUT_STATE state;
+	DWORD result = XInputGetState(0, &state);
+
+	if (result == 0) controller = state.Gamepad;
+}
+
 Input* Input::GetInstance()
 {
 	return instance;
@@ -42,9 +57,12 @@ Input* Input::GetInstance()
 
 bool Input::GetKey(int key)
 {
-	// Update keyboard state
-	keyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
 	return (keyboardState[key] & 0x80);
+}
+
+XINPUT_GAMEPAD* Input::GetController()
+{
+	return &controller;
 }
 
 void Input::Initialize(HWND hwnd)

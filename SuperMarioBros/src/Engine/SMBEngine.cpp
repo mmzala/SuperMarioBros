@@ -41,6 +41,7 @@ SMBEngine::~SMBEngine()
 
 void SMBEngine::Update()
 {
+	input->Update();
 	graphics->BeginFrame();
 	game->Update(0.0f);
 	graphics->EndFrame();
