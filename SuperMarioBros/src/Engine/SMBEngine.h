@@ -6,6 +6,7 @@ class DXManager;
 class Game;
 class Camera;
 class Input;
+class Timer;
 class Shader;
 
 class SMBEngine
@@ -32,6 +33,7 @@ private:
 	Game* game;
 	Camera* camera;
 	Input* input;
+	Timer* timer;
 
 	Shader* textureShader;
 };

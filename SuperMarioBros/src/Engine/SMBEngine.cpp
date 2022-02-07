@@ -3,6 +3,7 @@
 #include "../Game/Game.h"
 #include "Graphics/Camera.h"
 #include "Input/Input.h"
+#include "../Utils/Timer.h"
 #include "Graphics/Shaders/Shader.h"
 
 SMBEngine* SMBEngine::instance = nullptr;
@@ -13,6 +14,7 @@ SMBEngine::SMBEngine(HWND hwnd)
 	game(nullptr),
 	camera(nullptr),
 	input(nullptr),
+	timer(nullptr),
 	textureShader(nullptr)
 {
 	if (instance == nullptr)
@@ -31,6 +33,7 @@ SMBEngine::SMBEngine(HWND hwnd)
 
 SMBEngine::~SMBEngine()
 {
+	delete timer;
 	delete input;
 	delete camera;
 	delete game;
@@ -41,9 +44,11 @@ SMBEngine::~SMBEngine()
 
 void SMBEngine::Update()
 {
+	float deltaTime = timer->Mark();
+
 	input->Update();
 	graphics->BeginFrame();
-	game->Update(0.0f);
+	game->Update(deltaTime);
 	graphics->EndFrame();
 }
 
@@ -79,6 +84,7 @@ void SMBEngine::Initialize(HWND hwnd)
 	game = new Game();
 	camera = new Camera(clientWidth, clientHeight);
 	input = new Input(hwnd);
+	timer = new Timer();
 
 	textureShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso",
 		L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso");

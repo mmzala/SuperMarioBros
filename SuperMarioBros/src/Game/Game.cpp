@@ -28,11 +28,11 @@ void Game::Update(float deltaTime)
 {
 	if (Input::GetInstance()->GetKey(DIK_A) || Input::GetInstance()->GetController()->wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
-		camPosX -= 0.01f;
+		camPosX -= 100.0 * deltaTime;
 	}
 	if (Input::GetInstance()->GetKey(DIK_D) || Input::GetInstance()->GetController()->wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 	{
-		camPosX += 0.01f;
+		camPosX += 100.0 * deltaTime;
 	}
 	
 	SMBEngine::GetInstance()->GetCamera()->SetPosition(DirectX::XMFLOAT2(camPosX, 0.0f));

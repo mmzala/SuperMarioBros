@@ -182,6 +182,7 @@
     <ClCompile Include="src\Engine\Graphics\DXManager.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Engine\Graphics\Texture2D.cpp" />
+    <ClCompile Include="src\Utils\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Input\Input.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\Engine\Graphics\DXManager.h" />
     <ClInclude Include="src\Engine\Graphics\stb_image.h" />
     <ClInclude Include="src\Engine\Graphics\Texture2D.h" />
+    <ClInclude Include="src\Utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\PixelShader.hlsl">
