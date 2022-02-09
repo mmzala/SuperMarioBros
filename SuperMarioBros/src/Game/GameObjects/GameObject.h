@@ -1,8 +1,8 @@
 #pragma once
 
-#include <DirectXMath.h> // XMMATRIX and XMFLOAT2
-
+class Transform;
 class Sprite;
+class RectCollider;
 
 class GameObject
 {
@@ -12,16 +12,13 @@ public:
 
 	void Update(float deltaTime);
 
-	DirectX::XMMATRIX GetWorldMatrix();
-	void SetPosition(DirectX::XMFLOAT2 position);
-	void SetRotation(float rotation);
-	void SetScale(DirectX::XMFLOAT2 scale);
+public:
+	Transform* transform;
 
 private:
-	DirectX::XMFLOAT2 position;
-	float rotation;
-	DirectX::XMFLOAT2 scale;
-
 	Sprite* sprite;
+
+public:
+	RectCollider* collider; // Collider has to be here, because sprite needs to be initialized first to get the texture size
 };
 

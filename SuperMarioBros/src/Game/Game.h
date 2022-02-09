@@ -17,6 +17,7 @@ private:
 	GameObject* object;
 	GameObject* object2;
 
-	float camPosX;
+	float playerX;
+	float playerY;
 };
 

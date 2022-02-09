@@ -11,7 +11,7 @@ Sprite::Sprite(const char* textureFile)
 	:
 	constantBuffer(nullptr),
 	texture(new Texture2D(textureFile)),
-	quad(new Quad(DirectX::XMFLOAT2((float)texture->GetWidth(), (float)texture->GetHeight())))
+	quad(new Quad(GetSize()))
 {
 	CreateConstantBuffer();
 }
@@ -52,6 +52,11 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 
 	// Drawing a quad, so 6 vertecies
 	deviceContext->Draw(6, 0);
+}
+
+DirectX::XMFLOAT2 Sprite::GetSize()
+{
+	return DirectX::XMFLOAT2((float)texture->GetWidth(), (float)texture->GetHeight());
 }
 
 void Sprite::CreateConstantBuffer()

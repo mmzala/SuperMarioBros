@@ -14,6 +14,12 @@ public:
 
 	void Draw(DirectX::XMMATRIX worldMatrix);
 
+	/// <summary>
+	/// Returns the size of the texture2D
+	/// </summary>
+	/// <returns> Size of texture2D </returns>
+	DirectX::XMFLOAT2 GetSize();
+
 private:
 	void CreateConstantBuffer();
 
