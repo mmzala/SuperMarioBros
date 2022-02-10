@@ -19,12 +19,15 @@ public:
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
+	ID3D11Buffer* GetConstantBuffer();
 
 private:
 	bool CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned int height);
 	bool CreateRenderTargetView();
 	void CreateViewport(unsigned int width, unsigned int height);
+
 	void CreateBlendState();
+	void CreateConstantBuffer();
 
 private:
 	 ID3D11Device* device;
@@ -32,6 +35,7 @@ private:
 	 IDXGISwapChain* swapChain;
 	 ID3D11RenderTargetView* backBufferTarget;
 
+	 ID3D11Buffer* constantBuffer;
 	 ID3D11BlendState* alphaBlendState;
 
 	 D3D_DRIVER_TYPE driverType;

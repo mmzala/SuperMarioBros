@@ -9,21 +9,14 @@
 
 Sprite::Sprite(const char* textureFile)
 	:
-	constantBuffer(nullptr),
 	texture(new Texture2D(textureFile)),
 	quad(new Quad(GetSize()))
-{
-	CreateConstantBuffer();
-}
+{}
 
 Sprite::~Sprite()
 {
 	delete texture;
 	delete quad;
-
-	if (constantBuffer) constantBuffer->Release();
-
-	constantBuffer = 0;
 }
 
 void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
@@ -47,6 +40,7 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 	DirectX::XMMATRIX mvp = DirectX::XMMatrixMultiply(worldMatrix, SMBEngine::GetInstance()->GetCamera()->GetViewportProjectionMatrix());
 	mvp = DirectX::XMMatrixTranspose(mvp);
 
+	ID3D11Buffer* constantBuffer = SMBEngine::GetInstance()->GetGraphics()->GetConstantBuffer();
 	deviceContext->UpdateSubresource(constantBuffer, 0, 0, &mvp, 0, 0);
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
 
@@ -57,23 +51,4 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 DirectX::XMFLOAT2 Sprite::GetSize()
 {
 	return DirectX::XMFLOAT2((float)texture->GetWidth(), (float)texture->GetHeight());
-}
-
-void Sprite::CreateConstantBuffer()
-{
-	D3D11_BUFFER_DESC constDesc;
-	ZeroMemory(&constDesc, sizeof(constDesc));
-	constDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
-	constDesc.Usage = D3D11_USAGE_DEFAULT;
-
-	ID3D11Device* device = SMBEngine::GetInstance()->GetGraphics()->GetDevice();
-	HRESULT d3dResult = device->CreateBuffer(&constDesc, 0, &constantBuffer);
-
-	if (FAILED(d3dResult))
-	{
-		MessageBox(NULL, L"Error constant buffer!", L"Error!", MB_OK);
-		PostQuitMessage(0);
-		return;
-	}
 }

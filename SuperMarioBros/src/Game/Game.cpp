@@ -25,6 +25,10 @@ Game::Game()
 	object2 = new GameObject("assets/goomba.png");
 	object2->transform->position = DirectX::XMFLOAT2(400.0f, 200.0f);
 	object2->transform->scale = DirectX::XMFLOAT2(0.3f, 0.4f);
+
+	object3 = new GameObject("assets/p3_front.png");
+	object3->transform->position = DirectX::XMFLOAT2(500.0f, 500.0f);
+	object3->transform->scale = DirectX::XMFLOAT2(0.6f, 0.6f);
 }
 
 Game::~Game()
@@ -57,10 +61,16 @@ void Game::Update(float deltaTime)
 
 	object->transform->position = DirectX::XMFLOAT2(playerX, playerY);
 
-	// If objects are not colliding, then update object2
+	// If object1 is not colliding, then update object2
 	if (!Collision::Check(object->collider->GetBounds(), object2->collider->GetBounds()))
 	{
 		object2->Update(deltaTime);
+	}
+
+	// If object1 is not colliding, then update object3
+	if (!Collision::Check(object->collider->GetBounds(), object3->collider->GetBounds()))
+	{
+		object3->Update(deltaTime);
 	}
 
 	object->Update(deltaTime);

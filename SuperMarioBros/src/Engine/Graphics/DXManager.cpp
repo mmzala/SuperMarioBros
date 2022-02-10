@@ -1,5 +1,6 @@
 #include "DXManager.h"
 #include <d3dcompiler.h> // D3DCOMPILE Constants
+#include <DirectXMath.h> // XMMATRIX
 
 // Prefer 'enum class' over 'enum' warning (thanks Microsoft >_<)
 #pragma warning(disable : 26812)
@@ -10,6 +11,7 @@ DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned i
 	deviceContext(nullptr),
 	swapChain(nullptr),
 	backBufferTarget(nullptr),
+	constantBuffer(),
 	alphaBlendState(nullptr),
 	driverType(D3D_DRIVER_TYPE_NULL),
 	featureLevel(D3D_FEATURE_LEVEL_11_0)
@@ -17,17 +19,21 @@ DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned i
 	if (!CreateDeviceAndSwapChain(hwnd, clientWidth, clientHeight)) return;
 	if(!CreateRenderTargetView()) return;
 	CreateViewport(clientWidth, clientHeight);
+
 	CreateBlendState();
+	CreateConstantBuffer();
 }
 
 DXManager::~DXManager()
 {
+	if (constantBuffer) constantBuffer->Release();
 	if (alphaBlendState) alphaBlendState->Release();
 	if (backBufferTarget) backBufferTarget->Release();
 	if (swapChain) swapChain->Release();
 	if (deviceContext) deviceContext->Release();
 	if (device) device->Release();
-
+	
+	constantBuffer = 0;
 	alphaBlendState = 0;
 	backBufferTarget = 0;
 	swapChain = 0;
@@ -54,6 +60,11 @@ ID3D11Device* DXManager::GetDevice()
 ID3D11DeviceContext* DXManager::GetDeviceContext()
 {
 	return deviceContext;
+}
+
+ID3D11Buffer* DXManager::GetConstantBuffer()
+{
+	return constantBuffer;
 }
 
 #pragma region Creation Methods
@@ -190,5 +201,23 @@ void DXManager::CreateBlendState()
 
 	const float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	deviceContext->OMSetBlendState(alphaBlendState, blendFactor, 0xFFFFFFFF);
+}
+
+void DXManager::CreateConstantBuffer()
+{
+	D3D11_BUFFER_DESC constDesc;
+	ZeroMemory(&constDesc, sizeof(constDesc));
+	constDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
+	constDesc.Usage = D3D11_USAGE_DEFAULT;
+
+	HRESULT d3dResult = device->CreateBuffer(&constDesc, 0, &constantBuffer);
+
+	if (FAILED(d3dResult))
+	{
+		MessageBox(NULL, L"Error constant buffer!", L"Error!", MB_OK);
+		PostQuitMessage(0);
+		return;
+	}
 }
 #pragma endregion Creating DirectX objects

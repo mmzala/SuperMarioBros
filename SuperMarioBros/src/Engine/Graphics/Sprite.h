@@ -4,7 +4,6 @@
 
 class Texture2D;
 class Quad;
-struct ID3D11Buffer;
 
 class Sprite
 {
@@ -21,11 +20,6 @@ public:
 	DirectX::XMFLOAT2 GetSize();
 
 private:
-	void CreateConstantBuffer();
-
-private:
-	ID3D11Buffer* constantBuffer;
-
 	Texture2D* texture;
 	Quad* quad;
 };
