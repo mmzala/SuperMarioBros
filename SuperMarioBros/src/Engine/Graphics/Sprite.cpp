@@ -7,14 +7,16 @@
 #include "Camera.h" // GetViewportProjectionMatrix()
 #include "Shaders/Shader.h"
 
-Sprite::Sprite(const char* textureFile)
+Sprite::Sprite(const char* textureFile, int spriteSheetSize)
 	:
+	VSCBData(new VSConstantBufferData(spriteSheetSize)),
 	texture(new Texture2D(textureFile)),
 	quad(new Quad(GetSize()))
 {}
 
 Sprite::~Sprite()
 {
+	delete VSCBData;
 	delete texture;
 	delete quad;
 }
@@ -24,7 +26,7 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 	unsigned int stride = quad->GetSizeOfVertex();
 	unsigned int offset = 0;
 
-	Shader* shader = SMBEngine::GetInstance()->GetTextureShader();
+	Shader* shader = SMBEngine::GetInstance()->GetSpriteShader();
 	ID3D11DeviceContext* deviceContext = SMBEngine::GetInstance()->GetGraphics()->GetDeviceContext();
 
 	deviceContext->IASetInputLayout(shader->GetInputLayout());
@@ -37,18 +39,34 @@ void Sprite::Draw(DirectX::XMMATRIX worldMatrix)
 	deviceContext->PSSetShaderResources(0, 1, texture->GetShaderResourceViewPP());
 	deviceContext->PSSetSamplers(0, 1, texture->GetSamplerStatePP());
 
-	DirectX::XMMATRIX mvp = DirectX::XMMatrixMultiply(worldMatrix, SMBEngine::GetInstance()->GetCamera()->GetViewportProjectionMatrix());
-	mvp = DirectX::XMMatrixTranspose(mvp);
-
-	ID3D11Buffer* constantBuffer = SMBEngine::GetInstance()->GetGraphics()->GetConstantBuffer();
-	deviceContext->UpdateSubresource(constantBuffer, 0, 0, &mvp, 0, 0);
-	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
+	UpdateConstantBuffer(worldMatrix);
 
 	// Drawing a quad, so 6 vertecies
 	deviceContext->Draw(6, 0);
 }
 
+void Sprite::SetFrame(int frame)
+{
+	VSCBData->frame = frame;
+}
+
+int Sprite::GetFrame()
+{
+	return VSCBData->frame;
+}
+
 DirectX::XMFLOAT2 Sprite::GetSize()
 {
-	return DirectX::XMFLOAT2((float)texture->GetWidth(), (float)texture->GetHeight());
+	return DirectX::XMFLOAT2((float)(texture->GetWidth() / VSCBData->sheetSize), 
+		(float)(texture->GetHeight() / VSCBData->sheetSize));
+}
+
+void Sprite::UpdateConstantBuffer(DirectX::XMMATRIX worldMatrix)
+{
+	ID3D11DeviceContext* deviceContext = SMBEngine::GetInstance()->GetGraphics()->GetDeviceContext();
+
+	DirectX::XMMATRIX mvp = DirectX::XMMatrixMultiply(worldMatrix, SMBEngine::GetInstance()->GetCamera()->GetViewportProjectionMatrix());
+	VSCBData->transform = DirectX::XMMatrixTranspose(mvp);
+
+	deviceContext->UpdateSubresource(SMBEngine::GetInstance()->GetGraphics()->GetConstantBuffer(), 0, 0, VSCBData, 0, 0);
 }

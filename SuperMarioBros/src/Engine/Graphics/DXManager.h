@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d11.h> // DirectX classes
+#include <DirectXMath.h> // XMMATRIX
 
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "D3DCompiler.lib")
@@ -40,4 +41,20 @@ private:
 
 	 D3D_DRIVER_TYPE driverType;
 	 D3D_FEATURE_LEVEL featureLevel;
+};
+
+// Constant buffer data used for sprite rendering
+struct VSConstantBufferData
+{
+	DirectX::XMMATRIX transform;
+	// Sprite sheet size that contains 2^n animation frames (example: size 2 == 4 frames / size 3 == 9 frames)
+	int sheetSize;
+	int frame;
+
+	VSConstantBufferData(int spriteSheetSize)
+		:
+		transform(DirectX::XMMATRIX()),
+		sheetSize(spriteSheetSize),
+		frame(0)
+	{}
 };

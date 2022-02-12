@@ -16,7 +16,6 @@ public:
 private:
 	GameObject* object;
 	GameObject* object2;
-	GameObject* object3;
 
 	float playerX;
 	float playerY;

@@ -21,7 +21,7 @@ public:
 	DXManager* GetGraphics();
 	Camera* GetCamera();
 
-	Shader* GetTextureShader();
+	Shader* GetSpriteShader();
 
 private:
 	void Initialize(HWND hwnd);
@@ -35,6 +35,6 @@ private:
 	Input* input;
 	Timer* timer;
 
-	Shader* textureShader;
+	Shader* spriteShader;
 };
 

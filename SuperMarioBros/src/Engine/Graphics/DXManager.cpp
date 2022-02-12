@@ -1,6 +1,5 @@
 #include "DXManager.h"
 #include <d3dcompiler.h> // D3DCOMPILE Constants
-#include <DirectXMath.h> // XMMATRIX
 
 // Prefer 'enum class' over 'enum' warning (thanks Microsoft >_<)
 #pragma warning(disable : 26812)
@@ -208,7 +207,7 @@ void DXManager::CreateConstantBuffer()
 	D3D11_BUFFER_DESC constDesc;
 	ZeroMemory(&constDesc, sizeof(constDesc));
 	constDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constDesc.ByteWidth = sizeof(DirectX::XMMATRIX);
+	constDesc.ByteWidth = sizeof(VSConstantBufferData);
 	constDesc.Usage = D3D11_USAGE_DEFAULT;
 
 	HRESULT d3dResult = device->CreateBuffer(&constDesc, 0, &constantBuffer);
@@ -219,5 +218,7 @@ void DXManager::CreateConstantBuffer()
 		PostQuitMessage(0);
 		return;
 	}
+
+	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
 }
 #pragma endregion Creating DirectX objects

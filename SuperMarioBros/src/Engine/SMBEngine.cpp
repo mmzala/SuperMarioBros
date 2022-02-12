@@ -15,7 +15,7 @@ SMBEngine::SMBEngine(HWND hwnd)
 	camera(nullptr),
 	input(nullptr),
 	timer(nullptr),
-	textureShader(nullptr)
+	spriteShader(nullptr)
 {
 	if (instance == nullptr)
 	{
@@ -39,7 +39,7 @@ SMBEngine::~SMBEngine()
 	delete game;
 	delete graphics;
 
-	delete textureShader;
+	delete spriteShader;
 }
 
 void SMBEngine::Update()
@@ -67,9 +67,9 @@ Camera* SMBEngine::GetCamera()
 	return camera;
 }
 
-Shader* SMBEngine::GetTextureShader()
+Shader* SMBEngine::GetSpriteShader()
 {
-	return textureShader;
+	return spriteShader;
 }
 
 void SMBEngine::Initialize(HWND hwnd)
@@ -86,6 +86,6 @@ void SMBEngine::Initialize(HWND hwnd)
 	input = new Input(hwnd);
 	timer = new Timer();
 
-	textureShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/VertexShader.cso",
-		L"src/Engine/Graphics/Shaders/Precompiled/PixelShader.cso");
+	spriteShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/SpriteVS.cso",
+		L"src/Engine/Graphics/Shaders/Precompiled/SpritePS.cso");
 }

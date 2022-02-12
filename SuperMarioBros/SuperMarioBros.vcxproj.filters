@@ -109,7 +109,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\Engine\Graphics\Shaders\PixelShader.hlsl" />
-    <FxCompile Include="src\Engine\Graphics\Shaders\VertexShader.hlsl" />
+    <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl" />
+    <FxCompile Include="src\Engine\Graphics\Shaders\SpriteVS.hlsl" />
   </ItemGroup>
 </Project>

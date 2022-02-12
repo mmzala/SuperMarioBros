@@ -205,7 +205,7 @@
     <ClInclude Include="src\Game\GameObjects\Components\Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\Engine\Graphics\Shaders\PixelShader.hlsl">
+    <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -215,7 +215,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(ProjectName)\src\Engine\Graphics\Shaders\Precompiled\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(ProjectName)\src\Engine\Graphics\Shaders\Precompiled\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="src\Engine\Graphics\Shaders\VertexShader.hlsl">
+    <FxCompile Include="src\Engine\Graphics\Shaders\SpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
