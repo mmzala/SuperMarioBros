@@ -1,6 +1,7 @@
 #pragma once
 
 class GameObject;
+class Tilemap;
 
 /// <summary>
 /// Manages the game itself
@@ -16,6 +17,8 @@ public:
 private:
 	GameObject* object;
 	GameObject* object2;
+
+	Tilemap* tilemap;
 
 	float playerX;
 	float playerY;

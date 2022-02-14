@@ -88,4 +88,13 @@ void SMBEngine::Initialize(HWND hwnd)
 
 	spriteShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/SpriteVS.cso",
 		L"src/Engine/Graphics/Shaders/Precompiled/SpritePS.cso");
+
+	// Set graphics settings for primitive type
+	ID3D11DeviceContext* deviceContext = graphics->GetDeviceContext();
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// Set graphics settings for shaders
+	deviceContext->IASetInputLayout(spriteShader->GetInputLayout());
+	deviceContext->VSSetShader(spriteShader->GetVertexShader(), 0, 0);
+	deviceContext->PSSetShader(spriteShader->GetPixelShader(), 0, 0);
 }

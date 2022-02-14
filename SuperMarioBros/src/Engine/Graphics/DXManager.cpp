@@ -42,7 +42,7 @@ DXManager::~DXManager()
 
 void DXManager::BeginFrame()
 {
-	float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float color[4] = { 0.4f, 0.6f, 0.75f, 1.0f };
 	deviceContext->ClearRenderTargetView(backBufferTarget, color);
 }
 

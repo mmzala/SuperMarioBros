@@ -1,10 +1,11 @@
 #include "Transform.h"
 
-Transform::Transform()
+Transform::Transform(DirectX::XMFLOAT2 position,
+	float rotation, DirectX::XMFLOAT2 scale)
 	:
-	position(DirectX::XMFLOAT2(0.0f, 0.0f)),
-	rotation(0.0f),
-	scale(DirectX::XMFLOAT2(1.0f, 1.0f))
+	position(position),
+	rotation(rotation),
+	scale(scale)
 {}
 
 DirectX::XMMATRIX Transform::GetWorldMatrix()

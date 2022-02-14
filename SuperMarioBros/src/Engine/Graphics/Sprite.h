@@ -5,6 +5,7 @@
 class Texture2D;
 class Quad;
 struct VSConstantBufferData;
+struct ID3D11DeviceContext;
 
 class Sprite
 {
@@ -38,7 +39,7 @@ public:
 	DirectX::XMFLOAT2 GetSize();
 
 private:
-	void UpdateConstantBuffer(DirectX::XMMATRIX worldMatrix);
+	void UpdateConstantBuffer(DirectX::XMMATRIX worldMatrix , ID3D11DeviceContext* deviceContext);
 
 private:
 	// Constant buffer data
