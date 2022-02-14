@@ -42,7 +42,8 @@ DXManager::~DXManager()
 
 void DXManager::BeginFrame()
 {
-	float color[4] = { 0.4f, 0.6f, 0.75f, 1.0f };
+	// BLUE: 0.4f, 0.6f, 0.75f, 1.0f
+	float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	deviceContext->ClearRenderTargetView(backBufferTarget, color);
 }
 
@@ -93,7 +94,7 @@ bool DXManager::CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.BufferDesc.Width = width;
 	swapChainDesc.BufferDesc.Height = height;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
