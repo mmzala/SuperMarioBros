@@ -202,6 +202,7 @@
     <ClInclude Include="src\Engine\Graphics\DXManager.h" />
     <ClInclude Include="src\Engine\Graphics\stb_image.h" />
     <ClInclude Include="src\Engine\Graphics\Texture2D.h" />
+    <ClInclude Include="src\Game\World\Worlds.h" />
     <ClInclude Include="src\Utils\Timer.h" />
     <ClInclude Include="src\Game\GameObjects\Components\Transform.h" />
     <ClInclude Include="src\Game\World\Tilemap.h" />

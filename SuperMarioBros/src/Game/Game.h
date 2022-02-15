@@ -15,12 +15,10 @@ public:
 	void Update(float deltaTime);
 
 private:
-	GameObject* object;
-	GameObject* object2;
-
 	Tilemap* tilemap;
 
-	float playerX;
-	float playerY;
+	float camX;
+	float camY;
+	float speed;
 };
 
