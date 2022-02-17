@@ -26,11 +26,11 @@ Game::Game()
 {
 	Tilemap::TilemapSettings tilemapSettings;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
-	tilemapSettings.spriteSheetSize = 5;
+	tilemapSettings.spriteSheetSize = 6;
 	tilemapSettings.position = DirectX::XMFLOAT2(100.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 
-	tilemap = new Tilemap(Worlds::world1, tilemapSettings);
+	tilemap = new Tilemap(Worlds::world1d1, tilemapSettings);
 }
 
 Game::~Game()
