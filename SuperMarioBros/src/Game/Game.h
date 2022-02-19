@@ -1,6 +1,7 @@
 #pragma once
 
 class GameObject;
+class Mario;
 class Tilemap;
 
 /// <summary>
@@ -15,6 +16,7 @@ public:
 	void Update(float deltaTime);
 
 private:
+	Mario* player;
 	Tilemap* tilemap;
 
 	float camX;

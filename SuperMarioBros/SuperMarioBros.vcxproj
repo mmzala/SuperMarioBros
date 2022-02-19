@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\GameObjects\Mario.cpp" />
     <ClCompile Include="src\Engine\Physics\Collision.cpp" />
     <ClCompile Include="src\Engine\Physics\RectCollider.cpp" />
     <ClCompile Include="src\Engine\Input\Input.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="src\Game\World\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\GameObjects\Mario.h" />
     <ClInclude Include="src\Engine\Physics\Collision.h" />
     <ClInclude Include="src\Engine\Physics\RectCollider.h" />
     <ClInclude Include="src\Engine\Input\Input.h" />

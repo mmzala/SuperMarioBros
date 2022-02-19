@@ -4,12 +4,12 @@
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h"
 #include <Windows.h> // RECT
-#include <algorithm>
+#include <algorithm> // std::clamp
 
 Tilemap::Tilemap(std::vector<std::vector<int>> map, TilemapSettings settings)
 	:
 	map(map),
-	sprite(new Sprite(settings.spriteSheetFile, settings.spriteSheetSize)),
+	sprite(new Sprite(SpriteSettings(settings.spriteSheetFile, settings.spriteSheetSize))),
 	transform(new Transform({ settings.position.x, 0.0f }, 0.0f, settings.scale)),
 	tileSize((int)(sprite->GetSize().x * transform->scale.x)) // Size of x and y will be the same anyway :)
 {

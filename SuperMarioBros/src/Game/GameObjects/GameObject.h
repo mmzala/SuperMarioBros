@@ -2,24 +2,27 @@
 
 class Transform;
 class Sprite;
-struct Animation;
+struct SpriteSettings;
 class RectCollider;
 
 class GameObject
 {
 public:
-	GameObject(const char* textureFile);
+	/// <summary>
+	/// Creates an game object.
+	/// DELETE spriteSettings after passing it here
+	/// </summary>
+	/// <param name="spriteSettings">: Sprite settings, DELETE THIS AFTER USING IT!!! </param>
+	GameObject(SpriteSettings* spriteSettings);
 	~GameObject();
 
-	void Update(float deltaTime);
+	virtual void Update(float deltaTime);
 
 public:
 	Transform* transform;
 
-private:
+protected:
 	Sprite* sprite;
-	Animation* anim;
-	float animTimer;
 
 public:
 	RectCollider* collider; // Collider has to be here, because sprite needs to be initialized first to get the texture size

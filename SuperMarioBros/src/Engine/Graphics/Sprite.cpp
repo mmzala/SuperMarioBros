@@ -6,10 +6,10 @@
 #include "DXManager.h" // Getting graphics
 #include "Camera.h" // GetViewportProjectionMatrix()
 
-Sprite::Sprite(const char* textureFile, int spriteSheetSize)
+Sprite::Sprite(SpriteSettings settings)
 	:
-	VSCBData(new VSConstantBufferData(spriteSheetSize)),
-	texture(new Texture2D(textureFile)),
+	VSCBData(new VSConstantBufferData(settings.spriteSheetSize)),
+	texture(new Texture2D(settings.textureFile)),
 	quad(new Quad(GetSize()))
 {}
 

@@ -6,9 +6,13 @@
 #include "../Engine/Graphics/Camera.h" // Getting camera
 #include "../Engine/Input/Input.h" // Checking input
 
+// Graphics
+#include "../Engine/Graphics/Sprite.h" // Sprite settings
+
 // GameObject
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Components/Transform.h" // Getting gameobject's transform
+#include "GameObjects/Mario.h" // Player character
 
 // World
 #include "World/Tilemap.h"
@@ -24,18 +28,26 @@ Game::Game()
 	camY(0.0f),
 	speed(1200.0f)
 {
-	Tilemap::TilemapSettings tilemapSettings;
+	SpriteSettings* spriteSettings = new SpriteSettings();
+	spriteSettings->textureFile = "assets/MarioSpriteSheet.png";
+	spriteSettings->spriteSheetSize = 8;
+	player = new Mario(spriteSettings);
+	delete spriteSettings;
+	player->transform->position = DirectX::XMFLOAT2(320.0f, 120.0f);
+	player->transform->scale = DirectX::XMFLOAT2(1.25f, 1.25f);
+
+	TilemapSettings tilemapSettings;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = 6;
 	tilemapSettings.position = DirectX::XMFLOAT2(100.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
-
 	tilemap = new Tilemap(Worlds::world1d1, tilemapSettings);
 }
 
 Game::~Game()
 {
 	delete tilemap;
+	delete player;
 }
 
 void Game::Update(float deltaTime)
@@ -54,4 +66,5 @@ void Game::Update(float deltaTime)
 	SMBEngine::GetInstance()->GetCamera()->SetPosition(newPosition);
 
 	tilemap->Draw();
+	player->Update(deltaTime);
 }
