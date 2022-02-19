@@ -32,6 +32,15 @@ public:
 	void Draw();
 
 private:
+	/// <summary>
+	/// Gets first right and left tiles in tilemap coordinates on the screen that appear in the view frustum of the camera
+	/// </summary>
+	/// <returns> x = most left tile that appears on screen, y = most right tile that appears on screen </returns>
+	DirectX::XMINT2 GetHorizontalTilesInFrustum();
+
+	DirectX::XMINT2 GetTilePositionInTilemapCoordinates(DirectX::XMFLOAT2 worldPosition);
+
+private:
 	std::vector<std::vector<int>> map;
 
 	Sprite* sprite;

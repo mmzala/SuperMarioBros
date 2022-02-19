@@ -24,6 +24,17 @@ DirectX::XMMATRIX Camera::GetViewportProjectionMatrix()
 	return viewportProjectionMatrix;
 }
 
+RECT Camera::GetViewportBounds()
+{
+	RECT bounds = RECT();
+	bounds.left = (LONG)position.x;
+	bounds.right = (LONG)(clientWidth + position.x);
+	bounds.bottom = (LONG)position.y;
+	bounds.top = (LONG)(clientHeight + position.y);
+
+	return bounds;
+}
+
 void Camera::UpdateViewportProjectionMatrix()
 {
 	using namespace DirectX;

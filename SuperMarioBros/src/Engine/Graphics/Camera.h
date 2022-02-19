@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h> // XMMATRIX
+#include <Windows.h> // RECT
 
 class Camera
 {
@@ -10,6 +11,8 @@ public:
 
 	void SetPosition(DirectX::XMFLOAT2 position);
 	DirectX::XMMATRIX GetViewportProjectionMatrix();
+
+	RECT GetViewportBounds();
 
 private:
 	void UpdateViewportProjectionMatrix();
