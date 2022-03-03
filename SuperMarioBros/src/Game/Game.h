@@ -16,11 +16,7 @@ public:
 	void Update(float deltaTime);
 
 private:
-	Mario* player;
 	Tilemap* tilemap;
-
-	float camX;
-	float camY;
-	float speed;
+	Mario* player;
 };
 

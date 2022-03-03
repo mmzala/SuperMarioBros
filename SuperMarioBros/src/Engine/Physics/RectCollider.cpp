@@ -14,10 +14,22 @@ RECT RectCollider::GetBounds()
 	float halfWidth = size.x / 2.0f;
 	float halfHeight = size.y / 2.0f;
 	
+	// Left and bottom are the position values, so only apply them there
 	bounds.left = (LONG)(transform->position.x - halfWidth * transform->scale.x);
 	bounds.right = (LONG)(size.x * transform->scale.x);
 	bounds.bottom = (LONG)(transform->position.y - halfHeight * transform->scale.y);
 	bounds.top = (LONG)(size.y * transform->scale.y);
+
+	return bounds;
+}
+
+RECT RectCollider::GetBoundsWithOffset(DirectX::XMFLOAT2 offset)
+{
+	RECT bounds = GetBounds();
+
+	// Left and bottom are the position values, so only apply them there
+	bounds.left += (LONG)offset.x;
+	bounds.bottom += (LONG)offset.y;
 
 	return bounds;
 }

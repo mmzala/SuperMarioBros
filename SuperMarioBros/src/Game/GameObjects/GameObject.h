@@ -14,9 +14,9 @@ public:
 	/// </summary>
 	/// <param name="spriteSettings">: Sprite settings, DELETE THIS AFTER USING IT!!! </param>
 	GameObject(SpriteSettings* spriteSettings);
-	~GameObject();
+	virtual ~GameObject();
 
-	virtual void Update(float deltaTime);
+	virtual void Update(const float deltaTime);
 
 public:
 	Transform* transform;

@@ -23,25 +23,23 @@
 #include "../Engine/Physics/RectCollider.h" // Getting collider bounds
 
 Game::Game()
-	:
-	camX(0.0f),
-	camY(0.0f),
-	speed(1200.0f)
 {
+	TilemapSettings tilemapSettings;
+	tilemapSettings.tilemap = Worlds::world1d1;
+	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
+	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
+	tilemapSettings.spriteSheetSize = 6;
+	tilemapSettings.position = DirectX::XMFLOAT2(0.0f, 20.0f);
+	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	tilemap = new Tilemap(tilemapSettings);
+
 	SpriteSettings* spriteSettings = new SpriteSettings();
 	spriteSettings->textureFile = "assets/MarioSpriteSheet.png";
 	spriteSettings->spriteSheetSize = 8;
-	player = new Mario(spriteSettings);
+	player = new Mario(spriteSettings, tilemap);
 	delete spriteSettings;
-	player->transform->position = DirectX::XMFLOAT2(320.0f, 120.0f);
+	player->transform->position = DirectX::XMFLOAT2(320.0f, 250.0f);
 	player->transform->scale = DirectX::XMFLOAT2(1.25f, 1.25f);
-
-	TilemapSettings tilemapSettings;
-	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
-	tilemapSettings.spriteSheetSize = 6;
-	tilemapSettings.position = DirectX::XMFLOAT2(100.0f, 20.0f);
-	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
-	tilemap = new Tilemap(Worlds::world1d1, tilemapSettings);
 }
 
 Game::~Game()
@@ -52,19 +50,6 @@ Game::~Game()
 
 void Game::Update(float deltaTime)
 {
-	// Horizontal movement
-	if (Input::GetInstance()->GetKey(DIK_A))
-	{
-		camX -= speed * deltaTime;
-	}
-	if (Input::GetInstance()->GetKey(DIK_D))
-	{
-		camX += speed * deltaTime;
-	}
-
-	DirectX::XMFLOAT2 newPosition = DirectX::XMFLOAT2(camX, camY);
-	SMBEngine::GetInstance()->GetCamera()->SetPosition(newPosition);
-
 	tilemap->Draw();
 	player->Update(deltaTime);
 }

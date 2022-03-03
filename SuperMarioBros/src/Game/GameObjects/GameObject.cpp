@@ -19,7 +19,7 @@ GameObject::~GameObject()
 	delete transform;
 }
 
-void GameObject::Update(float deltaTime)
+void GameObject::Update(const float deltaTime)
 {
 	sprite->Draw(transform->GetWorldMatrix());
 }
