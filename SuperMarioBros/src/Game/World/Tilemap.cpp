@@ -25,7 +25,7 @@ void Tilemap::Draw()
 	DirectX::XMFLOAT2 originalPosition = transform->position;
 	DirectX::XMINT2 tilesInFrustum = GetHorizontalTilesInFrustum();
 
-	for (int y = tilemap.size() - 1; y > 0; y--)
+	for (int y = static_cast<int>(tilemap.size()) - 1; y > 0; y--)
 	{
 		for (int x = tilesInFrustum.x; x <= tilesInFrustum.y; x++)
 		{
@@ -71,10 +71,15 @@ RECT Tilemap::GetTileBounds(DirectX::XMINT2 tilemapPosition)
 
 bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 {
-	// Return true when tilemapPosition does not exist
-	if ((tilemapPosition.y > collisionMap.size() - 1) || 
-		tilemapPosition.y < 0 ||
-		(tilemapPosition.x > collisionMap[0].size() - 1) || 
+	// Return false when under or above the map
+	if ((tilemapPosition.y > collisionMap.size() - 1) ||
+		tilemapPosition.y < 0)
+	{
+		return false;
+	}
+
+	// Return true when too far left right
+	if ((tilemapPosition.x > collisionMap[0].size() - 1) || 
 		tilemapPosition.x < 0)
 	{
 		return true;

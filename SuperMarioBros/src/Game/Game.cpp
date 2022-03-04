@@ -38,8 +38,8 @@ Game::Game()
 	spriteSettings->spriteSheetSize = 8;
 	player = new Mario(spriteSettings, tilemap);
 	delete spriteSettings;
-	player->transform->position = DirectX::XMFLOAT2(320.0f, 250.0f);
-	player->transform->scale = DirectX::XMFLOAT2(1.25f, 1.25f);
+	player->transform->position = DirectX::XMFLOAT2(400.0f, 250.0f);
+	player->transform->scale = DirectX::XMFLOAT2(1.35f, 1.35f);
 }
 
 Game::~Game()

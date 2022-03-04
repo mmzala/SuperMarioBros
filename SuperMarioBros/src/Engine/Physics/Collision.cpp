@@ -10,6 +10,8 @@ bool Collision::RectCheck(RECT bounds1, RECT bounds2)
 
 bool Collision::TileCheck(RECT tileBounds, RECT bounds, CheckSide& side)
 {
+    CheckSide sideCollided = CheckSide::None;
+
     /*
     // Top collision
     if (tileBounds.bottom >= bounds.bottom + bounds.top)
@@ -19,9 +21,10 @@ bool Collision::TileCheck(RECT tileBounds, RECT bounds, CheckSide& side)
     */
 
     // Bottom collision
-    if (tileBounds.bottom + tileBounds.top >= bounds.bottom)
+    if ((tileBounds.bottom + tileBounds.top >= bounds.bottom) &&
+        (side & CheckSide::Bottom) == CheckSide::Bottom)
     {
-        side |= CheckSide::Bottom;
+        sideCollided |= CheckSide::Bottom;
     }
 
     /*
@@ -38,5 +41,6 @@ bool Collision::TileCheck(RECT tileBounds, RECT bounds, CheckSide& side)
     }
     */
 
+    side = sideCollided;
     return side != CheckSide::None;
 }

@@ -51,17 +51,35 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 void Mario::CheckCollision(DirectX::XMFLOAT2& velocity)
 {
 	RECT bounds = collider->GetBoundsWithOffset(velocity);
-	CheckSide side = CheckSide::None;
 
 	DirectX::XMFLOAT2 nextPosition = DirectX::XMFLOAT2(transform->position.x + velocity.x, 
 		transform->position.y + velocity.y);
 	DirectX::XMFLOAT2 fTilemapPosition = tilemap->GetPositionInTilemapCoordinates(nextPosition);
 
+	CheckBottomTilesCollision(bounds, fTilemapPosition, velocity);
+}
+
+void Mario::CheckBottomTilesCollision(RECT bounds, DirectX::XMFLOAT2 fTilemapPosition, DirectX::XMFLOAT2& velocity)
+{
 	// Check bottom left tile
 	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::floor(fTilemapPosition.x), (int32_t)std::ceil(fTilemapPosition.y));
-	bool a = tilemap->CheckCollisionTile(tilemapPosition);
 	if (tilemap->CheckCollisionTile(tilemapPosition))
 	{
+		CheckSide side = CheckSide::Bottom | CheckSide::Left;
+		if (Collision::TileCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side))
+		{
+			if (side == CheckSide::Bottom)
+			{
+				velocity.y = 0.0f;
+			}
+		}
+	}
+
+	// Check bottom right tile
+	tilemapPosition = DirectX::XMINT2((int32_t)std::ceil(fTilemapPosition.x), (int32_t)std::ceil(fTilemapPosition.y));
+	if (tilemap->CheckCollisionTile(tilemapPosition))
+	{
+		CheckSide side = CheckSide::Bottom | CheckSide::Right;
 		if (Collision::TileCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side))
 		{
 			if (side == CheckSide::Bottom)

@@ -10,7 +10,7 @@ class Transform;
 struct TilemapSettings
 {
 	std::vector<std::vector<int>> tilemap;
-	std::vector<std::vector<int>> collisionMap;
+	std::vector<std::vector<bool>> collisionMap;
 	const char* spriteSheetFile;
 	int spriteSheetSize;
 	DirectX::XMFLOAT2 position;
@@ -65,7 +65,7 @@ private:
 
 private:
 	std::vector<std::vector<int>> tilemap;
-	std::vector<std::vector<int>> collisionMap;
+	std::vector<std::vector<bool>> collisionMap;
 
 	Sprite* sprite;
 	Transform* transform;

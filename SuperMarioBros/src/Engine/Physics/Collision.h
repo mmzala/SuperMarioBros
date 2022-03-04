@@ -5,10 +5,10 @@
 enum class CheckSide
 {
 	None = 0,
-	Top = 1,
-	Bottom = 2,
-	Right = 4,
-	Left = 8,
+	Top = 1 << 0,
+	Bottom = 1 << 1,
+	Right = 1 << 2,
+	Left = 1 << 3,
 };
 DEFINE_ENUM_FLAG_OPERATORS(CheckSide);
 
