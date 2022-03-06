@@ -49,5 +49,5 @@ bool Collision::LeftTileCheck(Rect tileBounds, Rect characterBounds)
 
 bool Collision::RightTileCheck(Rect tileBounds, Rect characterBounds)
 {
-    return (tileBounds.x < characterBounds.x + characterBounds.width);
+    return (tileBounds.x > characterBounds.x + characterBounds.width);
 }

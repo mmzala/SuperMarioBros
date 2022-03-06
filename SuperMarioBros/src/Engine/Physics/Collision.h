@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Rect.h"
-#include <Windows.h> // RECT and DEFINE_ENUM_FLAG_OPERATORS
+#include <Windows.h> // DEFINE_ENUM_FLAG_OPERATORS
 
 enum class CheckSide
 {
@@ -24,6 +24,13 @@ public:
 	/// <returns> If bounds are collided </returns>
 	static bool RectCheck(Rect bounds1, Rect bounds2);
 
+	/// <summary>
+	/// Checks collision between a tile and a character collider.
+	/// </summary>
+	/// <param name="tileBounds">: Bounds of the tile</param>
+	/// <param name="characterBounds">: Bounds of the character </param>
+	/// <param name="side">: What side to check the collision on </param>
+	/// <returns> If tile and character collided on the given CheckSide </returns>
 	static bool TilemapCheck(Rect tileBounds, Rect characterBounds, CheckSide side);
 
 private:

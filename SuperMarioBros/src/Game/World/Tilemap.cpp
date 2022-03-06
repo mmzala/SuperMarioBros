@@ -49,7 +49,7 @@ DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 wor
 
 	DirectX::XMFLOAT2 mapPosition = DirectX::XMFLOAT2();
 	mapPosition.x = (transform->position.x + worldPosition.x) / tileSizeScaled;
-	mapPosition.y = (topTilePosition - worldPosition.y + halfTileSize) / tileSizeScaled;
+	mapPosition.y = (topTilePosition - worldPosition.y) / tileSizeScaled;
 
 	return mapPosition;
 }

@@ -39,7 +39,7 @@ Game::Game()
 	player = new Mario(spriteSettings, tilemap);
 	delete spriteSettings;
 	player->transform->position = DirectX::XMFLOAT2(390.0f, 250.0f);
-	player->transform->scale = DirectX::XMFLOAT2(0.15f, 0.15f);
+	player->transform->scale = DirectX::XMFLOAT2(0.125f, 0.125f);
 }
 
 Game::~Game()
