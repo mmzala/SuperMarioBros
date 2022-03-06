@@ -1,46 +1,53 @@
 #include "Collision.h"
 
-bool Collision::RectCheck(RECT bounds1, RECT bounds2)
+bool Collision::RectCheck(Rect bounds1, Rect bounds2)
 {
-    return (bounds1.left < bounds2.left + bounds2.right &&
-        bounds1.left + bounds1.right > bounds2.left &&
-        bounds1.bottom < bounds2.bottom + bounds2.top &&
-        bounds1.top + bounds1.bottom > bounds2.bottom);
+    return (bounds1.x < bounds2.x + bounds2.width &&
+        bounds1.x + bounds1.width > bounds2.x &&
+        bounds1.y < bounds2.y + bounds2.height &&
+        bounds1.y + bounds1.height > bounds2.y);
 }
 
-bool Collision::TileCheck(RECT tileBounds, RECT bounds, CheckSide& side)
+bool Collision::TilemapCheck(Rect tileBounds, Rect characterBounds, CheckSide side)
 {
-    CheckSide sideCollided = CheckSide::None;
-
-    /*
-    // Top collision
-    if (tileBounds.bottom >= bounds.bottom + bounds.top)
+    switch (side)
     {
-        side |= CheckSide::Top;
-    }
-    */
+    case CheckSide::Bottom:
+        return BottomTileCheck(tileBounds, characterBounds);
+        break;
 
-    // Bottom collision
-    if ((tileBounds.bottom + tileBounds.top >= bounds.bottom) &&
-        (side & CheckSide::Bottom) == CheckSide::Bottom)
-    {
-        sideCollided |= CheckSide::Bottom;
-    }
+    case CheckSide::Top:
+        return TopTileCheck(tileBounds, characterBounds);
+        break;
 
-    /*
-    // Left collision
-    if (tileBounds.left + tileBounds.right >= bounds.left)
-    {
-        side |= CheckSide::Left;
+    case CheckSide::Left:
+        return LeftTileCheck(tileBounds, characterBounds);
+        break;
+
+    case CheckSide::Right:
+        return RightTileCheck(tileBounds, characterBounds);
+        break;
     }
 
-    // Right collision
-    if (tileBounds.left <= bounds.left + bounds.right)
-    {
-        side |= CheckSide::Right;
-    }
-    */
+    return false;
+}
 
-    side = sideCollided;
-    return side != CheckSide::None;
+bool Collision::BottomTileCheck(Rect tileBounds, Rect characterBounds)
+{
+    return (tileBounds.y + tileBounds.height > characterBounds.y);
+}
+
+bool Collision::TopTileCheck(Rect tileBounds, Rect characterBounds)
+{
+    return (tileBounds.y < characterBounds.y + characterBounds.height);
+}
+
+bool Collision::LeftTileCheck(Rect tileBounds, Rect characterBounds)
+{
+    return (tileBounds.x + tileBounds.width > characterBounds.x);
+}
+
+bool Collision::RightTileCheck(Rect tileBounds, Rect characterBounds)
+{
+    return (tileBounds.x < characterBounds.x + characterBounds.width);
 }

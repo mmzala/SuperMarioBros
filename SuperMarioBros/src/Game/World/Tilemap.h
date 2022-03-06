@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h> // XMFLOAT2
-#include <Windows.h> // RECT
+#include "../../Engine/Physics/Rect.h"
 #include<vector>
 
 class Sprite;
@@ -47,7 +47,7 @@ public:
 	/// </summary>
 	/// <param name="tilemapPosition">: Position in tilemap coordinates </param>
 	/// <returns> Bounds of a tile </returns>
-	RECT GetTileBounds(DirectX::XMINT2 tilemapPosition);
+	Rect GetTileBounds(DirectX::XMINT2 tilemapPosition);
 
 	/// <summary>
 	/// Checks if the tile has collision. Also returns true when position is outside collisionMap

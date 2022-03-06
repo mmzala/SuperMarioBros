@@ -34,12 +34,12 @@ Game::Game()
 	tilemap = new Tilemap(tilemapSettings);
 
 	SpriteSettings* spriteSettings = new SpriteSettings();
-	spriteSettings->textureFile = "assets/MarioSpriteSheet.png";
-	spriteSettings->spriteSheetSize = 8;
+	spriteSettings->textureFile = "assets/goomba.png";
+	spriteSettings->spriteSheetSize = 1;
 	player = new Mario(spriteSettings, tilemap);
 	delete spriteSettings;
-	player->transform->position = DirectX::XMFLOAT2(400.0f, 250.0f);
-	player->transform->scale = DirectX::XMFLOAT2(1.35f, 1.35f);
+	player->transform->position = DirectX::XMFLOAT2(390.0f, 250.0f);
+	player->transform->scale = DirectX::XMFLOAT2(0.15f, 0.15f);
 }
 
 Game::~Game()

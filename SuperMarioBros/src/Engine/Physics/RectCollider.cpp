@@ -3,33 +3,33 @@
 
 RectCollider::RectCollider(DirectX::XMFLOAT2 size, Transform* transform)
 	:
-	bounds(RECT()),
+	bounds(Rect()),
 	size(size),
 	transform(transform)
 {}
 
-RECT RectCollider::GetBounds()
+Rect RectCollider::GetBounds()
 {
 	// Update bounds
 	float halfWidth = size.x / 2.0f;
 	float halfHeight = size.y / 2.0f;
 	
 	// Left and bottom are the position values, so only apply them there
-	bounds.left = (LONG)(transform->position.x - halfWidth * transform->scale.x);
-	bounds.right = (LONG)(size.x * transform->scale.x);
-	bounds.bottom = (LONG)(transform->position.y - halfHeight * transform->scale.y);
-	bounds.top = (LONG)(size.y * transform->scale.y);
+	bounds.x = transform->position.x - halfWidth * transform->scale.x;
+	bounds.width = size.x * transform->scale.x;
+	bounds.y = transform->position.y - halfHeight * transform->scale.y;
+	bounds.height = size.y * transform->scale.y;
 
 	return bounds;
 }
 
-RECT RectCollider::GetBoundsWithOffset(DirectX::XMFLOAT2 offset)
+Rect RectCollider::GetBoundsWithOffset(DirectX::XMFLOAT2 offset)
 {
-	RECT bounds = GetBounds();
+	Rect bounds = GetBounds();
 
 	// Left and bottom are the position values, so only apply them there
-	bounds.left += (LONG)offset.x;
-	bounds.bottom += (LONG)offset.y;
+	bounds.x += offset.x;
+	bounds.y += offset.y;
 
 	return bounds;
 }

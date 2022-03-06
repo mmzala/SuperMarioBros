@@ -2,7 +2,6 @@
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Physics/RectCollider.h"
-#include "../../Engine/Physics/Collision.h" // Collision check
 #include "../../Engine/Input/Input.h" // Checking input
 #include "../World/Tilemap.h" // Getting tiles for collision
 #include <cmath> // floor and ceil
@@ -50,42 +49,28 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 
 void Mario::CheckCollision(DirectX::XMFLOAT2& velocity)
 {
-	RECT bounds = collider->GetBoundsWithOffset(velocity);
+	Rect bounds = collider->GetBounds();
+	Rect vBounds = collider->GetBoundsWithOffset(velocity);
+	float checkOffset = 1.0f; // Brings check offset to the middle of the collider based on the value
 
-	DirectX::XMFLOAT2 nextPosition = DirectX::XMFLOAT2(transform->position.x + velocity.x, 
-		transform->position.y + velocity.y);
-	DirectX::XMFLOAT2 fTilemapPosition = tilemap->GetPositionInTilemapCoordinates(nextPosition);
+	DirectX::XMFLOAT2 checkPosition = DirectX::XMFLOAT2(bounds.x + checkOffset, vBounds.y);
+	DirectX::XMFLOAT2 tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Bottom))
+	{
+		velocity.y = 0.0f;
+	}
 
-	CheckBottomTilesCollision(bounds, fTilemapPosition, velocity);
+	checkPosition = DirectX::XMFLOAT2(bounds.x + bounds.width - checkOffset, vBounds.y);
+	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Bottom))
+	{
+		velocity.y = 0.0f;
+	}
 }
 
-void Mario::CheckBottomTilesCollision(RECT bounds, DirectX::XMFLOAT2 fTilemapPosition, DirectX::XMFLOAT2& velocity)
+bool Mario::CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side)
 {
-	// Check bottom left tile
-	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::floor(fTilemapPosition.x), (int32_t)std::ceil(fTilemapPosition.y));
-	if (tilemap->CheckCollisionTile(tilemapPosition))
-	{
-		CheckSide side = CheckSide::Bottom | CheckSide::Left;
-		if (Collision::TileCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side))
-		{
-			if (side == CheckSide::Bottom)
-			{
-				velocity.y = 0.0f;
-			}
-		}
-	}
-
-	// Check bottom right tile
-	tilemapPosition = DirectX::XMINT2((int32_t)std::ceil(fTilemapPosition.x), (int32_t)std::ceil(fTilemapPosition.y));
-	if (tilemap->CheckCollisionTile(tilemapPosition))
-	{
-		CheckSide side = CheckSide::Bottom | CheckSide::Right;
-		if (Collision::TileCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side))
-		{
-			if (side == CheckSide::Bottom)
-			{
-				velocity.y = 0.0f;
-			}
-		}
-	}
+	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
+	if (!tilemap->CheckCollisionTile(tilemapPosition)) return false;
+	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
 }
