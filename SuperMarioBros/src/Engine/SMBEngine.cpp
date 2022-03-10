@@ -11,8 +11,8 @@ SMBEngine* SMBEngine::instance = nullptr;
 SMBEngine::SMBEngine(HWND hwnd)
 	:
 	graphics(nullptr),
-	game(nullptr),
 	camera(nullptr),
+	game(nullptr),
 	input(nullptr),
 	timer(nullptr),
 	spriteShader(nullptr)
@@ -81,8 +81,8 @@ void SMBEngine::Initialize(HWND hwnd)
 	const unsigned int clientHeight = dimensions.bottom - dimensions.top;
 
 	graphics = new DXManager(hwnd, clientWidth, clientHeight);
-	game = new Game();
 	camera = new Camera(clientWidth, clientHeight);
+	game = new Game();
 	input = new Input(hwnd);
 	timer = new Timer();
 

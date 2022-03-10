@@ -6,6 +6,7 @@
 #include "../../Engine/Physics/Collision.h" // Collision check and CheckSide enum
 
 class Tilemap;
+class Camera;
 
 class Mario : public GameObject
 {
@@ -22,5 +23,6 @@ private:
 
 private:
 	Tilemap* tilemap;
+	Camera* camera;
 };
 

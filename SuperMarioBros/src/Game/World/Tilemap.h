@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h> // XMFLOAT2
 #include "../../Engine/Physics/Rect.h"
-#include<vector>
+#include <vector>
 
 class Sprite;
 class Transform;
@@ -41,6 +41,12 @@ public:
 	/// <param name="worldPosition">: Position in the world </param>
 	/// <returns> Position in tilemap coordinates </returns>
 	DirectX::XMFLOAT2 GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 worldPosition);
+
+	/// <summary>
+	/// Gets the bounds of the tilemap
+	/// </summary>
+	/// <returns>Bounds of the tilemap</returns>
+	Rect GetTilemapBounds();
 
 	/// <summary>
 	/// Gets the bounds of a tile with already applied position

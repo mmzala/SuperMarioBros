@@ -30,8 +30,8 @@ private:
 	static SMBEngine* instance;
 
 	DXManager* graphics;
-	Game* game;
 	Camera* camera;
+	Game* game;
 	Input* input;
 	Timer* timer;
 

@@ -2,6 +2,8 @@
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Physics/RectCollider.h"
+#include "../../Engine/SMBEngine.h" // Getting camera
+#include "../../Engine/Graphics/Camera.h" // Camera follow
 #include "../../Engine/Input/Input.h" // Checking input
 #include "../World/Tilemap.h" // Getting tiles for collision
 #include <cmath> // floor and ceil
@@ -9,8 +11,10 @@
 Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	:
 	GameObject::GameObject(spriteSettings),
-	tilemap(tilemap)
+	tilemap(tilemap),
+	camera(SMBEngine::GetInstance()->GetCamera())
 {
+	camera->SetBoundary(tilemap->GetTilemapBounds());
 	sprite->SetFrame(24);
 }
 
@@ -22,6 +26,8 @@ void Mario::Update(const float deltaTime)
 	DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2();
 	Move(velocity, deltaTime);
 
+	camera->FollowPosition(transform->position, true, true);
+
 	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
 	sprite->Draw(transform->GetWorldMatrix());
 }
@@ -29,7 +35,7 @@ void Mario::Update(const float deltaTime)
 void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	constexpr float gravity = 100.0f;
-	constexpr float movementSpeed = 200.0f;
+	constexpr float movementSpeed = 1000.0f;
 	Input* input = Input::GetInstance();
 
 	if (input->GetKey(DIK_W))

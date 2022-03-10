@@ -54,6 +54,18 @@ DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 wor
 	return mapPosition;
 }
 
+Rect Tilemap::GetTilemapBounds()
+{
+	Rect bounds = Rect();
+
+	bounds.x = transform->position.x - tileSizeScaled / static_cast<float>(2);
+	bounds.width = transform->position.x + (tileSizeScaled * tilemap[0].size()) - tileSizeScaled / static_cast<float>(2);
+	bounds.y = transform->position.y - tileSizeScaled / static_cast<float>(2);
+	bounds.height = transform->position.y + (tileSizeScaled * tilemap.size());
+
+	return bounds;
+}
+
 Rect Tilemap::GetTileBounds(DirectX::XMINT2 tilemapPosition)
 {
 	Rect bounds = Rect();
@@ -90,11 +102,11 @@ bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 
 DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 {
-	RECT viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
+	Rect viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
 
 	// Adding tileSizeScaled to right coordinate, to prevent player from seeing any artifacts when going fast
-	DirectX::XMFLOAT2 worldPosition = DirectX::XMFLOAT2((float)viewportBounds.left,
-		(float)viewportBounds.right + tileSizeScaled);
+	DirectX::XMFLOAT2 worldPosition = DirectX::XMFLOAT2((float)viewportBounds.x,
+		(float)viewportBounds.width + tileSizeScaled);
 
 	// Both x and y are horizontal coordinates in this case
 	DirectX::XMINT2 mapPosition = DirectX::XMINT2();
