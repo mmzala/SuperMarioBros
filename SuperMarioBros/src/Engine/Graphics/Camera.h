@@ -12,6 +12,7 @@ public:
 	void SetPosition(DirectX::XMFLOAT2 position);
 	DirectX::XMMATRIX GetViewportProjectionMatrix();
 	Rect GetViewportBounds();
+	DirectX::XMFLOAT2 GetViewportCenter();
 
 	/// <summary>
 	/// Follows the position on the given axis. The center of the viewport is the given position

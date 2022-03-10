@@ -25,10 +25,8 @@ void Mario::Update(const float deltaTime)
 {
 	DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2();
 	Move(velocity, deltaTime);
+	UpdateCameraFollow();
 
-	camera->FollowPosition(transform->position, true, true);
-
-	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
@@ -51,6 +49,7 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	velocity.x += input->GetKey(DIK_D) * movementSpeed * deltaTime; // Right movement
 
 	CheckCollision(velocity);
+	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
 }
 
 void Mario::CheckCollision(DirectX::XMFLOAT2& velocity)
@@ -128,4 +127,14 @@ bool Mario::CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, 
 	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
 	if (!tilemap->CheckCollisionTile(tilemapPosition)) return false;
 	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
+}
+
+void Mario::UpdateCameraFollow()
+{
+	DirectX::XMFLOAT2 viewportCenter = camera->GetViewportCenter();
+
+	if (viewportCenter.x < transform->position.x)
+	{
+		camera->FollowPosition(transform->position, true, false);
+	}
 }

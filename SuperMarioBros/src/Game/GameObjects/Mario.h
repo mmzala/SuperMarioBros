@@ -20,6 +20,7 @@ private:
 	void Move(DirectX::XMFLOAT2& velocity, const float deltaTime);
 	void CheckCollision(DirectX::XMFLOAT2& velocity);
 	bool CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side);
+	void UpdateCameraFollow();
 
 private:
 	Tilemap* tilemap;
