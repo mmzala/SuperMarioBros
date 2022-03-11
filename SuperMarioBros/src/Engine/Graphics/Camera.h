@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h> // XMMATRIX
-#include "../Physics/Rect.h"
+#include "../../Utils/Rect.h"
 
 class Camera
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h> // XMFLOAT2
-#include "Rect.h"
+#include "../../Utils/Rect.h"
 
 class Transform;
 

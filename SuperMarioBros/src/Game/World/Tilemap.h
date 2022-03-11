@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h> // XMFLOAT2
-#include "../../Engine/Physics/Rect.h"
+#include "../../Utils/Rect.h"
 #include <vector>
 
 class Sprite;

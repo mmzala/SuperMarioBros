@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Rect.h"
+#include "../../Utils/Rect.h"
 #include <Windows.h> // DEFINE_ENUM_FLAG_OPERATORS
 
 enum class CheckSide

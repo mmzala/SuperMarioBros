@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include <DirectXMath.h> // XMFLOAT2
-#include "../../Engine/Physics/Rect.h"
+#include "../../Utils/Rect.h"
 #include "../../Engine/Physics/Collision.h" // Collision check and CheckSide enum
 
 class Tilemap;
