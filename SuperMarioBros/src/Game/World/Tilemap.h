@@ -79,5 +79,5 @@ private:
 	/// <summary>
 	/// Size of one tile in the texture, with already applied transform->size
 	/// </summary>
-	int tileSizeScaled;
+	float tileSizeScaled;
 };

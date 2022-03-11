@@ -29,7 +29,7 @@ Game::Game()
 	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = 6;
-	tilemapSettings.position = DirectX::XMFLOAT2(0.0f, 20.0f);
+	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	tilemap = new Tilemap(tilemapSettings);
 

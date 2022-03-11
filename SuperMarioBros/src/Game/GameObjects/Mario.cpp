@@ -20,7 +20,9 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 }
 
 Mario::~Mario()
-{}
+{
+	delete tilemapCollider;
+}
 
 void Mario::Update(const float deltaTime)
 {
@@ -66,4 +68,5 @@ void Mario::UpdateCameraFollow()
 	{
 		camera->FollowPosition(transform->position, true, false);
 	}
+	camera->FollowPosition(transform->position, true, false);
 }

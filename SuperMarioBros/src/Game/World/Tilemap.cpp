@@ -11,7 +11,7 @@ Tilemap::Tilemap(TilemapSettings settings)
 	collisionMap(settings.collisionMap),
 	sprite(new Sprite(SpriteSettings(settings.spriteSheetFile, settings.spriteSheetSize))),
 	transform(new Transform(settings.position, 0.0f, settings.scale)),
-	tileSizeScaled((int)(sprite->GetSize().x * transform->scale.x)) // Size of x and y will be the same anyway :)
+	tileSizeScaled(sprite->GetSize().x * transform->scale.x) // Size of x and y will be the same anyway :)
 {}
 
 Tilemap::~Tilemap()
@@ -44,11 +44,11 @@ void Tilemap::Draw()
 
 DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 worldPosition)
 {
-	float halfTileSize = (float)(tileSizeScaled / 2);
+	float halfTileSize = tileSizeScaled / 2;
 	float topTilePosition = (tilemap.size() - static_cast<unsigned long long>(1)) * tileSizeScaled + transform->position.y;
 
 	DirectX::XMFLOAT2 mapPosition = DirectX::XMFLOAT2();
-	mapPosition.x = (transform->position.x + worldPosition.x) / tileSizeScaled;
+	mapPosition.x = (worldPosition.x - transform->position.x) / tileSizeScaled;
 	mapPosition.y = (topTilePosition - worldPosition.y) / tileSizeScaled;
 
 	return mapPosition;
@@ -57,11 +57,12 @@ DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 wor
 Rect Tilemap::GetTilemapBounds()
 {
 	Rect bounds = Rect();
+	float halfTileSize = tileSizeScaled / 2;
 
-	bounds.x = transform->position.x - tileSizeScaled / static_cast<float>(2);
-	bounds.width = transform->position.x + (tileSizeScaled * tilemap[0].size()) - tileSizeScaled / static_cast<float>(2);
-	bounds.y = transform->position.y - tileSizeScaled / static_cast<float>(2);
-	bounds.height = transform->position.y + (tileSizeScaled * tilemap.size());
+	bounds.x = transform->position.x - halfTileSize;
+	bounds.width = transform->position.x + (tileSizeScaled * tilemap[0].size()) - halfTileSize;
+	bounds.y = transform->position.y - halfTileSize;
+	bounds.height = transform->position.y + (tileSizeScaled * tilemap.size()) - halfTileSize;
 
 	return bounds;
 }
@@ -69,14 +70,14 @@ Rect Tilemap::GetTilemapBounds()
 Rect Tilemap::GetTileBounds(DirectX::XMINT2 tilemapPosition)
 {
 	Rect bounds = Rect();
-	float halfTileSize = (float)(tileSizeScaled / 2);
+	float halfTileSize = tileSizeScaled / 2;
 	float topTilePosition = (tilemap.size() - static_cast<unsigned long long>(1)) * tileSizeScaled + transform->position.y;
 
 	// Calculate world position somehow
 	bounds.x = tilemapPosition.x * tileSizeScaled + transform->position.x + halfTileSize;
-	bounds.width = static_cast<float>(tileSizeScaled);
+	bounds.width = tileSizeScaled;
 	bounds.y = topTilePosition - tilemapPosition.y * tileSizeScaled - halfTileSize;
-	bounds.height = static_cast<float>(tileSizeScaled);
+	bounds.height = tileSizeScaled;
 
 	return bounds;
 }
@@ -105,13 +106,13 @@ DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 	Rect viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
 
 	// Adding tileSizeScaled to right coordinate, to prevent player from seeing any artifacts when going fast
-	DirectX::XMFLOAT2 worldPosition = DirectX::XMFLOAT2((float)viewportBounds.x,
-		(float)viewportBounds.width + tileSizeScaled);
+	DirectX::XMFLOAT2 worldPosition = DirectX::XMFLOAT2(viewportBounds.x,
+		viewportBounds.width + tileSizeScaled);
 
 	// Both x and y are horizontal coordinates in this case
 	DirectX::XMINT2 mapPosition = DirectX::XMINT2();
-	mapPosition.x = (int)(transform->position.x + worldPosition.x) / tileSizeScaled;
-	mapPosition.y = (int)(transform->position.x + worldPosition.y) / tileSizeScaled;
+	mapPosition.x = static_cast<int32_t>((worldPosition.x - transform->position.x) / tileSizeScaled);
+	mapPosition.y = static_cast<int32_t>((worldPosition.y - transform->position.x) / tileSizeScaled);
 
 	mapPosition.x = std::clamp(mapPosition.x, 0, (int)tilemap[0].size() - 1);
 	mapPosition.y = std::clamp(mapPosition.y, 0, (int)tilemap[0].size() - 1);
