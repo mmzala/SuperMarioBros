@@ -2,10 +2,9 @@
 
 #include "GameObject.h"
 #include <DirectXMath.h> // XMFLOAT2
-#include "../../Utils/Rect.h"
-#include "../../Engine/Physics/Collision.h" // Collision check and CheckSide enum
 
 class Tilemap;
+class TilemapCollider;
 class Camera;
 
 class Mario : public GameObject
@@ -19,11 +18,11 @@ public:
 private:
 	void Move(DirectX::XMFLOAT2& velocity, const float deltaTime);
 	void CheckCollision(DirectX::XMFLOAT2& velocity);
-	bool CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side);
 	void UpdateCameraFollow();
 
 private:
 	Tilemap* tilemap;
+	TilemapCollider* tilemapCollider;
 	Camera* camera;
 };
 
