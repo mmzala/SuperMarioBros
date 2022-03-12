@@ -23,7 +23,8 @@ public:
 	void FollowPosition(DirectX::XMFLOAT2 position, bool followX, bool followY);
 
 	/// <summary>
-	/// Sets the boundery for the camera. The camera connot go outside those boundaries
+	/// Sets the boundery for the camera. The camera connot go outside those boundaries.
+	/// The camera also updates the position based on the boudary automatically
 	/// </summary>
 	/// <param name="boundary">: boundary for the camera</param>
 	void SetBoundary(Rect boundary);

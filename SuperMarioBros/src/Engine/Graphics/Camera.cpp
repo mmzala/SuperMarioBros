@@ -74,6 +74,8 @@ void Camera::SetBoundary(Rect boundary)
 	boundary.width -= clientWidth;
 	boundary.height -= clientHeight;
 	this->boundary = boundary;
+
+	SetPosition(position);
 }
 
 void Camera::UpdateViewportProjectionMatrix()

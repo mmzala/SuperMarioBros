@@ -66,6 +66,15 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 void Mario::CheckCollision(DirectX::XMFLOAT2& velocity)
 {
 	tilemapCollider->Update(velocity);
+
+	// Making sure the player cannot go back
+	Rect viewport = camera->GetViewportBounds();
+	Rect playerBounds = collider->GetBoundsWithOffset(velocity);
+
+	if (viewport.x >= playerBounds.x)
+	{
+		velocity.x = 0.0f;
+	}
 }
 
 void Mario::UpdateCameraFollow()
@@ -76,5 +85,5 @@ void Mario::UpdateCameraFollow()
 	{
 		camera->FollowPosition(transform->position, true, false);
 	}
-	camera->FollowPosition(transform->position, true, false);
+	// camera->FollowPosition(transform->position, true, false);
 }
