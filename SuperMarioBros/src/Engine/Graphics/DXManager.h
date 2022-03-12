@@ -50,12 +50,14 @@ struct VSConstantBufferData
 	int sheetSizeX;
 	int sheetSizeY;
 	int frame;
+	BOOL flipSpriteX;
 
 	VSConstantBufferData(DirectX::XMINT2 spriteSheetSize)
 		:
 		transform(DirectX::XMMATRIX()),
 		sheetSizeX(spriteSheetSize.x),
 		sheetSizeY(spriteSheetSize.y),
-		frame(0)
+		frame(0),
+		flipSpriteX(false)
 	{}
 };

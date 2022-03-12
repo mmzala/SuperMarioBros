@@ -35,7 +35,7 @@ void Mario::Update(const float deltaTime)
 
 void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
-	constexpr float gravity = 100.0f;
+	constexpr float gravity = 150.0f;
 	constexpr float movementSpeed = 1000.0f;
 	Input* input = Input::GetInstance();
 
@@ -48,8 +48,16 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 		velocity.y -= gravity * deltaTime;
 	}
 	
-	velocity.x += input->GetKey(DIK_A) * -movementSpeed * deltaTime; // Left movement
-	velocity.x += input->GetKey(DIK_D) * movementSpeed * deltaTime; // Right movement
+	if (input->GetKey(DIK_A))  // Left movement
+	{
+		velocity.x += -movementSpeed * deltaTime;
+		sprite->FlipSpriteX(true);
+	}
+	if (input->GetKey(DIK_D)) // Right movement
+	{
+		velocity.x += movementSpeed * deltaTime;
+		sprite->FlipSpriteX(false);
+	}
 
 	CheckCollision(velocity);
 	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);

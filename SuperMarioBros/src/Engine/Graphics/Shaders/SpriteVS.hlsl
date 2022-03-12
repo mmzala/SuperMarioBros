@@ -4,6 +4,7 @@ cbuffer CBuffer
 	int sheetSizeX;
 	int sheetSizeY;
 	int frame; // Which part of the texutre is to be displayed
+	bool flipSpriteX;
 };
 
 struct VSOut
@@ -33,6 +34,11 @@ VSOut main(float3 pos : POSITION, float2 tex0 : TEXCOORD0)
 		sheetSizeX < sheetSizeY)
 	{
 		vso.tex0.y += zoomY;
+	}
+
+	if (flipSpriteX)
+	{
+		vso.tex0.x *= -1;
 	}
 
 	return vso;

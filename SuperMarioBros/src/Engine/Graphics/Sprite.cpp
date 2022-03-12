@@ -47,6 +47,11 @@ int Sprite::GetFrame()
 	return VSCBData->frame;
 }
 
+void Sprite::FlipSpriteX(bool value)
+{
+	VSCBData->flipSpriteX = static_cast<BOOL>(value);
+}
+
 DirectX::XMFLOAT2 Sprite::GetSize()
 {
 	return DirectX::XMFLOAT2((float)(texture->GetWidth() / VSCBData->sheetSizeX), 

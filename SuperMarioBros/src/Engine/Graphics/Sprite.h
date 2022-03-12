@@ -48,6 +48,12 @@ public:
 	int GetFrame();
 
 	/// <summary>
+	/// Allows to flip the sprite in the X axis
+	/// </summary>
+	/// <param name="value">: If sprite should be flipped on X axis</param>
+	void FlipSpriteX(bool value);
+
+	/// <summary>
 	/// Returns the size of the rendered sprite
 	/// </summary>
 	/// <returns> Size of the rendered sprite </returns>
