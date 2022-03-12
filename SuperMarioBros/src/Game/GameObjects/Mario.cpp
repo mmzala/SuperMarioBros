@@ -13,10 +13,12 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	GameObject::GameObject(spriteSettings),
 	tilemap(tilemap),
 	tilemapCollider(new TilemapCollider(collider, tilemap)),
-	camera(SMBEngine::GetInstance()->GetCamera())
+	camera(SMBEngine::GetInstance()->GetCamera()),
+	marioState(MarioState::None)
 {
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	sprite->SetFrame(24);
+	sprite->SetFrame(55);
+	UpdateMarioState(MarioState::Large);
 }
 
 Mario::~Mario()
@@ -87,3 +89,22 @@ void Mario::UpdateCameraFollow()
 	}
 	// camera->FollowPosition(transform->position, true, false);
 }
+
+void Mario::UpdateMarioState(MarioState marioState)
+{
+	if (this->marioState == marioState) return;
+	this->marioState = marioState;
+
+	switch (marioState)
+	{
+	case MarioState::Small:
+		collider->SetSizeOffset(DirectX::XMFLOAT2(0.0f, -(sprite->GetSize().y / 2)));
+		break;
+
+	default:
+		collider->SetSizeOffset(DirectX::XMFLOAT2(0.0f, 0.0f));
+		break;
+	}
+}
+
+

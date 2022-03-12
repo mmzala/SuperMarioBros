@@ -7,6 +7,14 @@ class Tilemap;
 class TilemapCollider;
 class Camera;
 
+enum class MarioState
+{
+	None = 1 << 0, // None is used only at the start
+	Small = 1 << 1,
+	Large = 1 << 2,
+	Fire = 1 << 3,
+};
+
 class Mario : public GameObject
 {
 public:
@@ -19,10 +27,13 @@ private:
 	void Move(DirectX::XMFLOAT2& velocity, const float deltaTime);
 	void CheckCollision(DirectX::XMFLOAT2& velocity);
 	void UpdateCameraFollow();
+	void UpdateMarioState(MarioState marioState);
 
 private:
 	Tilemap* tilemap;
 	TilemapCollider* tilemapCollider;
 	Camera* camera;
+
+	MarioState marioState;
 };
 

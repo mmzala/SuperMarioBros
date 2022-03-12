@@ -24,7 +24,15 @@ VSOut main(float3 pos : POSITION, float2 tex0 : TEXCOORD0)
 	vso.tex0.x = tex0.x * zoomX;
 	vso.tex0.y = tex0.y * zoomY;
 
-	vso.tex0.x += zoomX * (frame % sheetSizeX);
+	if (flipSpriteX)
+	{
+		vso.tex0.x += zoomX * (sheetSizeX - frame - 1 % sheetSizeX);
+		vso.tex0.x = -vso.tex0.x;
+	}
+	else
+	{
+		vso.tex0.x += zoomX * (frame % sheetSizeX);
+	}
 	vso.tex0.y += zoomY * floor(frame / sheetSizeY);
 
 	// A very hacky way to fix a tex0.y going back a line when it's the first/last frame in the line
@@ -34,11 +42,6 @@ VSOut main(float3 pos : POSITION, float2 tex0 : TEXCOORD0)
 		sheetSizeX < sheetSizeY)
 	{
 		vso.tex0.y += zoomY;
-	}
-
-	if (flipSpriteX)
-	{
-		vso.tex0.x *= -1;
 	}
 
 	return vso;
