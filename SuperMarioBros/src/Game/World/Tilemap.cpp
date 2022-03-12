@@ -82,6 +82,11 @@ Rect Tilemap::GetTileBounds(DirectX::XMINT2 tilemapPosition)
 	return bounds;
 }
 
+float Tilemap::GetTileSize()
+{
+	return tileSizeScaled;
+}
+
 bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 {
 	// Return false when under or above the map

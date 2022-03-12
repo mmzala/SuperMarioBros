@@ -196,6 +196,7 @@
     <ClCompile Include="src\Engine\Physics\TilemapCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Rect.h" />
     <ClInclude Include="src\Game\GameObjects\Mario.h" />
     <ClInclude Include="src\Engine\Physics\Collision.h" />

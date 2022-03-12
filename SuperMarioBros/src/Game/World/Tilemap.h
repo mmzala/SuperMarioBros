@@ -56,6 +56,13 @@ public:
 	Rect GetTileBounds(DirectX::XMINT2 tilemapPosition);
 
 	/// <summary>
+	/// Gets already scaled size of a normal tile in this tilemap.
+	/// Because the tiles are squares, both axis are the same size
+	/// </summary>
+	/// <returns> Size of a tile </returns>
+	float GetTileSize();
+
+	/// <summary>
 	/// Checks if the tile has collision. Also returns true when position is outside collisionMap
 	/// </summary>
 	/// <param name="tilemapPosition">: Position in tilemap coordinates </param>

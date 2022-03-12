@@ -17,7 +17,7 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	marioState(MarioState::None)
 {
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	sprite->SetFrame(55);
+	sprite->SetFrame(0);
 	UpdateMarioState(MarioState::Large);
 }
 
@@ -95,6 +95,7 @@ void Mario::UpdateMarioState(MarioState marioState)
 	if (this->marioState == marioState) return;
 	this->marioState = marioState;
 
+	// Updating collider size
 	switch (marioState)
 	{
 	case MarioState::Small:

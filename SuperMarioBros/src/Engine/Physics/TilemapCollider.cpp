@@ -1,7 +1,9 @@
 #include "TilemapCollider.h"
 #include "RectCollider.h"
 #include "../../Game/World/Tilemap.h"
-#include <cmath> // floor and ceil
+#include "../../Utils/Math.h" // Lerp
+// lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
+#include <cmath> // floor / ceil
 
 TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap)
 	:
@@ -17,69 +19,39 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity)
 	Rect bounds = rectCollider->GetBounds();
 	Rect vBounds = rectCollider->GetBoundsWithOffset(velocity);
 
-	// Bottom left collision
-	DirectX::XMFLOAT2 checkPosition = DirectX::XMFLOAT2(bounds.x, vBounds.y);
-	DirectX::XMFLOAT2 tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Bottom))
+	if (CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
+		CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top))
 	{
 		velocity.y = 0.0f;
 	}
 
-	// Bottom right collision
-	checkPosition = DirectX::XMFLOAT2(bounds.x + bounds.width, vBounds.y);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Bottom))
-	{
-		velocity.y = 0.0f;
-	}
-
-	// Top left collision
-	checkPosition = DirectX::XMFLOAT2(bounds.x, vBounds.y + vBounds.height);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Top))
-	{
-		velocity.y = 0.0f;
-	}
-
-	// Top right collision
-	checkPosition = DirectX::XMFLOAT2(bounds.x + bounds.width, vBounds.y + vBounds.height);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Top))
-	{
-		velocity.y = 0.0f;
-	}
-
-	// Left bottom collision
-	checkPosition = DirectX::XMFLOAT2(vBounds.x, bounds.y);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Left))
+	if (CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left) ||
+		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right))
 	{
 		velocity.x = 0.0f;
 	}
+}
 
-	// Left top collision
-	checkPosition = DirectX::XMFLOAT2(vBounds.x, bounds.y + bounds.height);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Left))
+bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
+{
+	float tileSize = tilemap->GetTileSize();
+	int iterations = static_cast<int>(toPosition - fromPosition) / tileSize; // Calculate how many checks it takes to check for all tiles that can be in proximity
+	iterations += 2; // We always want to check atleast the corners
+
+	for (int i = 0; i < iterations; i++)
 	{
-		velocity.x = 0.0f;
+		float checkProgress = static_cast<float>(i) / (iterations - 1);
+		float positionProgress = Math::Lerp(fromPosition, toPosition, checkProgress);
+		DirectX::XMFLOAT2 checkPosition = GetCheckPosition(positionProgress, sidePosition, side);
+		DirectX::XMFLOAT2 tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+
+		if (CheckTileCollision(vBounds, tilemapPosition, side))
+		{
+			return true;
+		}
 	}
 
-	// Right bottom collision
-	checkPosition = DirectX::XMFLOAT2(vBounds.x + vBounds.width, bounds.y);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Right))
-	{
-		velocity.x = 0.0f;
-	}
-
-	// Right top collision
-	checkPosition = DirectX::XMFLOAT2(vBounds.x + vBounds.width, bounds.y + bounds.height);
-	tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
-	if (CheckTileCollision(vBounds, tilemapPosition, CheckSide::Right))
-	{
-		velocity.x = 0.0f;
-	}
+	return false;
 }
 
 bool TilemapCollider::CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side)
@@ -87,4 +59,21 @@ bool TilemapCollider::CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemap
 	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
 	if (!tilemap->CheckCollisionTile(tilemapPosition)) return false;
 	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
+}
+
+DirectX::XMFLOAT2 TilemapCollider::GetCheckPosition(float positionProgress, float sidePosition, CheckSide side)
+{
+	switch (side)
+	{
+	case CheckSide::Top:
+	case CheckSide::Bottom:
+		return DirectX::XMFLOAT2(positionProgress, sidePosition);
+		break;
+	case CheckSide::Right:
+	case CheckSide::Left:
+		return DirectX::XMFLOAT2(sidePosition, positionProgress);
+		break;
+	}
+
+	return DirectX::XMFLOAT2();
 }

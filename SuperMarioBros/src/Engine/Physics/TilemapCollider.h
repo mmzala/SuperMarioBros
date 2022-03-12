@@ -16,7 +16,9 @@ public:
 	void Update(DirectX::XMFLOAT2& velocity);
 
 private:
+	bool CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
 	bool CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side);
+	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);
 
 private:
 	RectCollider* rectCollider;
