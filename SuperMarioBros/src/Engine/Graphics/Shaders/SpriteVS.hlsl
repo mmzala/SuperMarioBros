@@ -1,7 +1,8 @@
 cbuffer CBuffer
 {
 	matrix transform;
-	int sheetSize; // Sprite sheet size that contains 2^n animation frames (example: size 2 == 4 frames / size 3 == 9 frames)
+	int sheetSizeX;
+	int sheetSizeY;
 	int frame; // Which part of the texutre is to be displayed
 };
 
@@ -16,10 +17,23 @@ VSOut main(float3 pos : POSITION, float2 tex0 : TEXCOORD0)
 	VSOut vso;
 	vso.pos = mul(float4(pos, 1.0f), transform);
 
-	float zoom;
-	zoom = 1.0 / sheetSize;
-	vso.tex0 = tex0 * zoom;
-	vso.tex0 += float2(zoom * (frame % sheetSize), zoom * floor(frame / sheetSize));
+	float zoomX = 1.0f / sheetSizeX;
+	float zoomY = 1.0f / sheetSizeY;
+
+	vso.tex0.x = tex0.x * zoomX;
+	vso.tex0.y = tex0.y * zoomY;
+
+	vso.tex0.x += zoomX * (frame % sheetSizeX);
+	vso.tex0.y += zoomY * floor(frame / sheetSizeY);
+
+	// A very hacky way to fix a tex0.y going back a line when it's the first/last frame in the line
+	if ((frame % sheetSizeX == 0 || 
+		frame % sheetSizeX == sheetSizeX - 1) && 
+		frame != 0 && 
+		sheetSizeX < sheetSizeY)
+	{
+		vso.tex0.y += zoomY;
+	}
 
 	return vso;
 }

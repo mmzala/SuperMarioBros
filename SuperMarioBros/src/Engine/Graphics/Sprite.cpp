@@ -49,8 +49,8 @@ int Sprite::GetFrame()
 
 DirectX::XMFLOAT2 Sprite::GetSize()
 {
-	return DirectX::XMFLOAT2((float)(texture->GetWidth() / VSCBData->sheetSize), 
-		(float)(texture->GetHeight() / VSCBData->sheetSize));
+	return DirectX::XMFLOAT2((float)(texture->GetWidth() / VSCBData->sheetSizeX), 
+		(float)(texture->GetHeight() / VSCBData->sheetSizeY));
 }
 
 void Sprite::UpdateConstantBuffer(DirectX::XMMATRIX worldMatrix, ID3D11DeviceContext* deviceContext)

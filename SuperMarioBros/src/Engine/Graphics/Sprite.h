@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DirectXMath.h> // XMMATRIX
+#include <DirectXMath.h> // XMMATRIX and XMINT2
 
 class Texture2D;
 class Quad;
@@ -10,16 +10,14 @@ struct ID3D11DeviceContext;
 struct SpriteSettings
 {
 	const char* textureFile;
-
-	// Sprite sheet size that contains 2^n animation frames (example: size 2 == 4 frames / size 3 == 9 frames)
-	int spriteSheetSize;
+	DirectX::XMINT2 spriteSheetSize;
 
 	/// <summary>
 	/// Creates settings, which decide how the sprite will function.
 	/// </summary>
 	/// <param name="textureFile">: What texture file to use </param>
 	/// <param name="spriteSheetSize">: Sprite sheet size that contains 2^n animation frames (example: size 2 == 4 frames / size 3 == 9 frames) </param>
-	SpriteSettings(const char* textureFile = nullptr, int spriteSheetSize = 1)
+	SpriteSettings(const char* textureFile = nullptr, DirectX::XMINT2 spriteSheetSize = DirectX::XMINT2(1, 1))
 		:
 		textureFile(textureFile),
 		spriteSheetSize(spriteSheetSize)

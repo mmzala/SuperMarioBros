@@ -12,7 +12,7 @@ struct TilemapSettings
 	std::vector<std::vector<int>> tilemap;
 	std::vector<std::vector<bool>> collisionMap;
 	const char* spriteSheetFile;
-	int spriteSheetSize;
+	DirectX::XMINT2 spriteSheetSize;
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;
 
@@ -21,7 +21,7 @@ struct TilemapSettings
 		tilemap(),
 		collisionMap(),
 		spriteSheetFile(nullptr),
-		spriteSheetSize(0),
+		spriteSheetSize(DirectX::XMINT2()),
 		position(DirectX::XMFLOAT2()),
 		scale(DirectX::XMFLOAT2())
 	{}

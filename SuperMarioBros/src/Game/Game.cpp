@@ -28,18 +28,20 @@ Game::Game()
 	tilemapSettings.tilemap = Worlds::world1d1;
 	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
-	tilemapSettings.spriteSheetSize = 6;
+	tilemapSettings.spriteSheetSize.x = 6;
+	tilemapSettings.spriteSheetSize.y = 6;
 	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	tilemap = new Tilemap(tilemapSettings);
 
 	SpriteSettings* spriteSettings = new SpriteSettings();
-	spriteSettings->textureFile = "assets/goomba.png";
-	spriteSettings->spriteSheetSize = 1;
+	spriteSettings->textureFile = "assets/MarioSpriteSheet.png";
+	spriteSettings->spriteSheetSize.x = 7;
+	spriteSettings->spriteSheetSize.y = 8;
 	player = new Mario(spriteSettings, tilemap);
 	delete spriteSettings;
 	player->transform->position = DirectX::XMFLOAT2(390.0f, 250.0f);
-	player->transform->scale = DirectX::XMFLOAT2(0.125f, 0.125f);
+	player->transform->scale = DirectX::XMFLOAT2(1.0f, 1.0f);
 }
 
 Game::~Game()

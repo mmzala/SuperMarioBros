@@ -47,14 +47,15 @@ private:
 struct VSConstantBufferData
 {
 	DirectX::XMMATRIX transform;
-	// Sprite sheet size that contains 2^n animation frames (example: size 2 == 4 frames / size 3 == 9 frames)
-	int sheetSize;
+	int sheetSizeX;
+	int sheetSizeY;
 	int frame;
 
-	VSConstantBufferData(int spriteSheetSize)
+	VSConstantBufferData(DirectX::XMINT2 spriteSheetSize)
 		:
 		transform(DirectX::XMMATRIX()),
-		sheetSize(spriteSheetSize),
+		sheetSizeX(spriteSheetSize.x),
+		sheetSizeY(spriteSheetSize.y),
 		frame(0)
 	{}
 };
