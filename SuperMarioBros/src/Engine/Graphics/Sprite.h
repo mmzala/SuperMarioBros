@@ -72,18 +72,3 @@ private:
 	DirectX::XMFLOAT2 sheetSize;
 };
 
-struct Animation
-{
-	int startFrame;
-	int endFrame;
-	// Animation frames per second
-	float speed;
-
-	Animation(int startFrame, int endFrame, float speed)
-		:
-		startFrame(startFrame),
-		endFrame(endFrame),
-		speed(speed)
-	{}
-};
-

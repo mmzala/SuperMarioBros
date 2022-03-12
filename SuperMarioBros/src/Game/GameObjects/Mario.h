@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include <DirectXMath.h> // XMFLOAT2
 
+class Animator;
 class Tilemap;
 class TilemapCollider;
 class Camera;
@@ -30,6 +31,7 @@ private:
 	void UpdateMarioState(MarioState marioState);
 
 private:
+	Animator* animator;
 	Tilemap* tilemap;
 	TilemapCollider* tilemapCollider;
 	Camera* camera;

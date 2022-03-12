@@ -1,6 +1,7 @@
 #include "Mario.h"
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
+#include "../../Engine/Graphics/Animator.h"
 #include "../../Engine/Physics/RectCollider.h" // Collision
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h" // Camera follow
@@ -11,6 +12,7 @@
 Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	:
 	GameObject::GameObject(spriteSettings),
+	animator(new Animator(sprite)),
 	tilemap(tilemap),
 	tilemapCollider(new TilemapCollider(collider, tilemap)),
 	camera(SMBEngine::GetInstance()->GetCamera()),
@@ -18,11 +20,16 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 {
 	camera->SetBoundary(tilemap->GetTilemapBounds());
 	sprite->SetFrame(0);
+
+	Animation anim = Animation(1, 3, 10.0f);
+	animator->SetAnimation(anim);
+
 	UpdateMarioState(MarioState::Large);
 }
 
 Mario::~Mario()
 {
+	delete animator;
 	delete tilemapCollider;
 }
 
@@ -32,6 +39,7 @@ void Mario::Update(const float deltaTime)
 	Move(velocity, deltaTime);
 	UpdateCameraFollow();
 
+	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
