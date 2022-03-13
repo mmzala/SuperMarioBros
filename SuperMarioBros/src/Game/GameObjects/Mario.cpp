@@ -8,6 +8,7 @@
 #include "../../Engine/Input/Input.h" // Checking input
 #include "../World/Tilemap.h" // Tilemap for collision
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
+#include "../Data/Animations.h" // Animations data
 
 Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	:
@@ -18,11 +19,15 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 	camera(SMBEngine::GetInstance()->GetCamera()),
 	marioState(MarioState::None)
 {
+	// Getting animations data
+	animations = std::unordered_map<MarioState, std::vector<Animation>> {
+		{MarioState::Small, Animations::Mario::Small::sMario},
+		{MarioState::Large, Animations::Mario::Large::lMario},
+		{MarioState::Fire, Animations::Mario::Large::fMario},
+	};
+
 	camera->SetBoundary(tilemap->GetTilemapBounds());
 	sprite->SetFrame(0);
-
-	Animation anim = Animation(1, 3, 10.0f);
-	animator->SetAnimation(anim);
 
 	UpdateMarioState(MarioState::Large);
 }
@@ -49,24 +54,35 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	constexpr float movementSpeed = 1000.0f;
 	Input* input = Input::GetInstance();
 
-	if (input->GetKey(DIK_W))
+	bool up = input->GetKey(DIK_W);
+	if (up)
 	{
-		velocity.y += movementSpeed * deltaTime;
+		velocity.y += movementSpeed / 2 * deltaTime;
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Jumping]);
 	}
 	else
 	{
 		velocity.y -= gravity * deltaTime;
 	}
 	
-	if (input->GetKey(DIK_A))  // Left movement
+	bool left = input->GetKey(DIK_A);
+	bool right = input->GetKey(DIK_D);
+	if (left)  // Left movement
 	{
 		velocity.x += -movementSpeed * deltaTime;
 		sprite->FlipSpriteX(true);
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
 	}
-	if (input->GetKey(DIK_D)) // Right movement
+	if (right) // Right movement
 	{
 		velocity.x += movementSpeed * deltaTime;
 		sprite->FlipSpriteX(false);
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
+	}
+
+	if (!left && !right && !up)
+	{
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
 	}
 
 	CheckCollision(velocity);

@@ -125,7 +125,7 @@
     <ClInclude Include="src\Game\World\Tilemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\World\Worlds.h">
+    <ClInclude Include="src\Game\Data\Worlds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\GameObjects\Mario.h">
@@ -141,6 +141,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Graphics\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Graphics\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Data\Animations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

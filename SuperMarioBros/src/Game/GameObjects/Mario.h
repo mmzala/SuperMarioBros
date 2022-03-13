@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 #include <DirectXMath.h> // XMFLOAT2
+#include "../../Engine/Graphics/Animation.h"
+#include <unordered_map>
 
 class Animator;
 class Tilemap;
@@ -37,5 +39,6 @@ private:
 	Camera* camera;
 
 	MarioState marioState;
+	std::unordered_map<MarioState, std::vector<Animation>> animations;
 };
 

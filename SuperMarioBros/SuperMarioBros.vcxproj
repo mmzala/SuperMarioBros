@@ -197,7 +197,9 @@
     <ClCompile Include="src\Engine\Physics\TilemapCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Graphics\Animation.h" />
     <ClInclude Include="src\Engine\Graphics\Animator.h" />
+    <ClInclude Include="src\Game\Data\Animations.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Rect.h" />
     <ClInclude Include="src\Game\GameObjects\Mario.h" />
@@ -214,7 +216,7 @@
     <ClInclude Include="src\Engine\Graphics\DXManager.h" />
     <ClInclude Include="src\Engine\Graphics\stb_image.h" />
     <ClInclude Include="src\Engine\Graphics\Texture2D.h" />
-    <ClInclude Include="src\Game\World\Worlds.h" />
+    <ClInclude Include="src\Game\Data\Worlds.h" />
     <ClInclude Include="src\Utils\Timer.h" />
     <ClInclude Include="src\Game\GameObjects\Components\Transform.h" />
     <ClInclude Include="src\Game\World\Tilemap.h" />
