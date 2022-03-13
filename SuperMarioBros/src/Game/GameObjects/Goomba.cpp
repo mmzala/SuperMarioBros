@@ -7,12 +7,9 @@
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 
-Goomba::Goomba(SpriteSettings* spriteSettings, Tilemap* tilemap)
+Goomba::Goomba(CharacterSettings settings)
 	:
-	GameObject::GameObject(spriteSettings),
-	animator(new Animator(sprite)),
-	tilemap(tilemap),
-	tilemapCollider(new TilemapCollider(collider, tilemap)),
+	Character::Character(settings),
 	goombaState(GoombaState::None),
 	animations(Animations::Goomba::goomba),
 	walkingRight(false)
@@ -22,32 +19,29 @@ Goomba::Goomba(SpriteSettings* spriteSettings, Tilemap* tilemap)
 }
 
 Goomba::~Goomba()
-{
-	delete animator;
-	delete tilemapCollider;
-}
+{}
 
 void Goomba::Update(const float deltaTime)
 {
-	DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2();
-	if(goombaState == GoombaState::Walking) Move(velocity, deltaTime);
-
+	if(goombaState == GoombaState::Walking) Move(deltaTime);
 	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
-void Goomba::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
+void Goomba::Move(const float deltaTime)
 {
-	constexpr float gravity = 150.0f;
-	constexpr float movementSpeed = 150.0f;
+	velocity.y = -gravity * deltaTime;
+	velocity.x = movementSpeed * (walkingRight ? -1 : 1) * deltaTime;
 
-	velocity.y -= gravity * deltaTime;
-	velocity.x += movementSpeed * (walkingRight ? -1 : 1) * deltaTime;
+	Character::Move(deltaTime);
+}
 
-	tilemapCollider->Update(velocity);
+void Goomba::CheckCollision()
+{
+	Character::CheckCollision();
+
 	// If velocity is 0 that means we hit something, so we change direction
 	if (velocity.x == 0.0f) walkingRight = !walkingRight;
-	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
 }
 
 void Goomba::UpdateState(GoombaState state)

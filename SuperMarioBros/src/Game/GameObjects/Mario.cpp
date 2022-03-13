@@ -2,20 +2,16 @@
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Graphics/Animator.h"
-#include "../../Engine/Physics/RectCollider.h" // Collision
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h" // Camera follow
 #include "../../Engine/Input/Input.h" // Checking input
-#include "../World/Tilemap.h" // Tilemap for collision
+#include "../../Engine/Physics/RectCollider.h" // Collider
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 
-Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
+Mario::Mario(CharacterSettings settings)
 	:
-	GameObject::GameObject(spriteSettings),
-	animator(new Animator(sprite)),
-	tilemap(tilemap),
-	tilemapCollider(new TilemapCollider(collider, tilemap)),
+	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
 	marioState(MarioState::None)
 {
@@ -28,54 +24,46 @@ Mario::Mario(SpriteSettings* spriteSettings, Tilemap* tilemap)
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
 	sprite->SetFrame(0);
-
 	UpdateMarioState(MarioState::Large);
 }
 
 Mario::~Mario()
-{
-	delete animator;
-	delete tilemapCollider;
-}
+{}
 
 void Mario::Update(const float deltaTime)
 {
-	DirectX::XMFLOAT2 velocity = DirectX::XMFLOAT2();
-	Move(velocity, deltaTime);
+	Move(deltaTime);
 	UpdateCameraFollow();
-
 	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
-void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
+void Mario::Move(const float deltaTime)
 {
-	constexpr float gravity = 150.0f;
-	constexpr float movementSpeed = 500.0f;
 	Input* input = Input::GetInstance();
 
 	bool up = input->GetKey(DIK_W);
 	if (up)
 	{
-		velocity.y += movementSpeed / 2 * deltaTime;
+		velocity.y = movementSpeed / 2 * deltaTime;
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Jumping]);
 	}
 	else
 	{
-		velocity.y -= gravity * deltaTime;
+		velocity.y = -gravity * deltaTime;
 	}
 	
 	bool left = input->GetKey(DIK_A);
 	bool right = input->GetKey(DIK_D);
 	if (left)  // Left movement
 	{
-		velocity.x += -movementSpeed * deltaTime;
+		velocity.x = -movementSpeed * deltaTime;
 		sprite->FlipSpriteX(true);
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
 	}
 	if (right) // Right movement
 	{
-		velocity.x += movementSpeed * deltaTime;
+		velocity.x = movementSpeed * deltaTime;
 		sprite->FlipSpriteX(false);
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
 	}
@@ -85,13 +73,12 @@ void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
 	}
 
-	CheckCollision(velocity);
-	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
+	Character::Move(deltaTime);
 }
 
-void Mario::CheckCollision(DirectX::XMFLOAT2& velocity)
+void Mario::CheckCollision()
 {
-	tilemapCollider->Update(velocity);
+	Character::CheckCollision();
 
 	// Making sure the player cannot go back
 	Rect viewport = camera->GetViewportBounds();

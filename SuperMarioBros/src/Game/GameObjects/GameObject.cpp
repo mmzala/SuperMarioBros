@@ -3,10 +3,10 @@
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Physics/RectCollider.h"
 
-GameObject::GameObject(SpriteSettings* spriteSettings)
+GameObject::GameObject(SpriteSettings spriteSettings)
 	:
 	transform(new Transform()),
-	sprite(new Sprite(SpriteSettings(spriteSettings->textureFile, spriteSettings->spriteSheetSize))),
+	sprite(new Sprite(SpriteSettings(spriteSettings.textureFile, spriteSettings.spriteSheetSize))),
 	collider(new RectCollider(sprite->GetSize(), transform))
 {
 	sprite->SetFrame(0);

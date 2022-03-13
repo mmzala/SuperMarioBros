@@ -1,8 +1,9 @@
 #pragma once
 
+#include "../Settings/SpriteSettings.h"
+
 class Transform;
 class Sprite;
-struct SpriteSettings;
 class RectCollider;
 
 class GameObject
@@ -13,7 +14,7 @@ public:
 	/// DELETE spriteSettings after passing it here
 	/// </summary>
 	/// <param name="spriteSettings">: Sprite settings, DELETE THIS AFTER USING IT!!! </param>
-	GameObject(SpriteSettings* spriteSettings);
+	GameObject(SpriteSettings spriteSettings);
 	virtual ~GameObject();
 
 	virtual void Update(const float deltaTime);

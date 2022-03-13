@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Character.h"
+#include "../Settings/CharacterSettings.h"
 #include <DirectXMath.h> // XMFLOAT2
 #include "../../Engine/Graphics/Animation.h"
 #include <unordered_map>
@@ -18,24 +19,21 @@ enum class MarioState
 	Fire = 3,
 };
 
-class Mario : public GameObject
+class Mario : public Character
 {
 public:
-	Mario(SpriteSettings* spriteSettings, Tilemap* tilemap);
+	Mario(CharacterSettings settings);
 	~Mario() override;
 
 	void Update(const float deltaTime) override;
 
-private:
-	void Move(DirectX::XMFLOAT2& velocity, const float deltaTime);
-	void CheckCollision(DirectX::XMFLOAT2& velocity);
+protected:
+	void Move(const float deltaTime) override;
+	void CheckCollision() override;
 	void UpdateCameraFollow();
 	void UpdateMarioState(MarioState marioState);
 
 private:
-	Animator* animator;
-	Tilemap* tilemap;
-	TilemapCollider* tilemapCollider;
 	Camera* camera;
 
 	MarioState marioState;

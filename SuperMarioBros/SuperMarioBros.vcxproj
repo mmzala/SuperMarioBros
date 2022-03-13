@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\GameObjects\Character.cpp" />
     <ClCompile Include="src\Game\GameObjects\Goomba.cpp" />
     <ClCompile Include="src\Engine\Graphics\Animator.cpp" />
     <ClCompile Include="src\Utils\Rect.cpp" />
@@ -198,10 +199,13 @@
     <ClCompile Include="src\Engine\Physics\TilemapCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\GameObjects\Character.h" />
     <ClInclude Include="src\Game\GameObjects\Goomba.h" />
     <ClInclude Include="src\Engine\Graphics\Animation.h" />
     <ClInclude Include="src\Engine\Graphics\Animator.h" />
     <ClInclude Include="src\Game\Data\Animations.h" />
+    <ClInclude Include="src\Game\Settings\CharacterSettings.h" />
+    <ClInclude Include="src\Game\Settings\SpriteSettings.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Rect.h" />
     <ClInclude Include="src\Game\GameObjects\Mario.h" />
