@@ -32,6 +32,12 @@ public:
 	/// <returns> Connected controller </returns>
 	XINPUT_GAMEPAD* GetController();
 
+	/// <summary>
+	/// Sets if keyboard should give input to application
+	/// </summary>
+	/// <param name="active">: State of keyboard </param>
+	void SetKeyboardActive(bool active);
+
 private:
 	void Initialize(HWND hwnd);
 

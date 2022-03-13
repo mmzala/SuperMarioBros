@@ -65,6 +65,18 @@ XINPUT_GAMEPAD* Input::GetController()
 	return &controller;
 }
 
+void Input::SetKeyboardActive(bool active)
+{
+	if (active)
+	{
+		if (keyboard != NULL) keyboard->Acquire();
+	}
+	else
+	{
+		keyboard->Unacquire();
+	}
+}
+
 void Input::Initialize(HWND hwnd)
 {
 	// Initialize DirectInput object
@@ -84,3 +96,5 @@ void Input::Initialize(HWND hwnd)
 	keyboard->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 	keyboard->Acquire();
 }
+
+

@@ -1,19 +1,25 @@
 #include <Windows.h>
 #include <memory>
 #include "Engine/SMBEngine.h"
-#include "Game/Game.h"
+#include "Engine/Input/Input.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT paintStruct;
-	HDC hDC;
-
 	switch (message)
 	{
-	case WM_PAINT:
-		hDC = BeginPaint(hwnd, &paintStruct);
-		EndPaint(hwnd, &paintStruct);
+	case WM_KILLFOCUS:
+	{
+		Input* input = Input::GetInstance();
+		if (input) input->SetKeyboardActive(false);
 		break;
+	}
+
+	case WM_SETFOCUS:
+	{
+		Input* input = Input::GetInstance();
+		if (input) input->SetKeyboardActive(true);
+		break;
+	}
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
