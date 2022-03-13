@@ -58,7 +58,7 @@ Game::Game()
 	goombaSettings.movementSpeed = 150.0f;
 	goombaSettings.gravity = 150.0f;
 	goomba = new Goomba(goombaSettings);
-	goomba->transform->position = DirectX::XMFLOAT2(1200.0f, 200.0f);
+	goomba->transform->position = DirectX::XMFLOAT2(1000.0f, 200.0f);
 	goomba->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 }
 

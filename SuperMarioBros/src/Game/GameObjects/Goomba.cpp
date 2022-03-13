@@ -31,7 +31,7 @@ void Goomba::Update(const float deltaTime)
 void Goomba::Move(const float deltaTime)
 {
 	velocity.y = -gravity * deltaTime;
-	velocity.x = movementSpeed * (walkingRight ? -1 : 1) * deltaTime;
+	velocity.x = movementSpeed * (walkingRight ? 1 : -1) * deltaTime;
 
 	Character::Move(deltaTime);
 }
