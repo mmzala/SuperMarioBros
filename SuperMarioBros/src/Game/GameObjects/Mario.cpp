@@ -51,7 +51,7 @@ void Mario::Update(const float deltaTime)
 void Mario::Move(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	constexpr float gravity = 150.0f;
-	constexpr float movementSpeed = 1000.0f;
+	constexpr float movementSpeed = 500.0f;
 	Input* input = Input::GetInstance();
 
 	bool up = input->GetKey(DIK_W);

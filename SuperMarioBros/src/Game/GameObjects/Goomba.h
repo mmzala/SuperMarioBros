@@ -3,42 +3,39 @@
 #include "GameObject.h"
 #include <DirectXMath.h> // XMFLOAT2
 #include "../../Engine/Graphics/Animation.h"
-#include <unordered_map>
+#include <vector>
 
 class Animator;
 class Tilemap;
 class TilemapCollider;
-class Camera;
 
-enum class MarioState
+enum class GoombaState
 {
 	None = 0, // None is used only at the start
-	Small = 1,
-	Large = 2,
-	Fire = 3,
+	Walking = 1,
+	Dead = 2,
 };
 
-class Mario : public GameObject
+class Goomba : public GameObject
 {
 public:
-	Mario(SpriteSettings* spriteSettings, Tilemap* tilemap);
-	~Mario() override;
+	Goomba(SpriteSettings* spriteSettings, Tilemap* tilemap);
+	~Goomba() override;
 
 	void Update(const float deltaTime) override;
 
 private:
 	void Move(DirectX::XMFLOAT2& velocity, const float deltaTime);
-	void CheckCollision(DirectX::XMFLOAT2& velocity);
-	void UpdateCameraFollow();
-	void UpdateMarioState(MarioState marioState);
+	void UpdateState(GoombaState state);
 
 private:
 	Animator* animator;
 	Tilemap* tilemap;
 	TilemapCollider* tilemapCollider;
-	Camera* camera;
 
-	MarioState marioState;
-	std::unordered_map<MarioState, std::vector<Animation>> animations;
+	GoombaState goombaState;
+	std::vector<Animation> animations;
+
+	bool walkingRight;
 };
 

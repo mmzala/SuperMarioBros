@@ -2,6 +2,7 @@
 
 class GameObject;
 class Mario;
+class Goomba;
 class Tilemap;
 
 /// <summary>
@@ -18,5 +19,6 @@ public:
 private:
 	Tilemap* tilemap;
 	Mario* player;
+	Goomba* goomba;
 };
 

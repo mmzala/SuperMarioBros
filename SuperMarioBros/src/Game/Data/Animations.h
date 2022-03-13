@@ -68,4 +68,22 @@ namespace Animations
 			};
 		}
 	}
+
+	namespace Goomba
+	{
+		// Enum's have no inheritance, so we are doing it this way :)
+		struct AnimationState
+		{
+			static constexpr int Walking = 0;
+			static constexpr int Dead = 1;
+		};
+
+		/// <summary>
+		/// Goomba animations
+		/// </summary>
+		static const std::vector<Animation> goomba = {
+			Animation(0, 1, 5.0f), // Walking / Running
+			Animation(2, 2, 0.0f), // Dead
+		};
+	}
 }
