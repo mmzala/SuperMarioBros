@@ -13,7 +13,7 @@ Mario::Mario(CharacterSettings settings)
 	:
 	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
-	marioState(MarioState::None)
+	marioState()
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioState, std::vector<Animation>> {
@@ -23,8 +23,7 @@ Mario::Mario(CharacterSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	sprite->SetFrame(0);
-	UpdateMarioState(MarioState::Large);
+	UpdateState(MarioState::Small);
 }
 
 Mario::~Mario()
@@ -101,7 +100,7 @@ void Mario::UpdateCameraFollow()
 	// camera->FollowPosition(transform->position, true, false);
 }
 
-void Mario::UpdateMarioState(MarioState marioState)
+void Mario::UpdateState(MarioState marioState)
 {
 	if (this->marioState == marioState) return;
 	this->marioState = marioState;

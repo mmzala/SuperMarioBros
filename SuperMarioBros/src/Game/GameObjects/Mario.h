@@ -13,10 +13,9 @@ class Camera;
 
 enum class MarioState
 {
-	None = 0, // None is used only at the start
-	Small = 1,
-	Large = 2,
-	Fire = 3,
+	Small = 0,
+	Large = 1,
+	Fire = 2,
 };
 
 class Mario : public Character
@@ -31,7 +30,7 @@ protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision() override;
 	void UpdateCameraFollow();
-	void UpdateMarioState(MarioState marioState);
+	void UpdateState(MarioState marioState);
 
 private:
 	Camera* camera;
