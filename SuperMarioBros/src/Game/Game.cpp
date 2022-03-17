@@ -24,6 +24,8 @@
 #include "../Engine/Physics/Collision.h" // Collision check
 #include "../Engine/Physics/RectCollider.h" // Getting collider bounds
 
+// TODO: Create a movement component for Mario
+
 Game::Game()
 {
 	// Tilemap setup
@@ -49,6 +51,7 @@ Game::Game()
 	marioSettings.runningAcceleration = 0.20f;
 	marioSettings.releaseDeceleration = 0.08f;
 	marioSettings.skiddingDeceleration = 0.08f;
+	marioSettings.skidTurnaroundSpeed = 0.3f;
 	marioSettings.runningDecelerationDelay = 0.25f;
 	marioSettings.gravity = 150.0f;
 	player = new Mario(marioSettings);

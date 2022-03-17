@@ -20,6 +20,7 @@ Mario::Mario(MarioSettings settings)
 	runningAcceleration(settings.runningAcceleration),
 	releaseDeceleration(settings.releaseDeceleration),
 	skiddingDeceleration(settings.skiddingDeceleration),
+	skidTurnaroundSpeed(settings.skidTurnaroundSpeed),
 	runningDecelerationDelay(settings.runningDecelerationDelay),
 	runningDecelerationTimer(0.0f)
 {
@@ -50,8 +51,8 @@ void Mario::Move(const float deltaTime)
 	Input* input = Input::GetInstance();
 	velocity.y = -gravity;
 	
-	const bool leftInput = input->GetKey(DIK_LEFTARROW);
-	const bool rightInput = input->GetKey(DIK_RIGHTARROW);
+	const bool leftInput = input->GetKey(DIK_LEFTARROW) || input->GetKey(DIK_A);
+	const bool rightInput = input->GetKey(DIK_RIGHTARROW) || input->GetKey(DIK_D);
 	const bool runInput = input->GetKey(DIK_Z);
 	MoveHorizontal(leftInput, rightInput, runInput, deltaTime);
 
@@ -87,7 +88,14 @@ void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bo
 		}
 		else
 		{
-			velocity.x = std::fmax(velocity.x - movementAccelertion, -movementSpeed);
+			if (velocity.x > 0.0f)
+			{
+				velocity.x = velocity.x - skidTurnaroundSpeed;
+			}
+			else
+			{
+				velocity.x = std::fmax(velocity.x - movementAccelertion, -movementSpeed);
+			}
 		}
 		
 		sprite->FlipSpriteX(true);
@@ -102,7 +110,14 @@ void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bo
 		}
 		else
 		{
-			velocity.x = std::fmin(velocity.x + movementAccelertion, movementSpeed);
+			if (velocity.x < 0.0f)
+			{
+				velocity.x = velocity.x + skidTurnaroundSpeed;
+			}
+			else 
+			{
+				velocity.x = std::fmin(velocity.x + movementAccelertion, movementSpeed);
+			}
 		}
 		
 		sprite->FlipSpriteX(false);

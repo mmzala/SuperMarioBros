@@ -49,6 +49,7 @@ private:
 	float runningAcceleration;
 	float releaseDeceleration;
 	float skiddingDeceleration;
+	float skidTurnaroundSpeed;
 	unsigned int runningDecelerationDelay;
 	float runningDecelerationTimer;
 };
