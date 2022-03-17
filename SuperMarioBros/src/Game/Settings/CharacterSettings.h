@@ -7,15 +7,15 @@ struct CharacterSettings
 {
 	SpriteSettings spriteSettings;
 	Tilemap* tilemap;
-	float movementSpeed;
+	float walkingSpeed;
 	float gravity;
 
 	CharacterSettings(SpriteSettings spriteSettings = SpriteSettings(), Tilemap* tilemap = nullptr, 
-		float movementSpeed = 0.0f, float gravity = 0.0f)
+		float walkingSpeed = 0.0f, float gravity = 0.0f)
 		:
 		spriteSettings(spriteSettings),
 		tilemap(tilemap),
-		movementSpeed(movementSpeed),
+		walkingSpeed(walkingSpeed),
 		gravity(gravity)
 	{}
 };

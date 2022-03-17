@@ -12,6 +12,7 @@
 #include "GameObjects/Goomba.h" // Goomba enemy
 
 // Settings
+#include "Settings/MarioSettings.h"
 #include "Settings/CharacterSettings.h"
 #include "Settings/SpriteSettings.h"
 
@@ -39,14 +40,20 @@ Game::Game()
 	SpriteSettings marioSpriteSettings = SpriteSettings();
 	marioSpriteSettings.textureFile = "assets/MarioSpriteSheet.png";
 	marioSpriteSettings.spriteSheetSize = DirectX::XMINT2(7, 8);
-	CharacterSettings marioSettings = CharacterSettings();
+	MarioSettings marioSettings = MarioSettings();
 	marioSettings.spriteSettings = marioSpriteSettings;
 	marioSettings.tilemap = tilemap;
-	marioSettings.movementSpeed = 500.0f;
+	marioSettings.walkingSpeed = 190.0f;
+	marioSettings.runningSpeed = 290.0f;
+	marioSettings.walkingAcceleration = 0.15f;
+	marioSettings.runningAcceleration = 0.20f;
+	marioSettings.releaseDeceleration = 0.08f;
+	marioSettings.skiddingDeceleration = 0.08f;
+	marioSettings.runningDecelerationDelay = 0.25f;
 	marioSettings.gravity = 150.0f;
 	player = new Mario(marioSettings);
-	player->transform->position = DirectX::XMFLOAT2(390.0f, 250.0f);
-	player->transform->scale = DirectX::XMFLOAT2(1.0f, 1.0f);
+	player->transform->position = DirectX::XMFLOAT2(390.0f, 150.0f);
+	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
 	// Goomba setup
 	SpriteSettings goombaSpriteSettings = SpriteSettings();
@@ -55,7 +62,7 @@ Game::Game()
 	CharacterSettings goombaSettings = CharacterSettings();
 	goombaSettings.spriteSettings = goombaSpriteSettings;
 	goombaSettings.tilemap = tilemap;
-	goombaSettings.movementSpeed = 150.0f;
+	goombaSettings.walkingSpeed = 150.0f;
 	goombaSettings.gravity = 150.0f;
 	goomba = new Goomba(goombaSettings);
 	goomba->transform->position = DirectX::XMFLOAT2(1000.0f, 200.0f);

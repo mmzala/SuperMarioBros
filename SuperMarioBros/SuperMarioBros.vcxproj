@@ -205,6 +205,7 @@
     <ClInclude Include="src\Engine\Graphics\Animator.h" />
     <ClInclude Include="src\Game\Data\Animations.h" />
     <ClInclude Include="src\Game\Settings\CharacterSettings.h" />
+    <ClInclude Include="src\Game\Settings\MarioSettings.h" />
     <ClInclude Include="src\Game\Settings\SpriteSettings.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Rect.h" />

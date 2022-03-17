@@ -30,15 +30,15 @@ void Goomba::Update(const float deltaTime)
 
 void Goomba::Move(const float deltaTime)
 {
-	velocity.y = -gravity * deltaTime;
-	velocity.x = movementSpeed * (walkingRight ? 1 : -1) * deltaTime;
+	velocity.y = -gravity;
+	velocity.x = walkingSpeed * (walkingRight ? 1 : -1);
 
 	Character::Move(deltaTime);
 }
 
-void Goomba::CheckCollision()
+void Goomba::CheckCollision(const float deltaTime)
 {
-	Character::CheckCollision();
+	Character::CheckCollision(deltaTime);
 
 	// If velocity is 0 that means we hit something, so we change direction
 	if (velocity.x == 0.0f) walkingRight = !walkingRight;

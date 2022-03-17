@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual void Move(const float deltaTime);
-	virtual void CheckCollision();
+	virtual void CheckCollision(const float deltaTime);
 
 protected:
 	Animator* animator;
@@ -25,7 +25,7 @@ protected:
 	TilemapCollider* tilemapCollider;
 
 	DirectX::XMFLOAT2 velocity;
-	float movementSpeed;
+	float walkingSpeed;
 	float gravity;
 };
 

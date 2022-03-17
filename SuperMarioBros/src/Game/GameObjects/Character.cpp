@@ -12,7 +12,7 @@ Character::Character(const CharacterSettings settings)
 	tilemap(settings.tilemap),
 	tilemapCollider(new TilemapCollider(collider, tilemap)),
 	velocity(DirectX::XMFLOAT2(0.0f, 0.0f)),
-	movementSpeed(settings.movementSpeed),
+	walkingSpeed(settings.walkingSpeed),
 	gravity(settings.gravity)
 {}
 
@@ -31,12 +31,12 @@ void Character::Update(const float deltaTime)
 
 void Character::Move(const float deltaTime)
 {
-	CheckCollision();
-	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x, transform->position.y + velocity.y);
-	velocity = DirectX::XMFLOAT2(0.0f, 0.0f); // Reset velocity
+	CheckCollision(deltaTime);
+	transform->position = DirectX::XMFLOAT2(transform->position.x + velocity.x * deltaTime,
+		transform->position.y + velocity.y * deltaTime);
 }
 
-void Character::CheckCollision()
+void Character::CheckCollision(const float deltaTime)
 {
-	tilemapCollider->Update(velocity);
+	tilemapCollider->Update(velocity, deltaTime);
 }

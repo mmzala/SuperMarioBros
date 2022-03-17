@@ -8,12 +8,20 @@
 #include "../../Engine/Physics/RectCollider.h" // Collider
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
+#include <algorithm> // fmax / fmin
 
-Mario::Mario(CharacterSettings settings)
+Mario::Mario(MarioSettings settings)
 	:
-	Character::Character(settings),
+	Character::Character(CharacterSettings(settings.spriteSettings, settings.tilemap, settings.walkingSpeed, settings.gravity)),
 	camera(SMBEngine::GetInstance()->GetCamera()),
-	marioState()
+	marioState(MarioState::None),
+	runningSpeed(settings.runningSpeed),
+	walkingAcceleration(settings.walkingAcceleration),
+	runningAcceleration(settings.runningAcceleration),
+	releaseDeceleration(settings.releaseDeceleration),
+	skiddingDeceleration(settings.skiddingDeceleration),
+	runningDecelerationDelay(settings.runningDecelerationDelay),
+	runningDecelerationTimer(0.0f)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioState, std::vector<Animation>> {
@@ -40,50 +48,96 @@ void Mario::Update(const float deltaTime)
 void Mario::Move(const float deltaTime)
 {
 	Input* input = Input::GetInstance();
-
-	bool up = input->GetKey(DIK_W);
-	if (up)
-	{
-		velocity.y = movementSpeed / 2 * deltaTime;
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Jumping]);
-	}
-	else
-	{
-		velocity.y = -gravity * deltaTime;
-	}
+	velocity.y = -gravity;
 	
-	bool left = input->GetKey(DIK_A);
-	bool right = input->GetKey(DIK_D);
-	if (left)  // Left movement
-	{
-		velocity.x = -movementSpeed * deltaTime;
-		sprite->FlipSpriteX(true);
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
-	}
-	if (right) // Right movement
-	{
-		velocity.x = movementSpeed * deltaTime;
-		sprite->FlipSpriteX(false);
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
-	}
-
-	if (!left && !right && !up)
-	{
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
-	}
+	const bool leftInput = input->GetKey(DIK_LEFTARROW);
+	const bool rightInput = input->GetKey(DIK_RIGHTARROW);
+	const bool runInput = input->GetKey(DIK_Z);
+	MoveHorizontal(leftInput, rightInput, runInput, deltaTime);
 
 	Character::Move(deltaTime);
 }
 
-void Mario::CheckCollision()
+void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
 {
-	Character::CheckCollision();
+	// If you stop holding "run" input, but continue running in the same direction, Mario will
+	// , keep moving at current speed (runningSpeed) for runningDecelerationDelay amount.
+	// That's why you don't lose any speed when firing fireballs while running.
+	bool shouldRun = false;
+	if (runInput) runningDecelerationTimer = runningDecelerationDelay;
+	else
+	{
+		if (std::abs(velocity.x) > walkingSpeed)
+		{
+			runningDecelerationTimer -= deltaTime;
+
+			if (runningDecelerationTimer > 0.0f) shouldRun = true;
+		}
+	}
+
+	float movementSpeed = runInput || shouldRun ? runningSpeed : walkingSpeed;
+	float movementAccelertion = runInput ? runningAcceleration : walkingAcceleration;
+
+	if (leftInput && !rightInput)  // Left movement
+	{
+		// If velocity is too high then go back to the max velocity slowly
+		if (-movementSpeed > velocity.x)
+		{
+			velocity.x = velocity.x + releaseDeceleration;
+		}
+		else
+		{
+			velocity.x = std::fmax(velocity.x - movementAccelertion, -movementSpeed);
+		}
+		
+		sprite->FlipSpriteX(true);
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
+	}
+
+	if (rightInput && !leftInput) // Right movement
+	{
+		if (movementSpeed < velocity.x)
+		{
+			velocity.x = velocity.x - releaseDeceleration;
+		}
+		else
+		{
+			velocity.x = std::fmin(velocity.x + movementAccelertion, movementSpeed);
+		}
+		
+		sprite->FlipSpriteX(false);
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
+	}
+
+	if (!leftInput && !rightInput || leftInput && rightInput) // No input
+	{
+		if (velocity.x < 0)
+		{
+			velocity.x = std::fmin(0.0f, velocity.x + skiddingDeceleration);
+		}
+		else if (velocity.x > 0)
+		{
+			velocity.x = std::fmax(0.0f, velocity.x - skiddingDeceleration);
+		}
+
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
+	}
+
+	char str[256];
+	sprintf_s(str, sizeof(str), "Velocity.x: %f \n", velocity.x);
+	OutputDebugStringA(str);
+}
+
+void Mario::CheckCollision(const float deltaTime)
+{
+	Character::CheckCollision(deltaTime);
 
 	// Making sure the player cannot go back
 	Rect viewport = camera->GetViewportBounds();
-	Rect playerBounds = collider->GetBoundsWithOffset(velocity);
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime);
+	Rect playerBounds = collider->GetBoundsWithOffset(deltaVelocity);
 
-	if (viewport.x >= playerBounds.x)
+	if (viewport.x > playerBounds.x)
 	{
 		velocity.x = 0.0f;
 	}
@@ -97,7 +151,7 @@ void Mario::UpdateCameraFollow()
 	{
 		camera->FollowPosition(transform->position, true, false);
 	}
-	// camera->FollowPosition(transform->position, true, false);
+	camera->FollowPosition(transform->position, true, false);
 }
 
 void Mario::UpdateState(MarioState marioState)

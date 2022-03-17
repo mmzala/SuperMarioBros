@@ -23,7 +23,7 @@ public:
 
 protected:
 	void Move(const float deltaTime) override;
-	void CheckCollision() override;
+	void CheckCollision(const float deltaTime) override;
 	void UpdateState(GoombaState state);
 
 private:

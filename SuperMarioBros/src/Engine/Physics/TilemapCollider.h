@@ -13,7 +13,7 @@ public:
 	TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap);
 	~TilemapCollider();
 
-	void Update(DirectX::XMFLOAT2& velocity);
+	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
 
 private:
 	bool CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);

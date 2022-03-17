@@ -14,10 +14,11 @@ TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap)
 TilemapCollider::~TilemapCollider()
 {}
 
-void TilemapCollider::Update(DirectX::XMFLOAT2& velocity)
+void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	Rect bounds = rectCollider->GetBounds();
-	Rect vBounds = rectCollider->GetBoundsWithOffset(velocity);
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime);
+	Rect vBounds = rectCollider->GetBoundsWithOffset(deltaVelocity);
 
 	if (CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
 		CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top))
