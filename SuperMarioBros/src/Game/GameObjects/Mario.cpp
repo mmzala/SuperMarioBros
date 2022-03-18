@@ -9,6 +9,7 @@
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 #include <algorithm> // fmax / fmin
+#include "../../Utils/Debug.h" // Debugging
 
 Mario::Mario(MarioSettings settings)
 	:
@@ -138,9 +139,7 @@ void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bo
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
 	}
 
-	char str[256];
-	sprintf_s(str, sizeof(str), "Velocity.x: %f \n", velocity.x);
-	OutputDebugStringA(str);
+	Debug::Log("Velocity X: %f\n", velocity.x, velocity.y);
 }
 
 void Mario::CheckCollision(const float deltaTime)

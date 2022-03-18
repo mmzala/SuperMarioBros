@@ -10,11 +10,11 @@ struct MarioSettings : CharacterSettings
 	float releaseDeceleration;
 	float skiddingDeceleration;
 	float skidTurnaroundSpeed;
-	unsigned int runningDecelerationDelay;
+	float runningDecelerationDelay;
 
 	MarioSettings(float runningSpeed = 0.0f, float walkingAcceleration = 0.0f, 
 		float runningAcceleration = 0.0f, float releaseDeceleration = 0.0f, float skiddingDeceleration = 0.0f,
-		float skidTurnaroundSpeed = 0.0f, unsigned int runningDecelerationDelay = 0.25f)
+		float skidTurnaroundSpeed = 0.0f, float runningDecelerationDelay = 0.25f)
 		:
 		CharacterSettings::CharacterSettings(),
 		runningSpeed(runningSpeed),
