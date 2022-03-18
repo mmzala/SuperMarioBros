@@ -47,11 +47,11 @@ Game::Game()
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 190.0f;
 	marioSettings.runningSpeed = 290.0f;
-	marioSettings.walkingAcceleration = 0.15f;
-	marioSettings.runningAcceleration = 0.20f;
-	marioSettings.releaseDeceleration = 0.08f;
-	marioSettings.skiddingDeceleration = 0.1f;
-	marioSettings.skidTurnaroundSpeed = 0.5f;
+	marioSettings.walkingAcceleration = 0.3f;
+	marioSettings.runningAcceleration = 0.35f;
+	marioSettings.releaseDeceleration = 0.15f;
+	marioSettings.skiddingDeceleration = 0.35f;
+	marioSettings.skidTurnaroundSpeed = 0.7f;
 	marioSettings.runningDecelerationDelay = 0.25f;
 	marioSettings.gravity = 150.0f;
 	player = new Mario(marioSettings);

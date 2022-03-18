@@ -139,7 +139,7 @@ void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bo
 		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
 	}
 
-	Debug::Log("Velocity X: %f\n", velocity.x, velocity.y);
+	Debug::Log("Velocity X: %f\n", velocity.x);
 }
 
 void Mario::CheckCollision(const float deltaTime)
