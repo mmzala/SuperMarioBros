@@ -32,6 +32,7 @@ protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision(const float deltaTime) override;
 	void UpdateCameraFollow();
+	void UpdateAnimations();
 	void UpdateState(MarioState marioState);
 
 private:

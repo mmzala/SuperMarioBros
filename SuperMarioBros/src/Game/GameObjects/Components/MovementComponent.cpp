@@ -24,6 +24,7 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	maxJumpTime(settings.maxJumpTime),
 	jumpDecelaration(settings.jumpDecelaration),
 	jumpTimer(maxJumpTime),
+	isJumping(false),
 	gravityAccelerationSpeed(settings.gravityAccelerationSpeed)
 {}
 
@@ -43,12 +44,18 @@ MovementState MovementComponent::GetState()
 	return state;
 }
 
+int MovementComponent::GetMovementDirection()
+{
+	return movementDirection;
+}
+
 // REFACTOR THIS LATER PLS
 void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
 {
 	float movementSpeed = ShouldRun(runInput, deltaTime) ? runningSpeed : character->walkingSpeed;
 	float movementAccelertion = runInput ? runningAcceleration : walkingAcceleration;
 	float turnaroundSpeed = GetTurnaroundSpeed();
+	movementDirection = rightInput - leftInput;
 
 	if (leftInput && !rightInput)  // Left movement
 	{
@@ -61,10 +68,12 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 		{
 			if (character->velocity.x > 0.0f)
 			{
+				state = MovementState::TurningAround;
 				character->velocity.x = character->velocity.x - turnaroundSpeed;
 			}
 			else
 			{
+				state = MovementState::Running;
 				character->velocity.x = std::fmax(character->velocity.x - movementAccelertion, -movementSpeed);
 			}
 		}
@@ -80,17 +89,22 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 		{
 			if (character->velocity.x < 0.0f)
 			{
+				state = MovementState::TurningAround;
 				character->velocity.x = character->velocity.x + turnaroundSpeed;
 			}
 			else
 			{
+				state = MovementState::Running;
 				character->velocity.x = std::fmin(character->velocity.x + movementAccelertion, movementSpeed);
 			}
 		}
 	}
 
-	if ((!leftInput && !rightInput || leftInput && rightInput) && isGrounded) // No input while grounded
+	if ((!leftInput && !rightInput || leftInput && rightInput)) // No input
 	{
+		state = MovementState::Standing;
+		if (!isGrounded) return;
+
 		if (character->velocity.x < 0)
 		{
 			character->velocity.x = std::fmin(0.0f, character->velocity.x + skiddingDeceleration);
@@ -124,21 +138,27 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 				jumpTimer = 0.0f;
 			}
 
+			isJumping = true;
 			character->velocity.y = Math::Lerp(maxJumpSpeed, minJumpSpeed, jumpTimer / maxJumpTime);
 			jumpTimer -= deltaTime;
 		}
+
+		if (isGrounded) isJumping = false;
 	}
 	else
 	{
 		if (isGrounded)
 		{
 			jumpTimer = maxJumpTime;
+			isJumping = false;
 		}
 		else
 		{
 			jumpTimer = 0.0f;
 		}
 	}
+
+	if (isJumping) state = MovementState::Jumping;
 }
 
 bool MovementComponent::ShouldRun(const bool runInput, const float deltaTime)

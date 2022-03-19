@@ -25,8 +25,8 @@ Mario::Mario(MarioSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	sprite->SetFrame(21);
 	UpdateState(MarioState::Small);
+	UpdateAnimations();
 }
 
 Mario::~Mario()
@@ -38,6 +38,8 @@ void Mario::Update(const float deltaTime)
 {
 	Move(deltaTime);
 	UpdateCameraFollow();
+
+	UpdateAnimations();
 	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());
 }
@@ -49,7 +51,7 @@ void Mario::Move(const float deltaTime)
 	MovementInput movementInput = MovementInput();
 	movementInput.left = input->GetKey(DIK_LEFTARROW) || input->GetKey(DIK_A);
 	movementInput.right = input->GetKey(DIK_RIGHTARROW) || input->GetKey(DIK_D);
-	movementInput.run = input->GetKey(DIK_Z);
+	movementInput.run = input->GetKey(DIK_Z) || input->GetKey(DIK_M);
 	movementInput.jump = input->GetKey(DIK_SPACE);
 
 	movementComponent->Update(movementInput, deltaTime);
@@ -80,6 +82,37 @@ void Mario::UpdateCameraFollow()
 		camera->FollowPosition(transform->position, true, false);
 	}
 	camera->FollowPosition(transform->position, true, false);
+}
+
+void Mario::UpdateAnimations()
+{
+	switch (movementComponent->GetState())
+	{
+	case MovementState::Standing:
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
+		break;
+	case MovementState::Running:
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
+		break;
+	case MovementState::TurningAround:
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::ChangeDir]);
+		break;
+	case MovementState::Jumping:
+		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Jumping]);
+		break;
+	}
+
+	// There is a better way to do this most likely, but I don't want to think anymore
+	// REFACTOR THIS LATER
+	switch (movementComponent->GetMovementDirection())
+	{
+	case 1:
+		sprite->FlipSpriteX(false);
+		break;
+	case -1:
+		sprite->FlipSpriteX(true);
+		break;
+	}
 }
 
 void Mario::UpdateState(MarioState marioState)

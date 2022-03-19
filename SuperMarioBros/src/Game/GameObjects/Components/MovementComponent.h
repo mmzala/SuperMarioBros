@@ -26,8 +26,8 @@ struct MovementInput
 enum class MovementState
 {
 	Standing = 0,
-	Walking = 1,
-	Running = 2,
+	Running = 1,
+	TurningAround = 2,
 	Jumping = 3,
 };
 
@@ -39,6 +39,7 @@ public:
 
 	void Update(MovementInput input, const float deltaTime);
 	MovementState GetState();
+	int GetMovementDirection();
 
 private:
 	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime);
@@ -50,6 +51,7 @@ private:
 	Character* character;
 	MovementState state;
 	bool isGrounded;
+	int movementDirection;
 
 	float runningSpeed;
 	float walkingAcceleration;
@@ -68,6 +70,7 @@ private:
 	float maxJumpTime;
 	float jumpDecelaration;
 	float jumpTimer;
+	bool isJumping;
 	
 	float gravityAccelerationSpeed;
 };
