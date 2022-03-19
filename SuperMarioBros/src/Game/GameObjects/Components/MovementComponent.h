@@ -1,5 +1,8 @@
 #pragma once
 
+// Movement physics is based on this information:
+// https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
+
 #include "../../Settings/MovementComponentSettings.h"
 
 class Character;
@@ -39,12 +42,15 @@ public:
 
 private:
 	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime);
+	void MoveVertical(const bool jumpInput, const float deltaTime);
+	bool ShouldRun(const bool runInput, const float deltaTime);
+	float GetTurnaroundSpeed();
 
 private:
 	Character* character;
 	MovementState state;
+	bool isGrounded;
 
-	// Movement variables
 	float runningSpeed;
 	float walkingAcceleration;
 	float runningAcceleration;
@@ -53,5 +59,8 @@ private:
 	float skidTurnaroundSpeed;
 	float runningDecelerationDelay;
 	float runningDecelerationTimer;
+
+	float airWalkingTurnaroundSpeed;
+	float airRunningTurnaroundSpeed;
 };
 

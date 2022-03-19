@@ -49,6 +49,8 @@ Game::Game()
 	movementSettings.skiddingDeceleration = 0.35f;
 	movementSettings.skidTurnaroundSpeed = 0.7f;
 	movementSettings.runningDecelerationDelay = 0.25f;
+	movementSettings.airWalkingTurnaroundSpeed = 0.75f;
+	movementSettings.airRunningTurnaroundSpeed = 0.85f;
 	MarioSettings marioSettings = MarioSettings();
 	marioSettings.movementSettings = movementSettings;
 	marioSettings.spriteSettings = marioSpriteSettings;

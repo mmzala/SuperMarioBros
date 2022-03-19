@@ -25,6 +25,7 @@ Mario::Mario(MarioSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
+	sprite->SetFrame(21);
 	UpdateState(MarioState::Small);
 }
 
@@ -49,6 +50,7 @@ void Mario::Move(const float deltaTime)
 	movementInput.left = input->GetKey(DIK_LEFTARROW) || input->GetKey(DIK_A);
 	movementInput.right = input->GetKey(DIK_RIGHTARROW) || input->GetKey(DIK_D);
 	movementInput.run = input->GetKey(DIK_Z);
+	movementInput.jump = input->GetKey(DIK_SPACE);
 
 	movementComponent->Update(movementInput, deltaTime);
 	Character::Move(deltaTime);

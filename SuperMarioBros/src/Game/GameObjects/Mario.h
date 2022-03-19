@@ -1,8 +1,5 @@
 #pragma once
 
-// Movement physics credits:
-// https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
-
 #include "Character.h"
 #include "../Settings/MarioSettings.h"
 #include <DirectXMath.h> // XMFLOAT2
@@ -33,7 +30,6 @@ public:
 
 protected:
 	void Move(const float deltaTime) override;
-	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime);
 	void CheckCollision(const float deltaTime) override;
 	void UpdateCameraFollow();
 	void UpdateState(MarioState marioState);

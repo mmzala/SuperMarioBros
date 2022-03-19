@@ -8,7 +8,8 @@
 TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap)
 	:
 	rectCollider(rectCollider),
-	tilemap(tilemap)
+	tilemap(tilemap),
+	isGrounded(false)
 {}
 
 TilemapCollider::~TilemapCollider()
@@ -20,23 +21,32 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime);
 	Rect vBounds = rectCollider->GetBoundsWithOffset(deltaVelocity);
 
-	if (CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
-		CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top))
+	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
+	bool collidedTop = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top);
+	if (collidedBottom || collidedTop)
 	{
 		velocity.y = 0.0f;
 	}
 
-	if (CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left) ||
-		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right))
+	bool collidedLeft = CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left);
+	bool collidedRight = CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right);
+	if (collidedLeft || collidedRight)
 	{
 		velocity.x = 0.0f;
 	}
+
+	isGrounded = collidedBottom;
+}
+
+bool TilemapCollider::IsGrounded()
+{
+	return isGrounded;
 }
 
 bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
 {
 	float tileSize = tilemap->GetTileSize();
-	int iterations = static_cast<int>(toPosition - fromPosition) / tileSize; // Calculate how many checks it takes to check for all tiles that can be in proximity
+	int iterations = static_cast<int>((toPosition - fromPosition) / tileSize); // Calculate how many checks it takes to check for all tiles that can be in proximity
 	iterations += 2; // We always want to check atleast the corners
 
 	for (int i = 0; i < iterations; i++)
