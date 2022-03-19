@@ -9,6 +9,7 @@ class TilemapCollider;
 
 class Character : public GameObject
 {
+	friend class MovementComponent;
 public:
 	Character(const CharacterSettings settings);
 	~Character() override;

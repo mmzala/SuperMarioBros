@@ -8,22 +8,14 @@
 #include "../../Engine/Physics/RectCollider.h" // Collider
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
-#include <algorithm> // fmax / fmin
-#include "../../Utils/Debug.h" // Debugging
+#include "Components/MovementComponent.h"
 
 Mario::Mario(MarioSettings settings)
 	:
 	Character::Character(CharacterSettings(settings.spriteSettings, settings.tilemap, settings.walkingSpeed, settings.gravity)),
 	camera(SMBEngine::GetInstance()->GetCamera()),
-	marioState(MarioState::None),
-	runningSpeed(settings.runningSpeed),
-	walkingAcceleration(settings.walkingAcceleration),
-	runningAcceleration(settings.runningAcceleration),
-	releaseDeceleration(settings.releaseDeceleration),
-	skiddingDeceleration(settings.skiddingDeceleration),
-	skidTurnaroundSpeed(settings.skidTurnaroundSpeed),
-	runningDecelerationDelay(settings.runningDecelerationDelay),
-	runningDecelerationTimer(0.0f)
+	movementComponent(new MovementComponent(this, settings.movementSettings)),
+	marioState(MarioState::None)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioState, std::vector<Animation>> {
@@ -37,7 +29,9 @@ Mario::Mario(MarioSettings settings)
 }
 
 Mario::~Mario()
-{}
+{
+	delete movementComponent;
+}
 
 void Mario::Update(const float deltaTime)
 {
@@ -50,96 +44,14 @@ void Mario::Update(const float deltaTime)
 void Mario::Move(const float deltaTime)
 {
 	Input* input = Input::GetInstance();
-	velocity.y = -gravity;
 	
-	const bool leftInput = input->GetKey(DIK_LEFTARROW) || input->GetKey(DIK_A);
-	const bool rightInput = input->GetKey(DIK_RIGHTARROW) || input->GetKey(DIK_D);
-	const bool runInput = input->GetKey(DIK_Z);
-	MoveHorizontal(leftInput, rightInput, runInput, deltaTime);
+	MovementInput movementInput = MovementInput();
+	movementInput.left = input->GetKey(DIK_LEFTARROW) || input->GetKey(DIK_A);
+	movementInput.right = input->GetKey(DIK_RIGHTARROW) || input->GetKey(DIK_D);
+	movementInput.run = input->GetKey(DIK_Z);
 
+	movementComponent->Update(movementInput, deltaTime);
 	Character::Move(deltaTime);
-}
-
-void Mario::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
-{
-	// If you stop holding "run" input, but continue running in the same direction, Mario will
-	// , keep moving at current speed (runningSpeed) for runningDecelerationDelay amount.
-	// That's why you don't lose any speed when firing fireballs while running.
-	bool shouldRun = false;
-	if (runInput) runningDecelerationTimer = runningDecelerationDelay;
-	else
-	{
-		if (std::abs(velocity.x) > walkingSpeed)
-		{
-			runningDecelerationTimer -= deltaTime;
-
-			if (runningDecelerationTimer > 0.0f) shouldRun = true;
-		}
-	}
-
-	float movementSpeed = runInput || shouldRun ? runningSpeed : walkingSpeed;
-	float movementAccelertion = runInput ? runningAcceleration : walkingAcceleration;
-
-	if (leftInput && !rightInput)  // Left movement
-	{
-		// If velocity is too high then go back to the max velocity slowly
-		if (-movementSpeed > velocity.x)
-		{
-			velocity.x = velocity.x + releaseDeceleration;
-		}
-		else
-		{
-			if (velocity.x > 0.0f)
-			{
-				velocity.x = velocity.x - skidTurnaroundSpeed;
-			}
-			else
-			{
-				velocity.x = std::fmax(velocity.x - movementAccelertion, -movementSpeed);
-			}
-		}
-		
-		sprite->FlipSpriteX(true);
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
-	}
-
-	if (rightInput && !leftInput) // Right movement
-	{
-		if (movementSpeed < velocity.x)
-		{
-			velocity.x = velocity.x - releaseDeceleration;
-		}
-		else
-		{
-			if (velocity.x < 0.0f)
-			{
-				velocity.x = velocity.x + skidTurnaroundSpeed;
-			}
-			else 
-			{
-				velocity.x = std::fmin(velocity.x + movementAccelertion, movementSpeed);
-			}
-		}
-		
-		sprite->FlipSpriteX(false);
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
-	}
-
-	if (!leftInput && !rightInput || leftInput && rightInput) // No input
-	{
-		if (velocity.x < 0)
-		{
-			velocity.x = std::fmin(0.0f, velocity.x + skiddingDeceleration);
-		}
-		else if (velocity.x > 0)
-		{
-			velocity.x = std::fmax(0.0f, velocity.x - skiddingDeceleration);
-		}
-
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
-	}
-
-	Debug::Log("Velocity X: %f\n", velocity.x);
 }
 
 void Mario::CheckCollision(const float deltaTime)

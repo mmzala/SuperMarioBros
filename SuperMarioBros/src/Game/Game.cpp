@@ -15,6 +15,7 @@
 #include "Settings/MarioSettings.h"
 #include "Settings/CharacterSettings.h"
 #include "Settings/SpriteSettings.h"
+#include "Settings/MovementComponentSettings.h"
 
 // World
 #include "World/Tilemap.h"
@@ -23,8 +24,6 @@
 // Physics
 #include "../Engine/Physics/Collision.h" // Collision check
 #include "../Engine/Physics/RectCollider.h" // Getting collider bounds
-
-// TODO: Create a movement component for Mario
 
 Game::Game()
 {
@@ -42,17 +41,19 @@ Game::Game()
 	SpriteSettings marioSpriteSettings = SpriteSettings();
 	marioSpriteSettings.textureFile = "assets/MarioSpriteSheet.png";
 	marioSpriteSettings.spriteSheetSize = DirectX::XMINT2(7, 8);
+	MovementComponentSettings movementSettings = MovementComponentSettings();
+	movementSettings.runningSpeed = 290.0f;
+	movementSettings.walkingAcceleration = 0.3f;
+	movementSettings.runningAcceleration = 0.35f;
+	movementSettings.releaseDeceleration = 0.15f;
+	movementSettings.skiddingDeceleration = 0.35f;
+	movementSettings.skidTurnaroundSpeed = 0.7f;
+	movementSettings.runningDecelerationDelay = 0.25f;
 	MarioSettings marioSettings = MarioSettings();
+	marioSettings.movementSettings = movementSettings;
 	marioSettings.spriteSettings = marioSpriteSettings;
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 190.0f;
-	marioSettings.runningSpeed = 290.0f;
-	marioSettings.walkingAcceleration = 0.3f;
-	marioSettings.runningAcceleration = 0.35f;
-	marioSettings.releaseDeceleration = 0.15f;
-	marioSettings.skiddingDeceleration = 0.35f;
-	marioSettings.skidTurnaroundSpeed = 0.7f;
-	marioSettings.runningDecelerationDelay = 0.25f;
 	marioSettings.gravity = 150.0f;
 	player = new Mario(marioSettings);
 	player->transform->position = DirectX::XMFLOAT2(390.0f, 150.0f);

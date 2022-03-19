@@ -13,6 +13,7 @@ class Animator;
 class Tilemap;
 class TilemapCollider;
 class Camera;
+class MovementComponent;
 
 enum class MarioState
 {
@@ -39,18 +40,9 @@ protected:
 
 private:
 	Camera* camera;
+	MovementComponent* movementComponent;
 
 	MarioState marioState;
 	std::unordered_map<MarioState, std::vector<Animation>> animations;
-
-	// Movement variables
-	float runningSpeed;
-	float walkingAcceleration;
-	float runningAcceleration;
-	float releaseDeceleration;
-	float skiddingDeceleration;
-	float skidTurnaroundSpeed;
-	float runningDecelerationDelay;
-	float runningDecelerationTimer;
 };
 
