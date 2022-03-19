@@ -14,7 +14,7 @@ public:
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
-	bool IsGrounded();
+	CheckSide DetectedCollisions();
 
 private:
 	bool CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
@@ -24,6 +24,6 @@ private:
 private:
 	RectCollider* rectCollider;
 	Tilemap* tilemap;
-	bool isGrounded;
+	CheckSide collisions;
 };
 

@@ -9,7 +9,7 @@ TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap)
 	:
 	rectCollider(rectCollider),
 	tilemap(tilemap),
-	isGrounded(false)
+	collisions()
 {}
 
 TilemapCollider::~TilemapCollider()
@@ -18,7 +18,8 @@ TilemapCollider::~TilemapCollider()
 void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	Rect bounds = rectCollider->GetBounds();
-	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime);
+	// Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime - 0.01f);
 	Rect vBounds = rectCollider->GetBoundsWithOffset(deltaVelocity);
 
 	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
@@ -35,12 +36,17 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 		velocity.x = 0.0f;
 	}
 
-	isGrounded = collidedBottom;
+	CheckSide sidesDetected{};
+	if (collidedBottom) sidesDetected |= CheckSide::Bottom;
+	if (collidedTop) sidesDetected |= CheckSide::Top;
+	if (collidedLeft) sidesDetected |= CheckSide::Left;
+	if (collidedRight) sidesDetected |= CheckSide::Right;
+	collisions = sidesDetected;
 }
 
-bool TilemapCollider::IsGrounded()
+CheckSide TilemapCollider::DetectedCollisions()
 {
-	return isGrounded;
+	return collisions;
 }
 
 bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)

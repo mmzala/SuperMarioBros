@@ -1,14 +1,14 @@
 #include "MovementComponent.h"
 #include "../Character.h"
 #include <cmath> // fmax / fmin
-#include "../../../Utils/Debug.h" // Debugging
+#include "../../../Utils/Math.h" // Lerp
 #include "../../../Engine/Physics/TilemapCollider.h" // Checking if is grounded
 
 MovementComponent::MovementComponent(Character* character, MovementComponentSettings settings)
 	:
 	character(character),
 	state(MovementState::Standing),
-	isGrounded(character->tilemapCollider->IsGrounded()),
+	isGrounded((character->tilemapCollider->DetectedCollisions()& CheckSide::Bottom) == CheckSide::Bottom),
 	runningSpeed(settings.runningSpeed),
 	walkingAcceleration(settings.walkingAcceleration),
 	runningAcceleration(settings.runningAcceleration),
@@ -16,9 +16,15 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	skiddingDeceleration(settings.skiddingDeceleration),
 	skidTurnaroundSpeed(settings.skidTurnaroundSpeed),
 	runningDecelerationDelay(settings.runningDecelerationDelay),
-	runningDecelerationTimer(0.0f),
+	runningDecelerationTimer(runningDecelerationDelay),
 	airWalkingTurnaroundSpeed(settings.airWalkingTurnaroundSpeed),
-	airRunningTurnaroundSpeed(settings.airRunningTurnaroundSpeed)
+	airRunningTurnaroundSpeed(settings.airRunningTurnaroundSpeed),
+	minJumpSpeed(settings.minJumpSpeed),
+	maxJumpSpeed(settings.maxJumpSpeed),
+	maxJumpTime(settings.maxJumpTime),
+	jumpDecelaration(settings.jumpDecelaration),
+	jumpTimer(maxJumpTime),
+	gravityAccelerationSpeed(settings.gravityAccelerationSpeed)
 {}
 
 MovementComponent::~MovementComponent()
@@ -26,7 +32,8 @@ MovementComponent::~MovementComponent()
 
 void MovementComponent::Update(MovementInput input, const float deltaTime)
 {
-	isGrounded = character->tilemapCollider->IsGrounded();
+	CheckSide collisions = character->tilemapCollider->DetectedCollisions();
+	isGrounded = (collisions & CheckSide::Bottom) == CheckSide::Bottom;
 	MoveHorizontal(input.left, input.right, input.run, deltaTime);
 	MoveVertical(input.jump, deltaTime);
 }
@@ -93,19 +100,44 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 			character->velocity.x = std::fmax(0.0f, character->velocity.x - skiddingDeceleration);
 		}
 	}
-
-	Debug::Log("Turnaround speed: %f\n", turnaroundSpeed);
 }
 
+// REFACTOR THIS LATER PLS
 void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime)
 {
-	if (jumpInput)
+	if (character->velocity.y > 0.0f)
 	{
-		character->velocity.y = character->gravity;
+		character->velocity.y = character->velocity.y - jumpDecelaration;
 	}
 	else
 	{
-		character->velocity.y = -character->gravity;
+		character->velocity.y = std::fmax(character->velocity.y - gravityAccelerationSpeed, -character->gravity);
+	}
+
+	if (jumpInput)
+	{
+		if (jumpTimer > 0.0f)
+		{
+			// If top collision is detected then stop jumping
+			if ((character->tilemapCollider->DetectedCollisions() & CheckSide::Top) == CheckSide::Top)
+			{
+				jumpTimer = 0.0f;
+			}
+
+			character->velocity.y = Math::Lerp(maxJumpSpeed, minJumpSpeed, jumpTimer / maxJumpTime);
+			jumpTimer -= deltaTime;
+		}
+	}
+	else
+	{
+		if (isGrounded)
+		{
+			jumpTimer = maxJumpTime;
+		}
+		else
+		{
+			jumpTimer = 0.0f;
+		}
 	}
 }
 

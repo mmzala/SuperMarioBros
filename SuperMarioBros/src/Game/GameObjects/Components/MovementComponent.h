@@ -62,5 +62,13 @@ private:
 
 	float airWalkingTurnaroundSpeed;
 	float airRunningTurnaroundSpeed;
+
+	float minJumpSpeed;
+	float maxJumpSpeed;
+	float maxJumpTime;
+	float jumpDecelaration;
+	float jumpTimer;
+	
+	float gravityAccelerationSpeed;
 };
 
