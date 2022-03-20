@@ -3,7 +3,7 @@
 #include "../GameObjects/Components/Transform.h"
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h"
-#include <algorithm> // std::clamp / std::find
+#include <algorithm> // std::clamp
 #include "../../Utils/Math.h" // FindInVector
 
 Tilemap::Tilemap(TilemapSettings settings)

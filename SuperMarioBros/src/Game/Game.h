@@ -1,11 +1,8 @@
 #pragma once
 
-class GameObject;
-class Mario;
-class Goomba;
-class Tilemap;
-class Flag;
-struct TilemapAnimation;
+#include <vector>
+
+class Scene;
 
 /// <summary>
 /// Manages the game itself
@@ -19,11 +16,7 @@ public:
 	void Update(float deltaTime);
 
 private:
-	Tilemap* tilemap;
-	Mario* player;
-	Goomba* goomba;
-	Flag* flag;
-
-	TilemapAnimation* questionMarkBlock;
+	std::vector<Scene*> scenes;
+	int sceneIndex;
 };
 
