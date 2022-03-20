@@ -1,12 +1,14 @@
 #include "TilemapCollider.h"
+#include "../../Game/GameObjects/Character.h"
 #include "RectCollider.h"
 #include "../../Game/World/Tilemap.h"
 #include "../../Utils/Math.h" // Lerp
 // lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
 #include <cmath> // floor / ceil
 
-TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap)
+TilemapCollider::TilemapCollider(Character* character, RectCollider* rectCollider, Tilemap* tilemap)
 	:
+	character(character),
 	rectCollider(rectCollider),
 	tilemap(tilemap),
 	collisions()
@@ -54,26 +56,29 @@ bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPo
 	float tileSize = tilemap->GetTileSize();
 	int iterations = static_cast<int>((toPosition - fromPosition) / tileSize); // Calculate how many checks it takes to check for all tiles that can be in proximity
 	iterations += 2; // We always want to check atleast the corners
+	bool hit = false;
 
 	for (int i = 0; i < iterations; i++)
 	{
 		float checkProgress = static_cast<float>(i) / (iterations - 1);
 		float positionProgress = Math::Lerp(fromPosition, toPosition, checkProgress);
 		DirectX::XMFLOAT2 checkPosition = GetCheckPosition(positionProgress, sidePosition, side);
-		DirectX::XMFLOAT2 tilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+		DirectX::XMFLOAT2 fTilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+		DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
 
 		if (CheckTileCollision(vBounds, tilemapPosition, side))
 		{
-			return true;
+			character->OnTileHit(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
+			hit = true;
 		}
 	}
 
-	return false;
+	return hit;
 }
 
-bool TilemapCollider::CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side)
+bool TilemapCollider::CheckTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side)
 {
-	DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
+	
 	if (!tilemap->CheckCollisionTile(tilemapPosition)) return false;
 	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
 }

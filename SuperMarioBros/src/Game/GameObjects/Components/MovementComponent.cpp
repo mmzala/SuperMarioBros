@@ -137,9 +137,12 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 			{
 				jumpTimer = 0.0f;
 			}
+			else
+			{
+				character->velocity.y = Math::Lerp(maxJumpSpeed, minJumpSpeed, jumpTimer / maxJumpTime);
+			}
 
 			isJumping = true;
-			character->velocity.y = Math::Lerp(maxJumpSpeed, minJumpSpeed, jumpTimer / maxJumpTime);
 			jumpTimer -= deltaTime;
 		}
 

@@ -9,6 +9,7 @@
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 #include "Components/MovementComponent.h"
+#include "../../Utils/Math.h"
 
 Mario::Mario(MarioSettings settings)
 	:
@@ -25,7 +26,7 @@ Mario::Mario(MarioSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	UpdateState(MarioState::Small);
+	UpdateState(MarioState::Large);
 	UpdateAnimations();
 }
 
@@ -71,6 +72,34 @@ void Mario::CheckCollision(const float deltaTime)
 	{
 		velocity.x = 0.0f;
 	}
+
+	HandleHeadCollision();
+}
+
+void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition)
+{
+	switch (side)
+	{
+	case CheckSide::Top:
+		headCollisionPositions.push_back(tilemapPosition);
+		break;
+	}
+}
+
+void Mario::HandleHeadCollision()
+{
+	if (headCollisionPositions.size() == 0) return;
+	DirectX::XMINT2 hitTile = GetHeadCollisionTile();
+	
+	switch (tilemap->GetTileType(hitTile))
+	{
+	case 2:
+		if (marioState == MarioState::Small) break;
+		tilemap->BreakTile(hitTile);
+		break;
+	}
+
+	headCollisionPositions.clear();
 }
 
 void Mario::UpdateCameraFollow()
@@ -131,6 +160,21 @@ void Mario::UpdateState(MarioState marioState)
 		collider->SetSizeOffset(DirectX::XMFLOAT2(0.0f, 0.0f));
 		break;
 	}
+}
+
+DirectX::XMINT2 Mario::GetHeadCollisionTile()
+{
+	int size = static_cast<int>(headCollisionPositions.size());
+	int* xPositions = new int[size];
+	for (int i = 0; i < size; i++)
+	{
+		xPositions[i] = static_cast<int>(headCollisionPositions[i].x);
+	}
+	float playerPosX = tilemap->GetPositionInTilemapCoordinates(transform->position).x;
+	int closestTileX = Math::FindClosest(xPositions, size, static_cast<int>(playerPosX));
+
+	delete[] xPositions;
+	return DirectX::XMINT2(closestTileX, headCollisionPositions[0].y); // Y position is the same for all vector elements
 }
 
 

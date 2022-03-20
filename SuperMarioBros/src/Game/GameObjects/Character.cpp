@@ -10,7 +10,7 @@ Character::Character(const CharacterSettings settings)
 	GameObject::GameObject(settings.spriteSettings),
 	animator(new Animator(sprite)),
 	tilemap(settings.tilemap),
-	tilemapCollider(new TilemapCollider(collider, tilemap)),
+	tilemapCollider(new TilemapCollider(this, collider, tilemap)),
 	velocity(DirectX::XMFLOAT2(0.0f, 0.0f)),
 	walkingSpeed(settings.walkingSpeed),
 	gravity(settings.gravity)
@@ -40,3 +40,6 @@ void Character::CheckCollision(const float deltaTime)
 {
 	tilemapCollider->Update(velocity, deltaTime);
 }
+
+void Character::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition)
+{}

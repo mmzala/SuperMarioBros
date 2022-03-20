@@ -11,7 +11,7 @@ Flag::Flag(FlagSettings settings, Tilemap* tilemap)
 	descendingSpeed(settings.descendingSpeed)
 {
 	// Position flag correctly on the X axis on the pole
-	DirectX::XMFLOAT2 position = DirectX::XMFLOAT2(topPosition.x - sprite->GetSize().x, topPosition.y);
+	DirectX::XMFLOAT2 position = DirectX::XMFLOAT2(topPosition.x - sprite->GetSize().x * transform->scale.x, topPosition.y);
 	transform->position = position;
 }
 

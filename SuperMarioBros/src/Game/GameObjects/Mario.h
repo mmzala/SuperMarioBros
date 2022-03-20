@@ -2,7 +2,7 @@
 
 #include "Character.h"
 #include "../Settings/MarioSettings.h"
-#include <DirectXMath.h> // XMFLOAT2
+#include <DirectXMath.h> // XMFLOAT2 / XMINT2
 #include "../../Engine/Graphics/Animation.h"
 #include <unordered_map>
 
@@ -31,9 +31,14 @@ public:
 protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision(const float deltaTime) override;
+	void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition) override;
+	void HandleHeadCollision();
 	void UpdateCameraFollow();
 	void UpdateAnimations();
 	void UpdateState(MarioState marioState);
+
+private:
+	DirectX::XMINT2 GetHeadCollisionTile();
 
 private:
 	Camera* camera;
@@ -41,5 +46,8 @@ private:
 
 	MarioState marioState;
 	std::unordered_map<MarioState, std::vector<Animation>> animations;
+	
+	// Positions are in tilemap coordinates
+	std::vector<DirectX::XMINT2> headCollisionPositions;
 };
 

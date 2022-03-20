@@ -116,6 +116,35 @@ bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 	return collisionMap[tilemapPosition.y][tilemapPosition.x];
 }
 
+int Tilemap::GetTileType(DirectX::XMINT2 tilemapPosition)
+{
+	// If given position is out of bounds, return an empty tile
+	if ((tilemapPosition.x > collisionMap[0].size() - 1) ||
+		tilemapPosition.x < 0 ||
+		(tilemapPosition.y > collisionMap.size() - 1) ||
+		tilemapPosition.y < 0)
+	{
+		return 0;
+	}
+
+	return tilemap[tilemapPosition.y][tilemapPosition.x];
+}
+
+void Tilemap::BreakTile(DirectX::XMINT2 tilemapPosition)
+{
+	// If given position is out of bounds, return
+	if ((tilemapPosition.x > collisionMap[0].size() - 1) ||
+		tilemapPosition.x < 0 ||
+		(tilemapPosition.y > collisionMap.size() - 1) ||
+		tilemapPosition.y < 0)
+	{
+		return;
+	}
+
+	tilemap[tilemapPosition.y][tilemapPosition.x] = 0;
+	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
+}
+
 DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 {
 	Rect viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();

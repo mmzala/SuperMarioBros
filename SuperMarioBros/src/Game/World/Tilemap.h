@@ -76,6 +76,15 @@ public:
 	/// <returns> If the tile has collision </returns>
 	bool CheckCollisionTile(DirectX::XMINT2 tilemapPosition);
 
+	/// <summary>
+	/// Return what tile it is
+	/// </summary>
+	/// <param name="tilemapPsoition">: Position in tilemap coordinates </param>
+	/// <returns> What type a tile is </returns>
+	int GetTileType(DirectX::XMINT2 tilemapPosition);
+
+	void BreakTile(DirectX::XMINT2 tilemapPosition);
+
 private:
 	/// <summary>
 	/// Gets first right and left tiles in tilemap coordinates on the screen that appear in the view frustum of the camera

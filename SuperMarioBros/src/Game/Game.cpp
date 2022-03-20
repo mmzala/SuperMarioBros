@@ -64,7 +64,7 @@ Game::Game()
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 700.0f;
 	player = new Mario(marioSettings);
-	player->transform->position = DirectX::XMFLOAT2(7700.0f, 150.0f);
+	player->transform->position = DirectX::XMFLOAT2(200.0f, 150.0f);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
 	// Goomba setup

@@ -6,11 +6,12 @@
 
 class RectCollider;
 class Tilemap;
+class Character;
 
 class TilemapCollider
 {
 public:
-	TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap);
+	TilemapCollider(Character* character, RectCollider* rectCollider, Tilemap* tilemap);
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
@@ -18,10 +19,11 @@ public:
 
 private:
 	bool CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
-	bool CheckTileCollision(Rect bounds, DirectX::XMFLOAT2 fTilemapPosition, CheckSide side);
+	bool CheckTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side);
 	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);
 
 private:
+	Character* character;
 	RectCollider* rectCollider;
 	Tilemap* tilemap;
 	CheckSide collisions;
