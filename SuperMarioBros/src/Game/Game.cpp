@@ -10,6 +10,7 @@
 #include "GameObjects/Components/Transform.h" // Getting gameobject's transform
 #include "GameObjects/Mario.h" // Player character
 #include "GameObjects/Goomba.h" // Goomba enemy
+#include "GameObjects/Flag.h" // Flag for the pole
 
 // Settings
 #include "Settings/MarioSettings.h"
@@ -63,7 +64,7 @@ Game::Game()
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 700.0f;
 	player = new Mario(marioSettings);
-	player->transform->position = DirectX::XMFLOAT2(390.0f, 150.0f);
+	player->transform->position = DirectX::XMFLOAT2(7700.0f, 150.0f);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
 	// Goomba setup
@@ -78,6 +79,18 @@ Game::Game()
 	goomba = new Goomba(goombaSettings);
 	goomba->transform->position = DirectX::XMFLOAT2(1000.0f, 200.0f);
 	goomba->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+
+	// Flag setup
+	SpriteSettings flagSpriteSettings = SpriteSettings();
+	flagSpriteSettings.textureFile = "assets/Flag.png";
+	flagSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+	FlagSettings flagSettings = FlagSettings();
+	flagSettings.spriteSettings = flagSpriteSettings;
+	flagSettings.poleTopPosition = DirectX::XMINT2(198, 3);
+	flagSettings.poleBottomPosition = DirectX::XMINT2(198, 11);
+	flagSettings.descendingSpeed = 150.0f;
+	flag = new Flag(flagSettings, tilemap);
+	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
 }
 
 Game::~Game()
@@ -85,6 +98,7 @@ Game::~Game()
 	delete tilemap;
 	delete player;
 	delete goomba;
+	delete flag;
 }
 
 void Game::Update(float deltaTime)
@@ -92,4 +106,5 @@ void Game::Update(float deltaTime)
 	tilemap->Draw();
 	goomba->Update(deltaTime);
 	player->Update(deltaTime);
+	flag->Update(deltaTime);
 }

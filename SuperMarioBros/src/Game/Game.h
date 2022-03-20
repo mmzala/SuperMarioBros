@@ -4,6 +4,7 @@ class GameObject;
 class Mario;
 class Goomba;
 class Tilemap;
+class Flag;
 
 /// <summary>
 /// Manages the game itself
@@ -20,5 +21,6 @@ private:
 	Tilemap* tilemap;
 	Mario* player;
 	Goomba* goomba;
+	Flag* flag;
 };
 

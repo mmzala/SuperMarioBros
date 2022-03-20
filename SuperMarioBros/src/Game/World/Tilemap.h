@@ -43,6 +43,13 @@ public:
 	DirectX::XMFLOAT2 GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 worldPosition);
 
 	/// <summary>
+	/// Calculates position in wold coordinates
+	/// </summary>
+	/// <param name="tilemapPosition">: Position in the tilemap </param>
+	/// <returns> Position in world coortinates </returns>
+	DirectX::XMFLOAT2 GetPositionInWorldCoordinates(DirectX::XMINT2 tilemapPosition);
+
+	/// <summary>
 	/// Gets the bounds of the tilemap
 	/// </summary>
 	/// <returns>Bounds of the tilemap</returns>

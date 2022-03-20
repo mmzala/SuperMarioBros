@@ -84,6 +84,9 @@
     <ClCompile Include="src\Game\GameObjects\Components\MovementComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\GameObjects\Flag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Graphics\DXManager.h">
@@ -180,6 +183,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Settings\MovementComponentSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\GameObjects\Flag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Settings\FlagSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

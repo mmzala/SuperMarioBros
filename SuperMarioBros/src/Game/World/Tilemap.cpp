@@ -54,6 +54,17 @@ DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 wor
 	return mapPosition;
 }
 
+DirectX::XMFLOAT2 Tilemap::GetPositionInWorldCoordinates(DirectX::XMINT2 tilemapPosition)
+{
+	DirectX::XMFLOAT2 position = DirectX::XMFLOAT2();
+	float topTilePosition = (tilemap.size() - static_cast<unsigned long long>(1)) * tileSizeScaled + transform->position.y;
+	
+	position.x = tilemapPosition.x * tileSizeScaled + transform->position.x;
+	position.y = topTilePosition - tilemapPosition.y * tileSizeScaled;
+
+	return position;
+}
+
 Rect Tilemap::GetTilemapBounds()
 {
 	Rect bounds = Rect();
@@ -73,7 +84,6 @@ Rect Tilemap::GetTileBounds(DirectX::XMINT2 tilemapPosition)
 	float halfTileSize = tileSizeScaled / 2;
 	float topTilePosition = (tilemap.size() - static_cast<unsigned long long>(1)) * tileSizeScaled + transform->position.y;
 
-	// Calculate world position somehow
 	bounds.x = tilemapPosition.x * tileSizeScaled + transform->position.x + halfTileSize;
 	bounds.width = tileSizeScaled;
 	bounds.y = topTilePosition - tilemapPosition.y * tileSizeScaled - halfTileSize;
