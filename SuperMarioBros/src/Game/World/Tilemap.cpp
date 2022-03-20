@@ -3,7 +3,8 @@
 #include "../GameObjects/Components/Transform.h"
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h"
-#include <algorithm> // std::clamp
+#include <algorithm> // std::clamp / std::find
+#include "../../Utils/Math.h" // FindInVector
 
 Tilemap::Tilemap(TilemapSettings settings)
 	:
@@ -11,8 +12,29 @@ Tilemap::Tilemap(TilemapSettings settings)
 	collisionMap(settings.collisionMap),
 	sprite(new Sprite(SpriteSettings(settings.spriteSheetFile, settings.spriteSheetSize))),
 	transform(new Transform(settings.position, 0.0f, settings.scale)),
-	tileSizeScaled(sprite->GetSize().x * transform->scale.x) // Size of x and y will be the same anyway :)
-{}
+	tileSizeScaled(sprite->GetSize().x * transform->scale.x), // Size of x and y will be the same anyway :)
+	animations(),
+	tilesToAnimate()
+{
+	// Setup animations in unordered_map
+	for (int animation = 0; animation < settings.animations.size(); animation++)
+	{
+		for (int animationFrame = settings.animations[animation]->startFrame; 
+			animationFrame < settings.animations[animation]->endFrame + 1; animationFrame++)
+		{
+			animations.insert(std::pair<int, TilemapAnimation*>(animationFrame, settings.animations[animation]));
+		}
+	}
+
+	// Cache tiles to be animated
+	for (int y = static_cast<int>(tilemap.size()) - 1; y > 0; y--)
+	{
+		for (int x = 0; x < tilemap[0].size(); x++)
+		{
+			if (animations.count(tilemap[y][x])) tilesToAnimate.push_back(DirectX::XMINT2(x, y));
+		}
+	}
+}
 
 Tilemap::~Tilemap()
 {
@@ -20,26 +42,17 @@ Tilemap::~Tilemap()
 	delete transform;
 }
 
-void Tilemap::Draw()
+void Tilemap::Update(const float deltaTime)
 {
-	DirectX::XMFLOAT2 originalPosition = transform->position;
-	DirectX::XMINT2 tilesInFrustum = GetHorizontalTilesInFrustum();
+	UpdateAnimations(deltaTime);
+	Draw();
 
-	for (int y = static_cast<int>(tilemap.size()) - 1; y > 0; y--)
+	// Reset animation timers if needed
+	for (std::unordered_map<int, TilemapAnimation*>::iterator iterator = animations.begin(); iterator != animations.end(); iterator++)
 	{
-		for (int x = tilesInFrustum.x; x <= tilesInFrustum.y; x++)
-		{
-			transform->position.x = (float)(x * tileSizeScaled + originalPosition.x);
-
-			if (tilemap[y][x] == 0) continue;
-			sprite->SetFrame(tilemap[y][x]);
-			sprite->Draw(transform->GetWorldMatrix());
-		}
-
-		transform->position.y += tileSizeScaled;
+		TilemapAnimation* anim = iterator->second;
+		if (anim->timer > 1.0f) anim->timer = 0.0f;
 	}
-
-	transform->position = originalPosition;
 }
 
 DirectX::XMFLOAT2 Tilemap::GetPositionInTilemapCoordinates(DirectX::XMFLOAT2 worldPosition)
@@ -118,28 +131,17 @@ bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 
 int Tilemap::GetTileType(DirectX::XMINT2 tilemapPosition)
 {
-	// If given position is out of bounds, return an empty tile
-	if ((tilemapPosition.x > collisionMap[0].size() - 1) ||
-		tilemapPosition.x < 0 ||
-		(tilemapPosition.y > collisionMap.size() - 1) ||
-		tilemapPosition.y < 0)
-	{
-		return 0;
-	}
-
+	if (IsPositionOutOfBounds(tilemapPosition)) return 0;
 	return tilemap[tilemapPosition.y][tilemapPosition.x];
 }
 
 void Tilemap::BreakTile(DirectX::XMINT2 tilemapPosition)
 {
-	// If given position is out of bounds, return
-	if ((tilemapPosition.x > collisionMap[0].size() - 1) ||
-		tilemapPosition.x < 0 ||
-		(tilemapPosition.y > collisionMap.size() - 1) ||
-		tilemapPosition.y < 0)
-	{
-		return;
-	}
+	if (IsPositionOutOfBounds(tilemapPosition)) return;
+
+	// If tile is an animated tile, then remove it from tilesToAnimate
+	std::pair<bool, int> foundAnimatedTile = Math::FindInVector(tilesToAnimate, tilemapPosition);
+	if (foundAnimatedTile.first) tilesToAnimate.erase(tilesToAnimate.begin() + foundAnimatedTile.second);
 
 	tilemap[tilemapPosition.y][tilemapPosition.x] = 0;
 	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
@@ -162,4 +164,61 @@ DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 	mapPosition.y = std::clamp(mapPosition.y, 0, (int)tilemap[0].size() - 1);
 
 	return mapPosition;
+}
+
+bool Tilemap::IsPositionOutOfBounds(DirectX::XMINT2 tilemapPosition)
+{
+	if ((tilemapPosition.x > collisionMap[0].size() - 1) ||
+		tilemapPosition.x < 0 ||
+		(tilemapPosition.y > collisionMap.size() - 1) ||
+		tilemapPosition.y < 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void Tilemap::Draw()
+{
+	DirectX::XMFLOAT2 originalPosition = transform->position;
+	DirectX::XMINT2 tilesInFrustum = GetHorizontalTilesInFrustum();
+
+	for (int y = static_cast<int>(tilemap.size()) - 1; y > 0; y--)
+	{
+		for (int x = tilesInFrustum.x; x <= tilesInFrustum.y; x++)
+		{
+			if (tilemap[y][x] == 0) continue;
+
+			transform->position.x = (float)(x * tileSizeScaled + originalPosition.x);
+			sprite->SetFrame(tilemap[y][x]);
+			sprite->Draw(transform->GetWorldMatrix());
+		}
+
+		transform->position.y += tileSizeScaled;
+	}
+
+	transform->position = originalPosition;
+}
+
+void Tilemap::UpdateAnimations(const float deltaTime)
+{
+	for (std::unordered_map<int, TilemapAnimation*>::iterator iterator = animations.begin(); iterator != animations.end(); iterator++)
+	{
+		TilemapAnimation* anim = iterator->second;
+		anim->timer += anim->speed * deltaTime;
+	}
+
+	for (DirectX::XMINT2 tile : tilesToAnimate)
+	{
+		TilemapAnimation* animation = animations[tilemap[tile.y][tile.x]];
+		if (animation->timer > 1.0f)
+		{
+			tilemap[tile.y][tile.x]++;
+			if (tilemap[tile.y][tile.x] > animation->endFrame)
+			{
+				tilemap[tile.y][tile.x] = animation->startFrame;
+			}
+		}
+	}
 }

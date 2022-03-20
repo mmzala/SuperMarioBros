@@ -9,6 +9,7 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	character(character),
 	state(MovementState::Standing),
 	isGrounded((character->tilemapCollider->DetectedCollisions()& CheckSide::Bottom) == CheckSide::Bottom),
+	movementDirection(0),
 	runningSpeed(settings.runningSpeed),
 	walkingAcceleration(settings.walkingAcceleration),
 	runningAcceleration(settings.runningAcceleration),

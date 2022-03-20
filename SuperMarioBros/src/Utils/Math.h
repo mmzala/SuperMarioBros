@@ -1,5 +1,20 @@
 #pragma once
 
+#include <DirectXMath.h>
+
+namespace DirectX
+{
+    inline bool operator==(const DirectX::XMINT2& first, const DirectX::XMINT2& second)
+    {
+        if (first.x == second.x &&
+            first.y == second.y)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
 class Math
 {
 public:
@@ -8,6 +23,13 @@ public:
 		return a + f * (b - a);
 	}
 
+	/// <summary>
+	/// Finds closest integer value in the array
+	/// </summary>
+	/// <param name="array">: Array to search in </param>
+	/// <param name="arrayayLength">: Lenght of the array </param>
+	/// <param name="target">: What to search for </param>
+	/// <returns> Closest value to the target in the array </returns>
 	static int FindClosest(const int* array, const int arrayayLength, const int target)
 	{
         // Corner cases
@@ -62,5 +84,32 @@ public:
         {
             return value1;
         }
+    }
+
+    /// <summary>
+    /// Finds the index of an element in a vector
+    /// </summary>
+    /// <typeparam name="T">: Any object that can compare each other </typeparam>
+    /// <param name="vector">: Vector of objects to compare </param>
+    /// <param name="element">: What element to find </param>
+    /// <returns> If an element exists in a vector and its index </returns>
+    template <typename T>
+    static std::pair<bool, int> FindInVector(const std::vector<T>& vector, const T& element)
+    {
+        std::pair<bool, int> result;
+
+        auto find = std::find(vector.begin(), vector.end(), element);
+        if (find != vector.end())
+        {
+            result.first = true;
+            result.second = distance(vector.begin(), find);
+        }
+        else
+        {
+            result.first = false;
+            result.second = -1;
+        }
+
+        return result;
     }
 };

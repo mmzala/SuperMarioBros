@@ -8,8 +8,8 @@
 #include "../../Engine/Physics/RectCollider.h" // Collider
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
+#include "../../Utils/Math.h" // FindClosest
 #include "Components/MovementComponent.h"
-#include "../../Utils/Math.h"
 
 Mario::Mario(MarioSettings settings)
 	:

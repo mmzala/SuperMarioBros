@@ -5,6 +5,7 @@ class Mario;
 class Goomba;
 class Tilemap;
 class Flag;
+struct TilemapAnimation;
 
 /// <summary>
 /// Manages the game itself
@@ -22,5 +23,7 @@ private:
 	Mario* player;
 	Goomba* goomba;
 	Flag* flag;
+
+	TilemapAnimation* questionMarkBlock;
 };
 

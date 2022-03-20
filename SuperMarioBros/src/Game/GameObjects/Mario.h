@@ -2,7 +2,6 @@
 
 #include "Character.h"
 #include "../Settings/MarioSettings.h"
-#include <DirectXMath.h> // XMFLOAT2 / XMINT2
 #include "../../Engine/Graphics/Animation.h"
 #include <unordered_map>
 

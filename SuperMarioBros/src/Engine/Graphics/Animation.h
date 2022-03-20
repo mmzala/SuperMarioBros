@@ -7,7 +7,7 @@ struct Animation
 	// Animation frames per second
 	float speed;
 
-	Animation(int startFrame, int endFrame, float speed)
+	Animation(int startFrame = 0, int endFrame = 0, float speed = 0.0f)
 		:
 		startFrame(startFrame),
 		endFrame(endFrame),

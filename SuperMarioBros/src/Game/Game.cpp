@@ -1,10 +1,7 @@
 #include "Game.h"
-#include <DirectXMath.h> // XMFLOAT2
 
 // Engine
 #include "../Engine/SMBEngine.h" // Getting engine
-#include "../Engine/Graphics/Camera.h" // Getting camera
-#include "../Engine/Input/Input.h" // Checking input
 
 // GameObjects
 #include "GameObjects/Components/Transform.h" // Getting gameobject's transform
@@ -22,18 +19,17 @@
 #include "World/Tilemap.h"
 #include "Data/Worlds.h"
 
-// Physics
-#include "../Engine/Physics/Collision.h" // Collision check
-#include "../Engine/Physics/RectCollider.h" // Getting collider bounds
-
 Game::Game()
 {
 	// Tilemap setup
+	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
+	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
 	TilemapSettings tilemapSettings;
 	tilemapSettings.tilemap = Worlds::world1d1;
 	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = DirectX::XMINT2(6, 6);
+	tilemapSettings.animations = tilemapAnimations;
 	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	tilemap = new Tilemap(tilemapSettings);
@@ -99,11 +95,12 @@ Game::~Game()
 	delete player;
 	delete goomba;
 	delete flag;
+	delete questionMarkBlock;
 }
 
 void Game::Update(float deltaTime)
 {
-	tilemap->Draw();
+	tilemap->Update(deltaTime);
 	goomba->Update(deltaTime);
 	player->Update(deltaTime);
 	flag->Update(deltaTime);
