@@ -15,6 +15,8 @@ public:
 	Scene();
 	virtual ~Scene();
 
+	virtual void Load();
+	virtual void UnLoad();
 	virtual void Update(const float deltaTime);
 
 protected:

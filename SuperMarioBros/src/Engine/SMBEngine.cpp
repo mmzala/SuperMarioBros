@@ -67,6 +67,11 @@ Camera* SMBEngine::GetCamera()
 	return camera;
 }
 
+Game* SMBEngine::GetGame()
+{
+	return game;
+}
+
 Shader* SMBEngine::GetSpriteShader()
 {
 	return spriteShader;

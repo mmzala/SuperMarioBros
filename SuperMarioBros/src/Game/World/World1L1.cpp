@@ -3,7 +3,18 @@
 #include "Tilemap.h"
 
 World1L1::World1L1()
+	:
+	Scene::Scene(),
+	questionMarkBlock()
+{}
+
+World1L1::~World1L1()
+{}
+
+void World1L1::Load()
 {
+	Scene::Load();
+
 	// Tilemap setup
 	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
 	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
@@ -22,8 +33,9 @@ World1L1::World1L1()
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
 }
 
-World1L1::~World1L1()
+void World1L1::UnLoad()
 {
+	Scene::UnLoad();
 	delete questionMarkBlock;
 }
 

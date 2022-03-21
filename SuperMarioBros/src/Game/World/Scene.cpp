@@ -15,6 +15,10 @@
 // World
 #include "Tilemap.h"
 
+// Camera resetting
+#include "../../Engine/SMBEngine.h"
+#include "../../Engine/Graphics/Camera.h"
+
 Scene::Scene()
 	:
 	tilemap(nullptr),
@@ -24,10 +28,24 @@ Scene::Scene()
 {}
 
 Scene::~Scene()
+{}
+
+void Scene::Load()
 {
+	Camera* camera = SMBEngine::GetInstance()->GetCamera();
+	camera->SetPosition(DirectX::XMFLOAT2(0.0f, 0.0f));
+}
+
+void Scene::UnLoad()
+{
+	// All of those 3 things need to be in a scene, so we don't need to check if they exist
 	delete tilemap;
 	delete player;
 	delete flag;
+
+	tilemap = 0;
+	player = 0;
+	flag = 0;
 
 	for (Character* enemy : enemies)
 	{
@@ -49,6 +67,9 @@ void Scene::Update(const float deltaTime)
 
 void Scene::CreateMario(DirectX::XMINT2 tilemapPosition)
 {
+	// There can only be 1 mario
+	if (player != nullptr) return;
+
 	SpriteSettings marioSpriteSettings = SpriteSettings();
 	marioSpriteSettings.textureFile = "assets/MarioSpriteSheet.png";
 	marioSpriteSettings.spriteSheetSize = DirectX::XMINT2(7, 8);
@@ -95,6 +116,9 @@ void Scene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 
 void Scene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom)
 {
+	// There can only be 1 flag
+	if (flag != nullptr) return;
+
 	SpriteSettings flagSpriteSettings = SpriteSettings();
 	flagSpriteSettings.textureFile = "assets/Flag.png";
 	flagSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);

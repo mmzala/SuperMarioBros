@@ -20,6 +20,7 @@ public:
 	static SMBEngine* GetInstance();
 	DXManager* GetGraphics();
 	Camera* GetCamera();
+	Game* GetGame();
 
 	Shader* GetSpriteShader();
 
