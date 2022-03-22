@@ -20,6 +20,7 @@ Flag::~Flag()
 
 void Flag::Update(const float deltaTime)
 {
+	if (!IsInViewingFrustum()) return;
 	GameObject::Update(deltaTime);
 }
 

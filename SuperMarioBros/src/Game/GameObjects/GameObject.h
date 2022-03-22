@@ -11,13 +11,13 @@ class GameObject
 public:
 	/// <summary>
 	/// Creates an game object.
-	/// DELETE spriteSettings after passing it here
 	/// </summary>
-	/// <param name="spriteSettings">: Sprite settings, DELETE THIS AFTER USING IT!!! </param>
+	/// <param name="spriteSettings">: Settings for the sprite </param>
 	GameObject(SpriteSettings spriteSettings);
 	virtual ~GameObject();
 
 	virtual void Update(const float deltaTime);
+	bool IsInViewingFrustum();
 
 public:
 	Transform* transform;

@@ -44,7 +44,7 @@ void Scene::UnLoad()
 	delete flag;
 
 	tilemap = 0;
-	player = 0;
+	player = 0; // This may be a small memory leak
 	flag = 0;
 
 	for (Character* enemy : enemies)
@@ -59,6 +59,7 @@ void Scene::Update(const float deltaTime)
 	tilemap->Update(deltaTime);
 	for (Character* enemy : enemies)
 	{
+		if (!enemy->IsInViewingFrustum()) continue;
 		enemy->Update(deltaTime);
 	}
 	player->Update(deltaTime);

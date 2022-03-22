@@ -99,13 +99,6 @@ void Mario::HandleHeadCollision()
 		if (marioState == MarioState::Small) break;
 		tilemap->BreakTile(hitTile);
 		break;
-
-	case 6:
-	case 7:
-	case 8:
-		Game* game = SMBEngine::GetInstance()->GetGame();
-		game->ChangeScene(game->GetSceneIndex() + 1);
-		break;
 	}
 
 	headCollisionPositions.clear();
