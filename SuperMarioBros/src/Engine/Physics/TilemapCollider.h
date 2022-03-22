@@ -3,15 +3,15 @@
 #include <DirectXMath.h> // XMFLOAT2
 #include "../../Utils/Rect.h"
 #include "../../Engine/Physics/Collision.h" // Collision check and CheckSide enum
+#include <functional>
 
 class RectCollider;
 class Tilemap;
-class Character;
 
 class TilemapCollider
 {
 public:
-	TilemapCollider(Character* character, RectCollider* rectCollider, Tilemap* tilemap);
+	TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)>);
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
@@ -23,9 +23,9 @@ private:
 	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);
 
 private:
-	Character* character;
 	RectCollider* rectCollider;
 	Tilemap* tilemap;
 	CheckSide collisions;
+	std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback;
 };
 

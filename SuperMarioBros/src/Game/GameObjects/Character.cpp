@@ -10,7 +10,8 @@ Character::Character(const CharacterSettings settings)
 	GameObject::GameObject(settings.spriteSettings),
 	animator(new Animator(sprite)),
 	tilemap(settings.tilemap),
-	tilemapCollider(new TilemapCollider(this, collider, tilemap)),
+	tilemapCollider(new TilemapCollider(collider, tilemap, std::bind(&Character::OnTileHit, this, 
+		std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4))),
 	velocity(DirectX::XMFLOAT2(0.0f, 0.0f)),
 	walkingSpeed(settings.walkingSpeed),
 	gravity(settings.gravity)

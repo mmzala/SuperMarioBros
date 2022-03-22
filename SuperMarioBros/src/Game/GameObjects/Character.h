@@ -11,7 +11,6 @@ class TilemapCollider;
 class Character : public GameObject
 {
 	friend class MovementComponent;
-	friend class TilemapCollider;
 
 public:
 	Character(const CharacterSettings settings);

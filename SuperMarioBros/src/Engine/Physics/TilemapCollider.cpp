@@ -1,17 +1,16 @@
 #include "TilemapCollider.h"
-#include "../../Game/GameObjects/Character.h"
 #include "RectCollider.h"
 #include "../../Game/World/Tilemap.h"
 #include "../../Utils/Math.h" // Lerp
 // lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
 #include <cmath> // floor / ceil
 
-TilemapCollider::TilemapCollider(Character* character, RectCollider* rectCollider, Tilemap* tilemap)
+TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback)
 	:
-	character(character),
 	rectCollider(rectCollider),
 	tilemap(tilemap),
-	collisions()
+	collisions(),
+	callback(callback)
 {}
 
 TilemapCollider::~TilemapCollider()
@@ -68,7 +67,7 @@ bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPo
 
 		if (CheckTileCollision(vBounds, tilemapPosition, side))
 		{
-			character->OnTileHit(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
+			callback(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
 			hit = true;
 		}
 	}
