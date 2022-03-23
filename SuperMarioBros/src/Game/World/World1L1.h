@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 
+class Text;
 struct TilemapAnimation;
 
 class World1L1 : public Scene
@@ -15,6 +16,7 @@ public:
 	void Update(const float deltaTime) override;
 
 protected:
+	Text* text;
 	TilemapAnimation* questionMarkBlock;
 };
 

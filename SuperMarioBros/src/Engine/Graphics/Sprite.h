@@ -15,7 +15,7 @@ public:
 	/// Creates a sprite with own texture2D and Quad
 	/// </summary>
 	Sprite(SpriteSettings settings);
-	~Sprite();
+	virtual ~Sprite();
 
 	void Draw(DirectX::XMMATRIX worldMatrix);
 
@@ -49,10 +49,7 @@ private:
 private:
 	// Constant buffer data
 	VSConstantBufferData* VSCBData;
-
 	Texture2D* texture;
 	Quad* quad;
-
-	DirectX::XMFLOAT2 sheetSize;
 };
 

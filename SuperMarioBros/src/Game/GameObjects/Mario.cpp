@@ -15,7 +15,7 @@
 
 Mario::Mario(MarioSettings settings)
 	:
-	Character::Character(CharacterSettings(settings.spriteSettings, settings.tilemap, settings.walkingSpeed, settings.gravity)),
+	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::None)
@@ -28,7 +28,7 @@ Mario::Mario(MarioSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	UpdateState(MarioState::Small);
+	UpdateState(MarioState::Large);
 	UpdateAnimations();
 }
 
