@@ -1,9 +1,14 @@
 #include "World1L1.h"
+#include "../GameObjects/Components/Transform.h"
+
+// World
 #include "../Data/Worlds.h"
 #include "Tilemap.h"
+
+// UI
 #include "../../Engine/Graphics/UI/Text.h"
+#include "../../Engine/Graphics/UI/UISprite.h"
 #include "../../Engine/Graphics/UI/Canvas.h"
-#include "../GameObjects/Components/Transform.h"
 
 World1L1::World1L1()
 	:
@@ -16,7 +21,8 @@ World1L1::World1L1()
 	worldText(nullptr),
 	worldCountText(nullptr),
 	timeText(nullptr),
-	timeCountText(nullptr)
+	timeCountText(nullptr),
+	coinSprite(nullptr)
 {}
 
 World1L1::~World1L1()
@@ -102,6 +108,14 @@ void World1L1::CreateUI()
 	timeCountText->transform->position = DirectX::XMFLOAT2(220.0f, 225.0f);
 	timeCountText->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
+	UISpriteSettings spriteSettings;
+	spriteSettings.textureFile = "assets/UICoins.png";
+	spriteSettings.spriteSheetSize = DirectX::XMINT2(3, 1);
+	spriteSettings.animation = Animation(0, 2, 5.0f);
+	coinSprite = new UISprite(spriteSettings);
+	coinSprite->transform->position = DirectX::XMFLOAT2(-80.0f, 225.0f);
+	coinSprite->transform->scale = DirectX::XMFLOAT2(1.5f, 1.5f);
+
 	canvas = new Canvas();
 	canvas->AddElement(marioText);
 	canvas->AddElement(scoreText);
@@ -110,4 +124,5 @@ void World1L1::CreateUI()
 	canvas->AddElement(worldCountText);
 	canvas->AddElement(timeText);
 	canvas->AddElement(timeCountText);
+	canvas->AddElement(coinSprite);
 }

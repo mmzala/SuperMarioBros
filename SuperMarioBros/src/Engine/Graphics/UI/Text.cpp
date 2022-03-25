@@ -5,6 +5,7 @@
 Text::Text(TextSettings settings)
 	:
 	Sprite::Sprite(settings),
+	UIElement::UIElement(),
 	text(nullptr),
 	minAsciiCode(settings.minAsciiCode), // 32 for current font
 	maxAsciiCode(settings.maxAsciiCode), // 126 for current font

@@ -204,10 +204,12 @@
     <ClCompile Include="src\Game\World\World1L1.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\Text.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\UIElement.cpp" />
+    <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Graphics\UI\Canvas.h" />
     <ClInclude Include="src\Game\Settings\TextSettings.h" />
+    <ClInclude Include="src\Game\Settings\UISpriteSettings.h" />
     <ClInclude Include="src\Game\World\Scene.h" />
     <ClInclude Include="src\Game\GameObjects\Flag.h" />
     <ClInclude Include="src\Game\GameObjects\Components\MovementComponent.h" />
@@ -246,6 +248,7 @@
     <ClInclude Include="src\Game\World\World1L1.h" />
     <ClInclude Include="src\Engine\Graphics\UI\Text.h" />
     <ClInclude Include="src\Engine\Graphics\UI\UIElement.h" />
+    <ClInclude Include="src\Engine\Graphics\UI\UISprite.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">

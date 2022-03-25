@@ -44,7 +44,7 @@ SMBEngine::~SMBEngine()
 
 void SMBEngine::Update()
 {
-	float deltaTime = timer->Mark();
+	deltaTime = timer->Mark();
 
 	input->Update();
 	graphics->BeginFrame();
@@ -75,6 +75,11 @@ Game* SMBEngine::GetGame()
 Shader* SMBEngine::GetSpriteShader()
 {
 	return spriteShader;
+}
+
+float SMBEngine::GetDeltaTime()
+{
+	return deltaTime;
 }
 
 void SMBEngine::Initialize(HWND hwnd)

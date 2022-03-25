@@ -4,6 +4,7 @@
 
 struct TilemapAnimation;
 class Text;
+class UISprite;
 class Canvas;
 
 class World1L1 : public Scene
@@ -30,5 +31,6 @@ protected:
 	Text* worldCountText;
 	Text* timeText;
 	Text* timeCountText;
+	UISprite* coinSprite;
 };
 
