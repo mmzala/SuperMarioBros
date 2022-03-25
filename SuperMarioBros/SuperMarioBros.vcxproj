@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Graphics\UI\Canvas.cpp" />
     <ClCompile Include="src\Game\World\Scene.cpp" />
     <ClCompile Include="src\Game\GameObjects\Flag.cpp" />
     <ClCompile Include="src\Game\GameObjects\Components\MovementComponent.cpp" />
@@ -202,8 +203,10 @@
     <ClCompile Include="src\Engine\Physics\TilemapCollider.cpp" />
     <ClCompile Include="src\Game\World\World1L1.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\Text.cpp" />
+    <ClCompile Include="src\Engine\Graphics\UI\UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Graphics\UI\Canvas.h" />
     <ClInclude Include="src\Game\Settings\TextSettings.h" />
     <ClInclude Include="src\Game\World\Scene.h" />
     <ClInclude Include="src\Game\GameObjects\Flag.h" />
@@ -242,6 +245,7 @@
     <ClInclude Include="src\Engine\Physics\TilemapCollider.h" />
     <ClInclude Include="src\Game\World\World1L1.h" />
     <ClInclude Include="src\Engine\Graphics\UI\Text.h" />
+    <ClInclude Include="src\Engine\Graphics\UI\UIElement.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">

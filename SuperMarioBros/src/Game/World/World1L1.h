@@ -2,8 +2,9 @@
 
 #include "Scene.h"
 
-class Text;
 struct TilemapAnimation;
+class Text;
+class Canvas;
 
 class World1L1 : public Scene
 {
@@ -16,7 +17,18 @@ public:
 	void Update(const float deltaTime) override;
 
 protected:
-	Text* text;
+	void CreateUI() override;
+
+protected:
 	TilemapAnimation* questionMarkBlock;
+
+	Canvas* canvas;
+	Text* marioText;
+	Text* scoreText;
+	Text* coinCountText;
+	Text* worldText;
+	Text* worldCountText;
+	Text* timeText;
+	Text* timeCountText;
 };
 

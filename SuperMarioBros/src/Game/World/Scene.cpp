@@ -34,6 +34,7 @@ void Scene::Load()
 {
 	Camera* camera = SMBEngine::GetInstance()->GetCamera();
 	camera->SetPosition(DirectX::XMFLOAT2(0.0f, 0.0f));
+	CreateUI();
 }
 
 void Scene::UnLoad()
@@ -131,3 +132,6 @@ void Scene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 t
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
 }
+
+void Scene::CreateUI()
+{}

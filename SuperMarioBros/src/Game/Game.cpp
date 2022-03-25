@@ -8,7 +8,7 @@ Game::Game()
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex)
 {
-	scenes = std::vector<Scene*>{ new World1L1() };
+	scenes = std::vector<Scene*>{ new World1L1(), new World1L1() };
 	scenes[sceneIndex]->Load();
 }
 

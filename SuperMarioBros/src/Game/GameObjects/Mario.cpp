@@ -11,8 +11,6 @@
 #include "../../Utils/Math.h" // FindClosest
 #include "Components/MovementComponent.h"
 
-#include "../Game.h"
-
 Mario::Mario(MarioSettings settings)
 	:
 	Character::Character(settings),
