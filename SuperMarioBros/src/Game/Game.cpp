@@ -1,6 +1,7 @@
 #include "Game.h"
-#include "World/Scene.h"
-#include "World/World1L1.h"
+#include "World/Scenes/Scene.h"
+#include "World/Scenes/MainMenuScene.h"
+#include "World/Scenes/World1L1.h"
 
 Game::Game()
 	:
@@ -8,7 +9,7 @@ Game::Game()
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex)
 {
-	scenes = std::vector<Scene*>{ new World1L1(), new World1L1() };
+	scenes = std::vector<Scene*>{ new MainMenuScene(), new World1L1() };
 	scenes[sceneIndex]->Load();
 }
 

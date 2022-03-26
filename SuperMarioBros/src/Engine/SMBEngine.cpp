@@ -12,10 +12,11 @@ SMBEngine::SMBEngine(HWND hwnd)
 	:
 	graphics(nullptr),
 	camera(nullptr),
-	game(nullptr),
 	input(nullptr),
 	timer(nullptr),
-	spriteShader(nullptr)
+	game(nullptr),
+	spriteShader(nullptr),
+	deltaTime(0.0f)
 {
 	if (instance == nullptr)
 	{
@@ -92,9 +93,9 @@ void SMBEngine::Initialize(HWND hwnd)
 
 	graphics = new DXManager(hwnd, clientWidth, clientHeight);
 	camera = new Camera(clientWidth, clientHeight);
-	game = new Game();
 	input = new Input(hwnd);
 	timer = new Timer();
+	game = new Game();
 
 	spriteShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/SpriteVS.cso",
 		L"src/Engine/Graphics/Shaders/Precompiled/SpritePS.cso");

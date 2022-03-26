@@ -1,20 +1,19 @@
-#include "World1L1.h"
-#include "../GameObjects/Components/Transform.h"
+#include "Scene.h"
 
-// World
-#include "../Data/Worlds.h"
-#include "Tilemap.h"
+#include "../../GameObjects/Components/Transform.h"
 
 // UI
-#include "../../Engine/Graphics/UI/Text.h"
-#include "../../Engine/Graphics/UI/UISprite.h"
-#include "../../Engine/Graphics/UI/Canvas.h"
+#include "../../../Engine/Graphics/UI/Text.h"
+#include "../../../Engine/Graphics/UI/UISprite.h"
+#include "../../../Engine/Graphics/UI/Canvas.h"
 
-World1L1::World1L1()
+// Camera resetting
+#include "../../../Engine/SMBEngine.h"
+#include "../../../Engine/Graphics/Camera.h"
+
+Scene::Scene()
 	:
-	Scene::Scene(),
-	questionMarkBlock(nullptr),
-	canvas(nullptr),
+	gameCanvas(nullptr),
 	marioText(nullptr),
 	scoreText(nullptr),
 	coinCountText(nullptr),
@@ -25,53 +24,32 @@ World1L1::World1L1()
 	coinSprite(nullptr)
 {}
 
-World1L1::~World1L1()
+Scene::~Scene()
 {}
 
-void World1L1::Load()
+void Scene::Load()
 {
-	Scene::Load();
-
-	// Tilemap setup
-	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
-	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
-	TilemapSettings tilemapSettings;
-	tilemapSettings.tilemap = Worlds::world1d1;
-	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
-	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
-	tilemapSettings.spriteSheetSize = DirectX::XMINT2(6, 6);
-	tilemapSettings.animations = tilemapAnimations;
-	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
-	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
-	tilemap = new Tilemap(tilemapSettings);
-
-	// Objects setup
-	CreateMario(DirectX::XMINT2(5, 11));
-	CreateGoomba(DirectX::XMINT2(22, 11));
-	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));	
+	Camera* camera = SMBEngine::GetInstance()->GetCamera();
+	camera->SetPosition(DirectX::XMFLOAT2(0.0f, 0.0f));
+	CreateUI();
 }
 
-void World1L1::UnLoad()
+void Scene::UnLoad()
 {
-	Scene::UnLoad();
-	delete questionMarkBlock;
-	delete canvas;
+	delete gameCanvas;
 }
 
-void World1L1::Update(const float deltaTime)
-{
-	Scene::Update(deltaTime);
-	canvas->Update();
-}
+void Scene::Update(const float deltaTime)
+{}
 
-void World1L1::CreateUI()
+void Scene::CreateUI()
 {
 	TextSettings textSettings;
 	textSettings.textureFile = "assets/Font.png";
 	textSettings.spriteSheetSize = DirectX::XMINT2(16, 6);
 	textSettings.minAsciiCode = 32;
 	textSettings.maxAsciiCode = 126;
-	textSettings.spacing = 2.5f;
+	textSettings.spacing = 2.0f;
 
 	marioText = new Text(textSettings);
 	marioText->SetText("MARIO");
@@ -112,17 +90,18 @@ void World1L1::CreateUI()
 	spriteSettings.textureFile = "assets/UICoins.png";
 	spriteSettings.spriteSheetSize = DirectX::XMINT2(3, 1);
 	spriteSettings.animation = Animation(0, 2, 5.0f);
+
 	coinSprite = new UISprite(spriteSettings);
 	coinSprite->transform->position = DirectX::XMFLOAT2(-80.0f, 225.0f);
 	coinSprite->transform->scale = DirectX::XMFLOAT2(1.5f, 1.5f);
 
-	canvas = new Canvas();
-	canvas->AddElement(marioText);
-	canvas->AddElement(scoreText);
-	canvas->AddElement(coinCountText);
-	canvas->AddElement(worldText);
-	canvas->AddElement(worldCountText);
-	canvas->AddElement(timeText);
-	canvas->AddElement(timeCountText);
-	canvas->AddElement(coinSprite);
+	gameCanvas = new Canvas();
+	gameCanvas->AddElement(marioText);
+	gameCanvas->AddElement(scoreText);
+	gameCanvas->AddElement(coinCountText);
+	gameCanvas->AddElement(worldText);
+	gameCanvas->AddElement(worldCountText);
+	gameCanvas->AddElement(timeText);
+	gameCanvas->AddElement(timeCountText);
+	gameCanvas->AddElement(coinSprite);
 }

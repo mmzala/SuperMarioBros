@@ -87,10 +87,10 @@
     <ClCompile Include="src\Game\GameObjects\Flag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\World\Scene.cpp">
+    <ClCompile Include="src\Game\World\Scenes\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\World\World1L1.cpp">
+    <ClCompile Include="src\Game\World\Scenes\World1L1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Graphics\UI\Text.cpp">
@@ -103,6 +103,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\World\Scenes\MainMenuScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\World\Scenes\GameplayScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,10 +215,10 @@
     <ClInclude Include="src\Game\Settings\FlagSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\World\Scene.h">
+    <ClInclude Include="src\Game\World\Scenes\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\World\World1L1.h">
+    <ClInclude Include="src\Game\World\Scenes\World1L1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Graphics\UI\Text.h">
@@ -231,6 +237,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Settings\UISpriteSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\World\Scenes\MainMenuScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\World\Scenes\GameplayScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

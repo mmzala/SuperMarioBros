@@ -26,7 +26,7 @@ Mario::Mario(MarioSettings settings)
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	UpdateState(MarioState::Large);
+	UpdateState(MarioState::Small);
 	UpdateAnimations();
 }
 

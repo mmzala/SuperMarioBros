@@ -39,9 +39,9 @@ private:
 
 	DXManager* graphics;
 	Camera* camera;
-	Game* game;
 	Input* input;
 	Timer* timer;
+	Game* game;
 
 	Shader* spriteShader;
 };

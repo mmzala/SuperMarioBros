@@ -1,13 +1,10 @@
 #pragma once
 
-#include "Scene.h"
+#include "GameplayScene.h"
 
 struct TilemapAnimation;
-class Text;
-class UISprite;
-class Canvas;
 
-class World1L1 : public Scene
+class World1L1 : public GameplayScene
 {
 public:
 	World1L1();
@@ -22,15 +19,5 @@ protected:
 
 protected:
 	TilemapAnimation* questionMarkBlock;
-
-	Canvas* canvas;
-	Text* marioText;
-	Text* scoreText;
-	Text* coinCountText;
-	Text* worldText;
-	Text* worldCountText;
-	Text* timeText;
-	Text* timeCountText;
-	UISprite* coinSprite;
 };
 
