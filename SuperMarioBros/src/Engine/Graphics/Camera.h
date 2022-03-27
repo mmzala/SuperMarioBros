@@ -28,6 +28,7 @@ public:
 	/// </summary>
 	/// <param name="boundary">: boundary for the camera</param>
 	void SetBoundary(Rect boundary);
+	void ResetBoundary();
 
 private:
 	void UpdateViewportProjectionMatrix();

@@ -78,6 +78,11 @@ void Camera::SetBoundary(Rect boundary)
 	SetPosition(position);
 }
 
+void Camera::ResetBoundary()
+{
+	boundary = Rect();
+}
+
 void Camera::UpdateViewportProjectionMatrix()
 {
 	using namespace DirectX;

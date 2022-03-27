@@ -2,9 +2,9 @@
 
 // GameObjects
 #include "../../GameObjects/Components/Transform.h" // Getting gameobject's transform
-#include "../../GameObjects/Mario.h" // Player character
-#include "../../GameObjects/Goomba.h" // Goomba enemy
-#include "../../GameObjects/Flag.h" // Flag for the pole
+#include "../../GameObjects/Mario.h"
+#include "../../GameObjects/Goomba.h"
+#include "../../GameObjects/Flag.h"
 
 // Settings
 #include "../../Settings/MarioSettings.h"
@@ -17,6 +17,11 @@
 
 // UI
 #include "../../../Engine/Graphics/UI/Canvas.h"
+
+// Changing Scene
+#include "../../../Engine/SMBEngine.h"
+#include "../../Game.h"
+#include "../../../Engine/Input/Input.h"
 
 GameplayScene::GameplayScene()
 	:
@@ -39,7 +44,6 @@ void GameplayScene::UnLoad()
 {
 	Scene::UnLoad();
 
-	// All of those 3 things need to be in a scene, so we don't need to check if they exist
 	delete tilemap;
 	delete player;
 	delete flag;
@@ -57,6 +61,12 @@ void GameplayScene::UnLoad()
 
 void GameplayScene::Update(const float deltaTime)
 {
+	if (Input::GetInstance()->GetKey(DIK_ESCAPE))
+	{
+		Game* game = SMBEngine::GetInstance()->GetGame();
+		game->ChangeScene(0);
+	}
+
 	if (tilemap) tilemap->Update(deltaTime);
 	for (Character* enemy : enemies)
 	{

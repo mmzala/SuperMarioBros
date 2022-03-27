@@ -30,6 +30,7 @@ Scene::~Scene()
 void Scene::Load()
 {
 	Camera* camera = SMBEngine::GetInstance()->GetCamera();
+	camera->ResetBoundary();
 	camera->SetPosition(DirectX::XMFLOAT2(0.0f, 0.0f));
 	CreateUI();
 }
