@@ -1,26 +1,11 @@
 #include <Windows.h>
 #include <memory>
 #include "Engine/SMBEngine.h"
-#include "Engine/Input/Input.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_KILLFOCUS:
-	{
-		Input* input = Input::GetInstance();
-		if (input) input->SetKeyboardActive(false);
-		break;
-	}
-
-	case WM_SETFOCUS:
-	{
-		Input* input = Input::GetInstance();
-		if (input) input->SetKeyboardActive(true);
-		break;
-	}
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -54,9 +39,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	}
 
 	RECT rc = { 0, 0, 800, 600 };
-	AdjustWindowRect(&rc, WS_EX_OVERLAPPEDWINDOW, FALSE);
+	DWORD windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+	AdjustWindowRect(&rc, windowStyle, FALSE);
 
-	HWND hwnd = CreateWindowA("SMB", "Super Mario Bros", WS_EX_OVERLAPPEDWINDOW,
+	HWND hwnd = CreateWindowA("SMB", "Super Mario Bros", windowStyle,
 		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top,
 		NULL, NULL, hInstance, NULL);
 
