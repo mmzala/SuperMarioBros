@@ -94,26 +94,26 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 
 	MovementComponentSettings movementSettings = MovementComponentSettings();
 	movementSettings.runningSpeed = 350.0f;
-	movementSettings.walkingAcceleration = 0.3f;
-	movementSettings.runningAcceleration = 0.35f;
-	movementSettings.releaseDeceleration = 0.15f;
-	movementSettings.skiddingDeceleration = 0.35f;
-	movementSettings.skidTurnaroundSpeed = 0.7f;
+	movementSettings.walkingAcceleration = 270.0f;
+	movementSettings.runningAcceleration = 370.0f;
+	movementSettings.releaseDeceleration = 150.0f;
+	movementSettings.skiddingDeceleration = 450.0f;
+	movementSettings.skidTurnaroundSpeed = 750.0f;
 	movementSettings.runningDecelerationDelay = 0.25f;
-	movementSettings.airWalkingTurnaroundSpeed = 0.75f;
-	movementSettings.airRunningTurnaroundSpeed = 0.85f;
-	movementSettings.minJumpSpeed = 425.0f;
+	movementSettings.airWalkingTurnaroundSpeed = 750.0f;
+	movementSettings.airRunningTurnaroundSpeed = 1050.0f;
+	movementSettings.minJumpSpeed = 400.0f;
 	movementSettings.maxJumpSpeed = 600.0f;
-	movementSettings.maxJumpTime = 0.25f;
-	movementSettings.jumpDecelaration = 1.5f;
-	movementSettings.gravityAccelerationSpeed = 2.0f;
+	movementSettings.maxJumpTime = 0.225f;
+	movementSettings.jumpDecelaration = 2500.0f;
+	movementSettings.gravityAccelerationSpeed = 3500.0f;
 
 	MarioSettings marioSettings = MarioSettings();
 	marioSettings.movementSettings = movementSettings;
 	marioSettings.spriteSettings = marioSpriteSettings;
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 230.0f;
-	marioSettings.gravity = 700.0f;
+	marioSettings.gravity = 1000.0f;
 
 	player = new Mario(marioSettings);
 	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);

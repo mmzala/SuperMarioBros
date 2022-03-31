@@ -54,8 +54,8 @@ int MovementComponent::GetMovementDirection()
 void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
 {
 	float movementSpeed = ShouldRun(runInput, deltaTime) ? runningSpeed : character->walkingSpeed;
-	float movementAccelertion = runInput ? runningAcceleration : walkingAcceleration;
-	float turnaroundSpeed = GetTurnaroundSpeed();
+	float movementAccelertion = (runInput ? runningAcceleration : walkingAcceleration) * deltaTime;
+	float turnaroundSpeed = GetTurnaroundSpeed() * deltaTime;
 	movementDirection = rightInput - leftInput;
 
 	if (leftInput && !rightInput)  // Left movement
@@ -63,7 +63,7 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 		// If velocity is too high then go back to the max velocity slowly
 		if (-movementSpeed > character->velocity.x && isGrounded)
 		{
-			character->velocity.x = character->velocity.x + releaseDeceleration;
+			character->velocity.x = character->velocity.x + releaseDeceleration * deltaTime;
 		}
 		else
 		{
@@ -84,7 +84,7 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 	{
 		if (movementSpeed < character->velocity.x && isGrounded)
 		{
-			character->velocity.x = character->velocity.x - releaseDeceleration;
+			character->velocity.x = character->velocity.x - releaseDeceleration * deltaTime;
 		}
 		else
 		{
@@ -108,11 +108,11 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 
 		if (character->velocity.x < 0)
 		{
-			character->velocity.x = std::fmin(0.0f, character->velocity.x + skiddingDeceleration);
+			character->velocity.x = std::fmin(0.0f, character->velocity.x + skiddingDeceleration * deltaTime);
 		}
 		else if (character->velocity.x > 0)
 		{
-			character->velocity.x = std::fmax(0.0f, character->velocity.x - skiddingDeceleration);
+			character->velocity.x = std::fmax(0.0f, character->velocity.x - skiddingDeceleration * deltaTime);
 		}
 	}
 }
@@ -122,11 +122,11 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 {
 	if (character->velocity.y > 0.0f)
 	{
-		character->velocity.y = character->velocity.y - jumpDecelaration;
+		character->velocity.y = character->velocity.y - jumpDecelaration * deltaTime;
 	}
 	else
 	{
-		character->velocity.y = std::fmax(character->velocity.y - gravityAccelerationSpeed, -character->gravity);
+		character->velocity.y = std::fmax(character->velocity.y - gravityAccelerationSpeed * deltaTime, -character->gravity);
 	}
 
 	if (jumpInput)
