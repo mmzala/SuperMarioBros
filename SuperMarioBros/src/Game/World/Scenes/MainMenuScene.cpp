@@ -79,7 +79,6 @@ void MainMenuScene::Update(const float deltaTime)
 
 	tilemap->Update(deltaTime);
 	mario->Update(deltaTime);
-	gameCanvas->Update();
 	mainMenuCanvas->Update();
 }
 

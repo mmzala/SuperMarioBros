@@ -3,6 +3,7 @@
 #include <vector>
 
 class Scene;
+class GameplayUI;
 
 /// <summary>
 /// Manages the game itself
@@ -16,6 +17,9 @@ public:
 	void Update(float deltaTime);
 	void ChangeScene(int sceneIndex);
 	int GetSceneIndex();
+
+public:
+	GameplayUI* gameplayUI;
 
 private:
 	void ChangeScene();

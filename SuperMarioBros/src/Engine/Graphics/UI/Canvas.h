@@ -12,9 +12,9 @@ class Canvas
 {
 public:
 	Canvas();
-	~Canvas();
+	virtual ~Canvas();
 
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// When you pass an element here, you don't need to delete it yourself. 

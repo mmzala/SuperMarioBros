@@ -1,10 +1,16 @@
 #include "Game.h"
+
+// Scenes
 #include "World/Scenes/Scene.h"
 #include "World/Scenes/MainMenuScene.h"
 #include "World/Scenes/World1L1.h"
 
+// UI
+#include "UI/GameplayUI.h"
+
 Game::Game()
 	:
+	gameplayUI(new GameplayUI()),
 	scenes(),
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex)
@@ -15,6 +21,8 @@ Game::Game()
 
 Game::~Game()
 {
+	delete gameplayUI;
+
 	scenes[sceneIndex]->UnLoad();
 	for (Scene* scene : scenes)
 	{
@@ -26,6 +34,7 @@ Game::~Game()
 void Game::Update(float deltaTime)
 {
 	scenes[sceneIndex]->Update(deltaTime);
+	gameplayUI->Update();
 
 	// The ChangeScene(int) method doesn't actually change the scene, but updates targetSceneIndex, so that
 	// the scene changes after it's updated. If scene would unload while it's updating we would get errors

@@ -75,7 +75,6 @@ void GameplayScene::Update(const float deltaTime)
 	}
 	if (player) player->Update(deltaTime);
 	if (flag) flag->Update(deltaTime);
-	if (gameCanvas) gameCanvas->Update();
 }
 
 void GameplayScene::CreateUI()

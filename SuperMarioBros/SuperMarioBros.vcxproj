@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\UI\GameplayUI.cpp" />
     <ClCompile Include="src\Game\World\Scenes\GameplayScene.cpp" />
     <ClCompile Include="src\Game\World\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\Canvas.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\UI\GameplayUI.h" />
     <ClInclude Include="src\Game\World\Scenes\GameplayScene.h" />
     <ClInclude Include="src\Game\World\Scenes\MainMenuScene.h" />
     <ClInclude Include="src\Engine\Graphics\UI\Canvas.h" />
