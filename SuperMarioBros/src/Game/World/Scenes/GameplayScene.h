@@ -5,8 +5,6 @@
 #include <vector>
 
 class Character;
-class Mario;
-class Goomba;
 class Tilemap;
 class Flag;
 
@@ -23,6 +21,8 @@ public:
 	void UnLoad() override;
 	void Update(const float deltaTime) override;
 
+	std::vector<Character*>& GetCharacters();
+
 protected:
 	void CreateUI() override;
 	void CreateMario(DirectX::XMINT2 tilemapPosition);
@@ -31,8 +31,7 @@ protected:
 
 protected:
 	Tilemap* tilemap;
-	Mario* player;
-	std::vector<Character*> enemies;
+	std::vector<Character*> characters;
 	Flag* flag;
 };
 

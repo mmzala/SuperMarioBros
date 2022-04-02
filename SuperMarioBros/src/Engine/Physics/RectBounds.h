@@ -5,11 +5,11 @@
 
 class Transform;
 
-class RectCollider
+class RectBounds
 {
 public:
-	RectCollider(DirectX::XMFLOAT2 size, Transform* transform);
-	~RectCollider();
+	RectBounds(DirectX::XMFLOAT2 size, Transform* transform);
+	~RectBounds();
 
 	/// <summary>
 	/// Gets bounds of the collider with already applied world position

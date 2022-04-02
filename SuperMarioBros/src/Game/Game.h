@@ -17,12 +17,13 @@ public:
 	void Update(float deltaTime);
 	void ChangeScene(int sceneIndex);
 	int GetSceneIndex();
-
-public:
-	GameplayUI* gameplayUI;
+	Scene* GetCurrentScene();
 
 private:
 	void ChangeScene();
+
+public:
+	GameplayUI* gameplayUI;
 
 private:
 	std::vector<Scene*> scenes;

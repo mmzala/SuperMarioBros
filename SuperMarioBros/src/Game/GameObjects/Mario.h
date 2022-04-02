@@ -5,9 +5,6 @@
 #include "../../Engine/Graphics/Animation.h"
 #include <unordered_map>
 
-class Animator;
-class Tilemap;
-class TilemapCollider;
 class Camera;
 class MovementComponent;
 
@@ -31,6 +28,7 @@ protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision(const float deltaTime) override;
 	void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition) override;
+	void OnCharacterHit(Character* other) override;
 	void HandleHeadCollision();
 	void UpdateCameraFollow();
 	void UpdateAnimations();

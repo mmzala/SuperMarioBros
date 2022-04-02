@@ -5,7 +5,7 @@
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h" // Camera follow
 #include "../../Engine/Input/Input.h" // Checking input
-#include "../../Engine/Physics/RectCollider.h" // Collider
+#include "../../Engine/Physics/RectBounds.h" // Collider
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 #include "../../Utils/Math.h" // FindClosest
@@ -66,7 +66,7 @@ void Mario::CheckCollision(const float deltaTime)
 	// Making sure the player cannot go back
 	Rect viewport = camera->GetViewportBounds();
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime);
-	Rect playerBounds = collider->GetBoundsWithOffset(deltaVelocity);
+	Rect playerBounds = bounds->GetBoundsWithOffset(deltaVelocity);
 
 	if (viewport.x > playerBounds.x)
 	{
@@ -85,6 +85,9 @@ void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosit
 		break;
 	}
 }
+
+void Mario::OnCharacterHit(Character* other)
+{}
 
 void Mario::HandleHeadCollision()
 {
@@ -153,11 +156,11 @@ void Mario::UpdateState(MarioState marioState)
 	switch (marioState)
 	{
 	case MarioState::Small:
-		collider->SetSizeOffset(DirectX::XMFLOAT2(0.0f, -(sprite->GetSize().y / 2)));
+		bounds->SetSizeOffset(DirectX::XMFLOAT2(0.0f, -(sprite->GetSize().y / 2)));
 		break;
 
 	default:
-		collider->SetSizeOffset(DirectX::XMFLOAT2(0.0f, 0.0f));
+		bounds->SetSizeOffset(DirectX::XMFLOAT2(0.0f, 0.0f));
 		break;
 	}
 }

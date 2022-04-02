@@ -4,7 +4,7 @@
 
 class Transform;
 class Sprite;
-class RectCollider;
+class RectBounds;
 
 class GameObject
 {
@@ -22,6 +22,6 @@ public:
 public:
 	Transform* transform;
 	Sprite* sprite;
-	RectCollider* collider;
+	RectBounds* bounds;
 };
 

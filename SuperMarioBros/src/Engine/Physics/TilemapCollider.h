@@ -5,13 +5,16 @@
 #include "../../Engine/Physics/Collision.h" // Collision check and CheckSide enum
 #include <functional>
 
-class RectCollider;
+class RectBounds;
 class Tilemap;
 
+/// <summary>
+/// Handles collision with the given tilemap
+/// </summary>
 class TilemapCollider
 {
 public:
-	TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)>);
+	TilemapCollider(RectBounds* rectBounds, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback);
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
@@ -23,7 +26,7 @@ private:
 	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);
 
 private:
-	RectCollider* rectCollider;
+	RectBounds* rectBounds;
 	Tilemap* tilemap;
 	CheckSide collisions;
 	std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback;

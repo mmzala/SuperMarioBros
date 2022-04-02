@@ -15,9 +15,6 @@
 // World
 #include "../Tilemap.h"
 
-// UI
-#include "../../../Engine/Graphics/UI/Canvas.h"
-
 // Changing Scene
 #include "../../../Engine/SMBEngine.h"
 #include "../../Game.h"
@@ -27,8 +24,7 @@ GameplayScene::GameplayScene()
 	:
 	Scene::Scene(),
 	tilemap(nullptr),
-	player(nullptr),
-	enemies(),
+	characters(),
 	flag(nullptr)
 {}
 
@@ -45,18 +41,17 @@ void GameplayScene::UnLoad()
 	Scene::UnLoad();
 
 	delete tilemap;
-	delete player;
 	delete flag;
 
 	tilemap = 0;
-	player = 0; // This may be a small memory leak
 	flag = 0;
 
-	for (Character* enemy : enemies)
+	for (Character* character : characters)
 	{
-		delete enemy;
+		delete character;
+		character = 0;
 	}
-	enemies.clear();
+	characters.clear();
 }
 
 void GameplayScene::Update(const float deltaTime)
@@ -68,13 +63,16 @@ void GameplayScene::Update(const float deltaTime)
 	}
 
 	if (tilemap) tilemap->Update(deltaTime);
-	for (Character* enemy : enemies)
-	{
-		if (!enemy->IsInViewingFrustum()) continue;
-		enemy->Update(deltaTime);
-	}
-	if (player) player->Update(deltaTime);
 	if (flag) flag->Update(deltaTime);
+	for (size_t i = characters.size(); i-- > 0;)
+	{
+		characters[i]->Update(deltaTime);
+	}
+}
+
+std::vector<Character*>& GameplayScene::GetCharacters()
+{
+	return characters;
 }
 
 void GameplayScene::CreateUI()
@@ -84,9 +82,6 @@ void GameplayScene::CreateUI()
 
 void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 {
-	// There can only be 1 mario
-	if (player != nullptr) return;
-
 	SpriteSettings marioSpriteSettings = SpriteSettings();
 	marioSpriteSettings.textureFile = "assets/MarioSpriteSheet.png";
 	marioSpriteSettings.spriteSheetSize = DirectX::XMINT2(7, 8);
@@ -114,9 +109,10 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 1000.0f;
 
-	player = new Mario(marioSettings);
+	Mario* player = new Mario(marioSettings);
 	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
+	characters.push_back(player);
 }
 
 void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
@@ -131,9 +127,10 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSettings.walkingSpeed = 150.0f;
 	goombaSettings.gravity = 150.0f;
 
-	enemies.push_back(new Goomba(goombaSettings));
-	enemies[enemies.size() - 1]->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
-	enemies[enemies.size() - 1]->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	Goomba* goomba = new Goomba(goombaSettings);
+	goomba->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	goomba->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	characters.push_back(goomba);
 }
 
 void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom)

@@ -54,6 +54,11 @@ int Game::GetSceneIndex()
 	return sceneIndex;
 }
 
+Scene* Game::GetCurrentScene()
+{
+	return scenes[sceneIndex];
+}
+
 void Game::ChangeScene()
 {
 	scenes[sceneIndex]->UnLoad();

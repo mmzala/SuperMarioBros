@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Physics\CharacterCollider.cpp" />
     <ClCompile Include="src\Game\UI\GameplayUI.cpp" />
     <ClCompile Include="src\Game\World\Scenes\GameplayScene.cpp" />
     <ClCompile Include="src\Game\World\Scenes\MainMenuScene.cpp" />
@@ -188,7 +189,7 @@
     <ClCompile Include="src\Utils\Rect.cpp" />
     <ClCompile Include="src\Game\GameObjects\Mario.cpp" />
     <ClCompile Include="src\Engine\Physics\Collision.cpp" />
-    <ClCompile Include="src\Engine\Physics\RectCollider.cpp" />
+    <ClCompile Include="src\Engine\Physics\RectBounds.cpp" />
     <ClCompile Include="src\Engine\Input\Input.cpp" />
     <ClCompile Include="src\Engine\Graphics\Shaders\Shader.cpp" />
     <ClCompile Include="src\Engine\SMBEngine.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Physics\CharacterCollider.h" />
     <ClInclude Include="src\Game\UI\GameplayUI.h" />
     <ClInclude Include="src\Game\World\Scenes\GameplayScene.h" />
     <ClInclude Include="src\Game\World\Scenes\MainMenuScene.h" />
@@ -234,7 +236,7 @@
     <ClInclude Include="src\Utils\Rect.h" />
     <ClInclude Include="src\Game\GameObjects\Mario.h" />
     <ClInclude Include="src\Engine\Physics\Collision.h" />
-    <ClInclude Include="src\Engine\Physics\RectCollider.h" />
+    <ClInclude Include="src\Engine\Physics\RectBounds.h" />
     <ClInclude Include="src\Engine\Input\Input.h" />
     <ClInclude Include="src\Engine\Graphics\Shaders\Shader.h" />
     <ClInclude Include="src\Engine\SMBEngine.h" />

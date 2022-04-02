@@ -7,6 +7,7 @@
 class Animator;
 class Tilemap;
 class TilemapCollider;
+class CharacterCollider;
 
 class Character : public GameObject
 {
@@ -22,11 +23,13 @@ protected:
 	virtual void Move(const float deltaTime);
 	virtual void CheckCollision(const float deltaTime);
 	virtual void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition);
+	virtual void OnCharacterHit(Character* other);
 
 protected:
 	Animator* animator;
 	Tilemap* tilemap;
 	TilemapCollider* tilemapCollider;
+	CharacterCollider* characterCollider;
 
 	DirectX::XMFLOAT2 velocity;
 	float walkingSpeed;

@@ -1,13 +1,13 @@
 #include "TilemapCollider.h"
-#include "RectCollider.h"
+#include "RectBounds.h"
 #include "../../Game/World/Tilemap.h"
 #include "../../Utils/Math.h" // Lerp
 // lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
 #include <cmath> // floor / ceil
 
-TilemapCollider::TilemapCollider(RectCollider* rectCollider, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback)
+TilemapCollider::TilemapCollider(RectBounds* rectBounds, Tilemap* tilemap, std::function<void(CheckSide, int, DirectX::XMINT2, DirectX::XMFLOAT2)> callback)
 	:
-	rectCollider(rectCollider),
+	rectBounds(rectBounds),
 	tilemap(tilemap),
 	collisions(),
 	callback(callback)
@@ -18,10 +18,10 @@ TilemapCollider::~TilemapCollider()
 
 void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
-	Rect bounds = rectCollider->GetBounds();
+	Rect bounds = rectBounds->GetBounds();
 	// Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime - 0.01f);
-	Rect vBounds = rectCollider->GetBoundsWithOffset(deltaVelocity);
+	Rect vBounds = rectBounds->GetBoundsWithOffset(deltaVelocity);
 
 	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
 	bool collidedTop = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top);

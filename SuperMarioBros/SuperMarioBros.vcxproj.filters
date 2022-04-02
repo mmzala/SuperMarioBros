@@ -51,7 +51,7 @@
     <ClCompile Include="src\Utils\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Physics\RectCollider.cpp">
+    <ClCompile Include="src\Engine\Physics\RectBounds.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\GameObjects\Components\Transform.cpp">
@@ -114,6 +114,9 @@
     <ClCompile Include="src\Game\UI\GameplayUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Physics\CharacterCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Graphics\DXManager.h">
@@ -152,7 +155,7 @@
     <ClInclude Include="src\Utils\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Physics\RectCollider.h">
+    <ClInclude Include="src\Engine\Physics\RectBounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\GameObjects\Components\Transform.h">
@@ -249,6 +252,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\UI\GameplayUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Physics\CharacterCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

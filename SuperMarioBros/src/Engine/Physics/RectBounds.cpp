@@ -1,7 +1,7 @@
-#include "RectCollider.h"
+#include "RectBounds.h"
 #include "../../Game/GameObjects/Components/Transform.h"
 
-RectCollider::RectCollider(DirectX::XMFLOAT2 size, Transform* transform)
+RectBounds::RectBounds(DirectX::XMFLOAT2 size, Transform* transform)
 	:
 	bounds(Rect()),
 	colliderSize(size),
@@ -9,10 +9,10 @@ RectCollider::RectCollider(DirectX::XMFLOAT2 size, Transform* transform)
 	transform(transform)
 {}
 
-RectCollider::~RectCollider()
+RectBounds::~RectBounds()
 {}
 
-Rect RectCollider::GetBounds()
+Rect RectBounds::GetBounds()
 {
 	// Update bounds
 	float halfWidth = colliderSize.x / 2.0f;
@@ -27,7 +27,7 @@ Rect RectCollider::GetBounds()
 	return bounds;
 }
 
-Rect RectCollider::GetBoundsWithOffset(DirectX::XMFLOAT2 positionOffset)
+Rect RectBounds::GetBoundsWithOffset(DirectX::XMFLOAT2 positionOffset)
 {
 	Rect bounds = GetBounds();
 
@@ -38,7 +38,7 @@ Rect RectCollider::GetBoundsWithOffset(DirectX::XMFLOAT2 positionOffset)
 	return bounds;
 }
 
-void RectCollider::SetSizeOffset(DirectX::XMFLOAT2 offset)
+void RectBounds::SetSizeOffset(DirectX::XMFLOAT2 offset)
 {
 	sizeOffset = offset;
 }
