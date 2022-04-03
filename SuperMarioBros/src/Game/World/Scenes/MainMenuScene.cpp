@@ -1,4 +1,5 @@
 #include "MainMenuScene.h"
+#include "../../Game.h"
 #include "../../GameObjects/Components/Transform.h"
 
 // World
@@ -15,12 +16,11 @@
 
 // Changing Scene
 #include "../../../Engine/SMBEngine.h"
-#include "../../Game.h"
 #include "../../../Engine/Input/Input.h"
 
-MainMenuScene::MainMenuScene()
+MainMenuScene::MainMenuScene(Game* game)
 	:
-	Scene::Scene(),
+	Scene::Scene(game),
 	tilemap(nullptr),
 	questionMarkBlock(nullptr),
 	mario(nullptr),

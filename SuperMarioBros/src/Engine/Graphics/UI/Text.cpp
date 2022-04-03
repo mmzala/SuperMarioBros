@@ -6,7 +6,7 @@ Text::Text(TextSettings settings)
 	:
 	Sprite::Sprite(settings),
 	UIElement::UIElement(),
-	text(nullptr),
+	text(),
 	minAsciiCode(settings.minAsciiCode), // 32 for current font
 	maxAsciiCode(settings.maxAsciiCode), // 126 for current font
 	spacing(settings.spacing)
@@ -18,11 +18,10 @@ Text::~Text()
 void Text::Draw(DirectX::XMFLOAT2 anchor)
 {
 	DirectX::XMFLOAT2 originalPosition = transform->position;
-	int textLength = static_cast<int>(std::strlen(text));
 	float spriteSizeX = GetSize().x * transform->scale.x;
 	transform->position.y += anchor.y;
 
-	for (int i = 0; i < textLength; i++)
+	for (int i = 0; i < text.length(); i++)
 	{
 		int asciiCode = int(text[i]);
 		if (!CharacterIsInScope(asciiCode)) continue;
@@ -34,7 +33,7 @@ void Text::Draw(DirectX::XMFLOAT2 anchor)
 	transform->position = originalPosition;
 }
 
-void Text::SetText(const char* text)
+void Text::SetText(std::string text)
 {
 	this->text = text;
 }

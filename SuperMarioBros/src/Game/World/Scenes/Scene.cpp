@@ -1,12 +1,17 @@
 #include "Scene.h"
-
+#include "../../Game.h"
 #include "../../GameObjects/Components/Transform.h"
 
 // Camera resetting
 #include "../../../Engine/SMBEngine.h"
 #include "../../../Engine/Graphics/Camera.h"
 
-Scene::Scene()
+// Setting scoring UI
+#include "../../Scoring/ScoreTracker.h"
+
+Scene::Scene(Game* game)
+	:
+	game(game)
 {}
 
 Scene::~Scene()
@@ -28,3 +33,11 @@ void Scene::Update(const float deltaTime)
 
 void Scene::CreateUI()
 {}
+
+void Scene::SetupScoreTracker(const char* worldText, float time, bool stopTime)
+{
+	ScoreTracker* scoreTracker = game->GetScoreTracker();
+	scoreTracker->SetWorldText(worldText);
+	scoreTracker->SetTime(time);
+	scoreTracker->stopTime = stopTime;
+}

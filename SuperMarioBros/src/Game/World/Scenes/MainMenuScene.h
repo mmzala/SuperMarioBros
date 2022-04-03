@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 
+class Game;
 class Tilemap;
 struct TilemapAnimation;
 class GameObject;
@@ -10,7 +11,7 @@ class Canvas;
 class MainMenuScene : public Scene
 {
 public:
-	MainMenuScene();
+	MainMenuScene(Game* game);
 	~MainMenuScene() override;
 
 	void Load() override;

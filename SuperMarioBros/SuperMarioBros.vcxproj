@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\Scoring\ScoreTracker.cpp" />
     <ClCompile Include="src\Engine\Physics\CharacterCollider.cpp" />
     <ClCompile Include="src\Game\UI\GameplayUI.cpp" />
     <ClCompile Include="src\Game\World\Scenes\GameplayScene.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\Scoring\ScoreTracker.h" />
     <ClInclude Include="src\Engine\Physics\CharacterCollider.h" />
     <ClInclude Include="src\Game\UI\GameplayUI.h" />
     <ClInclude Include="src\Game\World\Scenes\GameplayScene.h" />

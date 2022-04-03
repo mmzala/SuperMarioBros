@@ -1,7 +1,8 @@
 #include "GameplayScene.h"
+#include "../../Game.h"
 
 // GameObjects
-#include "../../GameObjects/Components/Transform.h" // Getting gameobject's transform
+#include "../../GameObjects/Components/Transform.h"
 #include "../../GameObjects/Mario.h"
 #include "../../GameObjects/Goomba.h"
 #include "../../GameObjects/Flag.h"
@@ -17,12 +18,11 @@
 
 // Changing Scene
 #include "../../../Engine/SMBEngine.h"
-#include "../../Game.h"
 #include "../../../Engine/Input/Input.h"
 
-GameplayScene::GameplayScene()
+GameplayScene::GameplayScene(Game* game)
 	:
-	Scene::Scene(),
+	Scene::Scene(game),
 	tilemap(nullptr),
 	characters(),
 	flag(nullptr)

@@ -5,36 +5,36 @@
 #include "World/Scenes/MainMenuScene.h"
 #include "World/Scenes/World1L1.h"
 
-// UI
-#include "UI/GameplayUI.h"
+// Scoring
+#include "Scoring/ScoreTracker.h"
 
 Game::Game()
 	:
-	gameplayUI(new GameplayUI()),
 	scenes(),
 	sceneIndex(0),
-	targetSceneIndex(sceneIndex)
+	targetSceneIndex(sceneIndex),
+	scoreTracker(new ScoreTracker())
 {
-	scenes = std::vector<Scene*>{ new MainMenuScene(), new World1L1() };
+	scenes = std::vector<Scene*>{ new MainMenuScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();
 }
 
 Game::~Game()
 {
-	delete gameplayUI;
-
 	scenes[sceneIndex]->UnLoad();
 	for (Scene* scene : scenes)
 	{
 		delete scene;
 	}
 	scenes.clear();
+
+	delete scoreTracker;
 }
 
 void Game::Update(float deltaTime)
 {
 	scenes[sceneIndex]->Update(deltaTime);
-	gameplayUI->Update();
+	scoreTracker->Update(deltaTime);
 
 	// The ChangeScene(int) method doesn't actually change the scene, but updates targetSceneIndex, so that
 	// the scene changes after it's updated. If scene would unload while it's updating we would get errors
@@ -57,6 +57,11 @@ int Game::GetSceneIndex()
 Scene* Game::GetCurrentScene()
 {
 	return scenes[sceneIndex];
+}
+
+ScoreTracker* Game::GetScoreTracker()
+{
+	return scoreTracker;
 }
 
 void Game::ChangeScene()

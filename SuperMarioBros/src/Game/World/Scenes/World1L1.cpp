@@ -1,13 +1,14 @@
 #include "World1L1.h"
+#include "../../Game.h"
 #include "../../GameObjects/Components/Transform.h"
 
 // World
 #include "../../Data/Worlds.h"
 #include "../Tilemap.h"
 
-World1L1::World1L1()
+World1L1::World1L1(Game* game)
 	:
-	GameplayScene::GameplayScene(),
+	GameplayScene::GameplayScene(game),
 	questionMarkBlock(nullptr)
 {}
 
@@ -34,7 +35,10 @@ void World1L1::Load()
 	// Objects setup
 	CreateMario(DirectX::XMINT2(2, 11));
 	CreateGoomba(DirectX::XMINT2(22, 11));
-	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));	
+	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
+
+	// Scoring UI setup
+	SetupScoreTracker("1-1", 400.0f, false);
 }
 
 void World1L1::UnLoad()

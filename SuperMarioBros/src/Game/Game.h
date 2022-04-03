@@ -3,7 +3,7 @@
 #include <vector>
 
 class Scene;
-class GameplayUI;
+class ScoreTracker;
 
 /// <summary>
 /// Manages the game itself
@@ -18,16 +18,15 @@ public:
 	void ChangeScene(int sceneIndex);
 	int GetSceneIndex();
 	Scene* GetCurrentScene();
+	ScoreTracker* GetScoreTracker();
 
 private:
 	void ChangeScene();
-
-public:
-	GameplayUI* gameplayUI;
 
 private:
 	std::vector<Scene*> scenes;
 	int sceneIndex;
 	int targetSceneIndex;
+	ScoreTracker* scoreTracker;
 };
 

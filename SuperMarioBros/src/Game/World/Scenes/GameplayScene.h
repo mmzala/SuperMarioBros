@@ -4,6 +4,7 @@
 #include <DirectXMath.h> // XMINT2
 #include <vector>
 
+class Game;
 class Character;
 class Tilemap;
 class Flag;
@@ -14,7 +15,7 @@ class Flag;
 class GameplayScene : public Scene
 {
 public:
-	GameplayScene();
+	GameplayScene(Game* game);
 	~GameplayScene() override;
 
 	void Load() override;

@@ -3,6 +3,7 @@
 #include "../Sprite.h"
 #include "UIElement.h"
 #include "../../../Game/Settings/TextSettings.h"
+#include <string>
 
 class Text : private Sprite, public UIElement
 {
@@ -11,13 +12,13 @@ public:
 	~Text() override;
 
 	void Draw(DirectX::XMFLOAT2 anchor) override;
-	void SetText(const char* text);
+	void SetText(std::string text);
 
 private:
 	bool CharacterIsInScope(int asciiCode);
 
 private:
-	const char* text;
+	std::string text;
 	const int minAsciiCode;
 	const int maxAsciiCode;
 	const float spacing;

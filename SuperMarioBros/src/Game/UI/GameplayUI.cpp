@@ -53,7 +53,7 @@ GameplayUI::GameplayUI()
 	timeText->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
 	timeCountText = new Text(textSettings);
-	timeCountText->SetText("300");
+	timeCountText->SetText("000");
 	timeCountText->transform->position = DirectX::XMFLOAT2(220.0f, 225.0f);
 	timeCountText->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 
