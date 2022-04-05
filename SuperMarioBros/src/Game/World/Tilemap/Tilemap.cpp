@@ -29,7 +29,7 @@ Tilemap::Tilemap(TilemapSettings settings)
 	// Cache tiles to be animated
 	for (int y = static_cast<int>(tilemap.size()) - 1; y > 0; y--)
 	{
-		for (int x = 0; x < tilemap[0].size(); x++)
+		for (int x = 0; x < static_cast<int>(tilemap[0].size()) - 1; x++)
 		{
 			if (animations.count(tilemap[y][x])) tilesToAnimate.push_back(DirectX::XMINT2(x, y));
 		}

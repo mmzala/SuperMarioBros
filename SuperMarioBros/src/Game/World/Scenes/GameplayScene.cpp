@@ -6,6 +6,7 @@
 #include "../../GameObjects/Mario.h"
 #include "../../GameObjects/Goomba.h"
 #include "../../GameObjects/Flag.h"
+#include "../../GameObjects/Mushroom.h"
 
 // Settings
 #include "../../Settings/MarioSettings.h"
@@ -150,4 +151,22 @@ void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::
 
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
+}
+
+void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
+{
+	SpriteSettings mushroomSpriteSettings = SpriteSettings();
+	mushroomSpriteSettings.textureFile = "assets/Mushroom.png";
+	mushroomSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+
+	CharacterSettings mushroomSettings = CharacterSettings();
+	mushroomSettings.spriteSettings = mushroomSpriteSettings;
+	mushroomSettings.tilemap = tilemap;
+	mushroomSettings.walkingSpeed = 150.0f;
+	mushroomSettings.gravity = 150.0f;
+
+	Mushroom* mushroom = new Mushroom(mushroomSettings);
+	mushroom->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	mushroom->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	characters.push_back(mushroom);
 }

@@ -6,6 +6,8 @@
 #include "../../Engine/Graphics/Animation.h"
 #include <vector>
 
+class AIMovementComponent;
+
 enum class GoombaState
 {
 	None = 0, // None is used only at the start
@@ -27,9 +29,8 @@ protected:
 	void UpdateState(GoombaState state);
 
 private:
+	AIMovementComponent* movementComponent;
 	GoombaState goombaState;
 	std::vector<Animation> animations;
-
-	bool walkingRight;
 };
 

@@ -20,7 +20,7 @@ Flag::~Flag()
 
 void Flag::Update(const float deltaTime)
 {
-	if (!IsInViewingFrustum()) return;
+	if (IsRightFromCamera()) return;
 	GameObject::Update(deltaTime);
 }
 

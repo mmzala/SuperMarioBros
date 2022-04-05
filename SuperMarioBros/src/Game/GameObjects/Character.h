@@ -12,6 +12,7 @@ class CharacterCollider;
 class Character : public GameObject
 {
 	friend class MovementComponent;
+	friend class AIMovementComponent;
 
 public:
 	Character(const CharacterSettings settings);

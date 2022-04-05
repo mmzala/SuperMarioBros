@@ -4,7 +4,6 @@
 #include "../../Engine/Physics/RectBounds.h"
 #include "../../Engine/SMBEngine.h"
 #include "../../Engine/Graphics/Camera.h"
-#include "../../Engine/Physics/Collision.h"
 
 GameObject::GameObject(SpriteSettings spriteSettings)
 	:
@@ -27,8 +26,8 @@ void GameObject::Update(const float deltaTime)
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
-bool GameObject::IsInViewingFrustum()
+bool GameObject::IsRightFromCamera()
 {
 	Rect viewingFrustum = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
-	return Collision::RectCheck(bounds->GetBounds(), viewingFrustum);
+	return bounds->GetBounds().x > (viewingFrustum.x + viewingFrustum.width);
 }

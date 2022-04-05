@@ -17,7 +17,7 @@ public:
 	virtual ~GameObject();
 
 	virtual void Update(const float deltaTime);
-	bool IsInViewingFrustum();
+	bool IsRightFromCamera();
 
 public:
 	Transform* transform;

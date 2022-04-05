@@ -36,6 +36,7 @@ void World1L1::Load()
 	CreateMario(DirectX::XMINT2(2, 11));
 	CreateGoomba(DirectX::XMINT2(22, 11));
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
+	CreateMushroom(DirectX::XMINT2(15, 11));
 
 	// Scoring UI setup
 	SetupScoreTracker("1-1", 400.0f, false);
