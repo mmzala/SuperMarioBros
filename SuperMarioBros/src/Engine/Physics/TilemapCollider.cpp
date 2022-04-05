@@ -1,6 +1,6 @@
 #include "TilemapCollider.h"
 #include "RectBounds.h"
-#include "../../Game/World/Tilemap.h"
+#include "../../Game/World/Tilemap/Tilemap.h"
 #include "../../Utils/Math.h" // Lerp
 // lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
 #include <cmath> // floor / ceil

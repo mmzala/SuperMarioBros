@@ -204,7 +204,7 @@
     <ClCompile Include="src\Engine\Graphics\Texture2D.cpp" />
     <ClCompile Include="src\Utils\Timer.cpp" />
     <ClCompile Include="src\Game\GameObjects\Components\Transform.cpp" />
-    <ClCompile Include="src\Game\World\Tilemap.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\Tilemap.cpp" />
     <ClCompile Include="src\Engine\Physics\TilemapCollider.cpp" />
     <ClCompile Include="src\Game\World\Scenes\World1L1.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\Text.cpp" />
@@ -253,7 +253,7 @@
     <ClInclude Include="src\Game\Data\Worlds.h" />
     <ClInclude Include="src\Utils\Timer.h" />
     <ClInclude Include="src\Game\GameObjects\Components\Transform.h" />
-    <ClInclude Include="src\Game\World\Tilemap.h" />
+    <ClInclude Include="src\Game\World\Tilemap\Tilemap.h" />
     <ClInclude Include="src\Engine\Physics\TilemapCollider.h" />
     <ClInclude Include="src\Game\World\Scenes\World1L1.h" />
     <ClInclude Include="src\Engine\Graphics\UI\Text.h" />

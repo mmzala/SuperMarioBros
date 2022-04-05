@@ -1,10 +1,10 @@
 #include "Tilemap.h"
-#include "../../Engine/Graphics/Sprite.h"
-#include "../GameObjects/Components/Transform.h"
-#include "../../Engine/SMBEngine.h" // Getting camera
-#include "../../Engine/Graphics/Camera.h"
+#include "../../../Engine/Graphics/Sprite.h"
+#include "../../GameObjects/Components/Transform.h"
+#include "../../../Engine/SMBEngine.h" // Getting camera
+#include "../../../Engine/Graphics/Camera.h"
 #include <algorithm> // std::clamp
-#include "../../Utils/Math.h" // FindInVector
+#include "../../../Utils/Math.h" // FindInVector
 
 Tilemap::Tilemap(TilemapSettings settings)
 	:

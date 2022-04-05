@@ -2,7 +2,7 @@
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Graphics/Animator.h"
-#include "../World/Tilemap.h" // Tilemap for collision
+#include "../World/Tilemap/Tilemap.h" // Tilemap for collision
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../../Engine/Physics/CharacterCollider.h" // Character collision
 

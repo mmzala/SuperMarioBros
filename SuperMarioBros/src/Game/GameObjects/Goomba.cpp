@@ -3,7 +3,7 @@
 #include "../../Engine/Graphics/Sprite.h"
 #include "../../Engine/Graphics/Animator.h"
 #include "../../Engine/Physics/RectBounds.h" // Collision
-#include "../World/Tilemap.h" // Tilemap for collision
+#include "../World/Tilemap/Tilemap.h" // Tilemap for collision
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../Data/Animations.h" // Animations data
 

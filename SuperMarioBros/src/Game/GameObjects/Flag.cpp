@@ -1,7 +1,7 @@
 #include "Flag.h"
 #include "Components/Transform.h"
 #include "../../Engine/Graphics/Sprite.h"
-#include "../World/Tilemap.h"
+#include "../World/Tilemap/Tilemap.h"
 
 Flag::Flag(FlagSettings settings, Tilemap* tilemap)
 	:

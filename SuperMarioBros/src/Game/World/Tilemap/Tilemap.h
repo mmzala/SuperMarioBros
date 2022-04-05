@@ -1,9 +1,9 @@
 #pragma once
 
 #include <DirectXMath.h> // XMFLOAT2
-#include "../../Utils/Rect.h"
+#include "../../../Utils/Rect.h"
 #include <vector>
-#include "../../Engine/Graphics/Animation.h"
+#include "../../../Engine/Graphics/Animation.h"
 #include <unordered_map>
 
 class Sprite;

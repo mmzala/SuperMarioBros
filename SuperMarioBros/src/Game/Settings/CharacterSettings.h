@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../World/Tilemap.h"
+#include "../World/Tilemap/Tilemap.h"
 #include "SpriteSettings.h"
 
 struct CharacterSettings

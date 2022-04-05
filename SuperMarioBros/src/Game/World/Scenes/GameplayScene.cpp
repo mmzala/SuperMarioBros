@@ -14,7 +14,7 @@
 #include "../../Settings/MovementComponentSettings.h"
 
 // World
-#include "../Tilemap.h"
+#include "../Tilemap/Tilemap.h"
 
 // Changing Scene
 #include "../../../Engine/SMBEngine.h"
