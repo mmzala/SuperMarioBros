@@ -67,6 +67,7 @@ void GameplayScene::Update(const float deltaTime)
 	if (flag) flag->Update(deltaTime);
 	for (size_t i = characters.size(); i-- > 0;)
 	{
+		if (!characters[i]->isActive) continue;
 		characters[i]->Update(deltaTime);
 	}
 }

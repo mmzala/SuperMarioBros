@@ -1,15 +1,24 @@
 #include "Mario.h"
 #include "Components/Transform.h"
-#include "../../Engine/Graphics/Sprite.h"
-#include "../../Engine/Graphics/Animator.h"
+#include "../../Utils/Math.h" // FindClosest
+
+// Graphics
+#include "../../Engine/Graphics/Sprite.h" // Rendering sprite
+#include "../../Engine/Graphics/Animator.h" // Playing animations
+#include "../Data/Animations.h" // Animations data
+
+// Controlling character
+#include "../../Engine/Input/Input.h" // Checking input
+#include "Components/MovementComponent.h" // Character controller
 #include "../../Engine/SMBEngine.h" // Getting camera
 #include "../../Engine/Graphics/Camera.h" // Camera follow
-#include "../../Engine/Input/Input.h" // Checking input
-#include "../../Engine/Physics/RectBounds.h" // Collider
-#include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
-#include "../Data/Animations.h" // Animations data
-#include "../../Utils/Math.h" // FindClosest
-#include "Components/MovementComponent.h"
+
+// Collision Checking
+#include "../../Engine/Physics/RectBounds.h" // Getting rect bounds for collision
+
+// Responses from collision
+#include "Mushroom.h" // Power up
+#include "Goomba.h" // Enemy
 
 Mario::Mario(MarioSettings settings)
 	:
@@ -87,7 +96,19 @@ void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosit
 }
 
 void Mario::OnCharacterHit(Character* other)
-{}
+{
+	// Can't use a switch :(
+	if (dynamic_cast<Goomba*>(other))
+	{
+		UpdateState(MarioState::Small);
+		other->isActive = false;
+	}
+	else if (dynamic_cast<Mushroom*>(other))
+	{
+		UpdateState(MarioState::Large);
+		other->isActive = false;
+	}
+}
 
 void Mario::HandleHeadCollision()
 {

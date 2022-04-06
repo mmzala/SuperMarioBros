@@ -23,7 +23,8 @@ void CharacterCollider::Update()
 
 	for (Character* character : characters)
 	{
-		if (this->character == character) continue;
+		if (this->character == character || !character->isActive) continue;
+
 		if (Collision::RectCheck(bounds, character->bounds->GetBounds()))
 		{
 			callback(character);

@@ -23,5 +23,11 @@ public:
 	Transform* transform;
 	Sprite* sprite;
 	RectBounds* bounds;
+
+	/// <summary>
+	/// Prevents the object from beeing updated.
+	/// If the object is also a character, it prevents from checking collision with other characters
+	/// </summary>
+	bool isActive;
 };
 

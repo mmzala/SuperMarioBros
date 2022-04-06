@@ -9,7 +9,8 @@ GameObject::GameObject(SpriteSettings spriteSettings)
 	:
 	transform(new Transform()),
 	sprite(new Sprite(SpriteSettings(spriteSettings.textureFile, spriteSettings.spriteSheetSize))),
-	bounds(new RectBounds(sprite->GetSize(), transform))
+	bounds(new RectBounds(sprite->GetSize(), transform)),
+	isActive(true)
 {
 	sprite->SetFrame(0);
 }
