@@ -1,7 +1,7 @@
 #include "TilemapCollider.h"
 #include "RectBounds.h"
 #include "../../Game/World/Tilemap/Tilemap.h"
-#include "../../Utils/Math.h" // Lerp
+#include "../../Utils/Math.h" // Lerp / * operator overload
 // lerp is only included in C++20, but then I would need to rewrite my world collision vector initialization, so no thanks :)
 #include <cmath> // floor / ceil
 
@@ -19,8 +19,8 @@ TilemapCollider::~TilemapCollider()
 void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	Rect bounds = rectBounds->GetBounds();
-	// Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
-	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity.x * deltaTime, velocity.y * deltaTime - 0.01f);
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
+	deltaVelocity.y -= 0.01f; // Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
 	Rect vBounds = rectBounds->GetBoundsWithOffset(deltaVelocity);
 
 	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);

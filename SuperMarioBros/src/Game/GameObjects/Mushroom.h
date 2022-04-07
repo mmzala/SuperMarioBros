@@ -17,6 +17,7 @@ public:
 
 protected:
 	void Move(const float deltaTime) override;
+	void OnCharacterHit(Character* other) override;
 
 private:
 	AIMovementComponent* movementComponent;

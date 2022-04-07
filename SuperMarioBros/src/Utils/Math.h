@@ -13,6 +13,11 @@ namespace DirectX
         }
         return false;
     }
+
+    inline DirectX::XMFLOAT2 operator*(const DirectX::XMFLOAT2& first, const float second)
+    {
+        return DirectX::XMFLOAT2(first.x * second, first.y * second);
+    }
 }
 
 class Math

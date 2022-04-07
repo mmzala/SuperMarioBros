@@ -9,6 +9,7 @@ public:
 	~AIMovementComponent();
 
 	void Update();
+	void ChangeMovingDirection();
 
 private:
 	Character* character;

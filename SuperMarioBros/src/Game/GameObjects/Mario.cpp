@@ -101,7 +101,6 @@ void Mario::OnCharacterHit(Character* other)
 	if (dynamic_cast<Goomba*>(other))
 	{
 		UpdateState(MarioState::Small);
-		other->isActive = false;
 	}
 	else if (dynamic_cast<Mushroom*>(other))
 	{

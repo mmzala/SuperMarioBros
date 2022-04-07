@@ -1,5 +1,5 @@
 #include "AIMovementComponent.h"
-#include "../Character.h"
+#include "../Character.h" // For character controlling
 
 AIMovementComponent::AIMovementComponent(Character* character)
 	:
@@ -17,4 +17,9 @@ void AIMovementComponent::Update()
 
 	character->velocity.y = -character->gravity;
 	character->velocity.x = character->walkingSpeed * (walkingRight ? 1 : -1);
+}
+
+void AIMovementComponent::ChangeMovingDirection()
+{
+	walkingRight = !walkingRight;
 }

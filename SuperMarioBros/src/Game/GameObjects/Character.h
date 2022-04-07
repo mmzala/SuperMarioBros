@@ -19,6 +19,7 @@ public:
 	~Character() override;
 
 	void Update(const float deltaTime) override;
+	DirectX::XMFLOAT2 GetVelocity();
 
 protected:
 	virtual void Move(const float deltaTime);

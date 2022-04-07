@@ -33,6 +33,11 @@ void Character::Update(const float deltaTime)
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
+DirectX::XMFLOAT2 Character::GetVelocity()
+{
+	return velocity;
+}
+
 void Character::Move(const float deltaTime)
 {
 	CheckCollision(deltaTime);
@@ -43,7 +48,7 @@ void Character::Move(const float deltaTime)
 void Character::CheckCollision(const float deltaTime)
 {
 	tilemapCollider->Update(velocity, deltaTime);
-	characterCollider->Update();
+	characterCollider->Update(deltaTime);
 }
 
 void Character::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition)

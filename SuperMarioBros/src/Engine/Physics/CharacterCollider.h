@@ -15,7 +15,7 @@ public:
 	CharacterCollider(Character* character, std::function<void(Character* other)> callback);
 	~CharacterCollider();
 
-	void Update();
+	void Update(const float deltaTime);
 
 private:
 	Character* character;

@@ -43,6 +43,11 @@ void Goomba::CheckCollision(const float deltaTime)
 	Character::CheckCollision(deltaTime);
 }
 
+void Goomba::OnCharacterHit(Character* other)
+{
+	movementComponent->ChangeMovingDirection();
+}
+
 void Goomba::UpdateState(GoombaState state)
 {
 	if (this->goombaState == state) return;

@@ -23,3 +23,8 @@ void Mushroom::Move(const float deltaTime)
 	movementComponent->Update();
 	Character::Move(deltaTime);
 }
+
+void Mushroom::OnCharacterHit(Character* other)
+{
+	movementComponent->ChangeMovingDirection();
+}

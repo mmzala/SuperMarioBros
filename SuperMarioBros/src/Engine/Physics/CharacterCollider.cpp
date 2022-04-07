@@ -5,6 +5,7 @@
 #include "../../Engine/SMBEngine.h"
 #include "../../Game/Game.h"
 #include "../../Game/World/Scenes/GameplayScene.h"
+#include "../../Utils/Math.h" // * operator overload
 
 CharacterCollider::CharacterCollider(Character* character, std::function<void(Character* other)> callback)
 	:
@@ -17,9 +18,9 @@ CharacterCollider::CharacterCollider(Character* character, std::function<void(Ch
 CharacterCollider::~CharacterCollider()
 {}
 
-void CharacterCollider::Update()
+void CharacterCollider::Update(const float deltaTime)
 {
-	Rect bounds = character->bounds->GetBounds();
+	Rect bounds = character->bounds->GetBoundsWithOffset(character->GetVelocity() * deltaTime);
 
 	for (Character* character : characters)
 	{

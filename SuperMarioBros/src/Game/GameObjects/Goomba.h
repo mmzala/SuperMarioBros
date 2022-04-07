@@ -26,6 +26,7 @@ public:
 protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision(const float deltaTime) override;
+	void OnCharacterHit(Character* other) override;
 	void UpdateState(GoombaState state);
 
 private:
