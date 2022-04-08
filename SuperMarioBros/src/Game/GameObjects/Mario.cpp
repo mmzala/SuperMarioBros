@@ -120,6 +120,9 @@ void Mario::HandleHeadCollision()
 		if (marioState == MarioState::Small) break;
 		tilemap->BreakTile(hitTile);
 		break;
+	default:
+		tilemap->CheckForTileAction(hitTile);
+		break;
 	}
 
 	headCollisionPositions.clear();

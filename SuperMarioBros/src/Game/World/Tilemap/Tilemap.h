@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../../Utils/Math.h" // FindInVector
 #include <DirectXMath.h> // XMFLOAT2
 #include "../../../Utils/Rect.h"
 #include <vector>
@@ -8,6 +9,7 @@
 
 class Sprite;
 class Transform;
+class TileAction;
 
 struct TilemapAnimation : Animation
 {
@@ -27,6 +29,7 @@ struct TilemapSettings
 	const char* spriteSheetFile;
 	DirectX::XMINT2 spriteSheetSize;
 	std::vector<TilemapAnimation*> animations;
+	std::vector<TileAction*> tileActions;
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;
 
@@ -37,6 +40,7 @@ struct TilemapSettings
 		spriteSheetFile(nullptr),
 		spriteSheetSize(DirectX::XMINT2()),
 		animations(),
+		tileActions(),
 		position(DirectX::XMFLOAT2()),
 		scale(DirectX::XMFLOAT2())
 	{}
@@ -49,6 +53,12 @@ public:
 	~Tilemap();
 
 	void Update(const float deltaTime);
+
+	/// <summary>
+	/// Checks if the tile in given tile position has a tile action and if there is one, it runs it
+	/// </summary>
+	/// <param name="tilePosition"> Position of the tile in tilemap coordinates </param>
+	void CheckForTileAction(DirectX::XMINT2 tilePosition);
 
 	/// <summary>
 	/// Calculates position in tilemap coordinates
@@ -97,6 +107,18 @@ public:
 	/// <param name="tilemapPsoition">: Position in tilemap coordinates </param>
 	/// <returns> What type a tile is </returns>
 	int GetTileType(DirectX::XMINT2 tilemapPosition);
+
+	/// <summary>
+	/// Sets the tile at the given position to the given tile type
+	/// </summary>
+	/// <param name="tilemapPosition"> Where to break the tile in tilemap coordinates </param>
+	/// <param name="tileType"> To what tileType to switch to </param>
+	void SetTile(DirectX::XMINT2 tilemapPosition, int tileType);
+
+	/// <summary>
+	/// Breaks tile tile
+	/// </summary>
+	/// <param name="tilemapPosition"> Where to break the tile in tilemap coordinates </param>
 	void BreakTile(DirectX::XMINT2 tilemapPosition);
 
 private:
@@ -123,4 +145,6 @@ private:
 
 	std::unordered_map<int, TilemapAnimation*> animations;
 	std::vector<DirectX::XMINT2> tilesToAnimate;
+
+	std::unordered_map<DirectX::XMINT2, TileAction*> tileActions;
 };

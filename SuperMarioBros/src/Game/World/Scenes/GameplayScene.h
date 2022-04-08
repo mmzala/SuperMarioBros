@@ -22,6 +22,7 @@ public:
 	void UnLoad() override;
 	void Update(const float deltaTime) override;
 
+	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 	std::vector<Character*>& GetCharacters();
 
 protected:
@@ -29,7 +30,6 @@ protected:
 	void CreateMario(DirectX::XMINT2 tilemapPosition);
 	void CreateGoomba(DirectX::XMINT2 tilemapPosition);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
-	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 
 protected:
 	Tilemap* tilemap;

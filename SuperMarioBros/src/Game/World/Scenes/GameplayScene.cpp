@@ -72,6 +72,24 @@ void GameplayScene::Update(const float deltaTime)
 	}
 }
 
+void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
+{
+	SpriteSettings mushroomSpriteSettings = SpriteSettings();
+	mushroomSpriteSettings.textureFile = "assets/Mushroom.png";
+	mushroomSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+
+	CharacterSettings mushroomSettings = CharacterSettings();
+	mushroomSettings.spriteSettings = mushroomSpriteSettings;
+	mushroomSettings.tilemap = tilemap;
+	mushroomSettings.walkingSpeed = 150.0f;
+	mushroomSettings.gravity = 375.0f;
+
+	Mushroom* mushroom = new Mushroom(mushroomSettings);
+	mushroom->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	mushroom->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	characters.push_back(mushroom);
+}
+
 std::vector<Character*>& GameplayScene::GetCharacters()
 {
 	return characters;
@@ -127,7 +145,7 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSettings.spriteSettings = goombaSpriteSettings;
 	goombaSettings.tilemap = tilemap;
 	goombaSettings.walkingSpeed = 150.0f;
-	goombaSettings.gravity = 150.0f;
+	goombaSettings.gravity = 375.0f;
 
 	Goomba* goomba = new Goomba(goombaSettings);
 	goomba->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
@@ -152,22 +170,4 @@ void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::
 
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
-}
-
-void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
-{
-	SpriteSettings mushroomSpriteSettings = SpriteSettings();
-	mushroomSpriteSettings.textureFile = "assets/Mushroom.png";
-	mushroomSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
-
-	CharacterSettings mushroomSettings = CharacterSettings();
-	mushroomSettings.spriteSettings = mushroomSpriteSettings;
-	mushroomSettings.tilemap = tilemap;
-	mushroomSettings.walkingSpeed = 150.0f;
-	mushroomSettings.gravity = 150.0f;
-
-	Mushroom* mushroom = new Mushroom(mushroomSettings);
-	mushroom->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
-	mushroom->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
-	characters.push_back(mushroom);
 }

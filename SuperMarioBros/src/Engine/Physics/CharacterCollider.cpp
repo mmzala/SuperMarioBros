@@ -1,11 +1,11 @@
 #include "CharacterCollider.h"
+#include "../../Utils/Math.h" // * operator overload
 #include "RectBounds.h"
 #include "../../Game/GameObjects/Character.h"
 #include "Collision.h"
 #include "../../Engine/SMBEngine.h"
 #include "../../Game/Game.h"
 #include "../../Game/World/Scenes/GameplayScene.h"
-#include "../../Utils/Math.h" // * operator overload
 
 CharacterCollider::CharacterCollider(Character* character, std::function<void(Character* other)> callback)
 	:

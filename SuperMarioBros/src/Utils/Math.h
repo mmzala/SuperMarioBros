@@ -1,6 +1,8 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include <DirectXMath.h> // DirectX extensions
+#include <vector> // std::vector
+#include <functional> // std::hash
 
 namespace DirectX
 {
@@ -18,6 +20,25 @@ namespace DirectX
     {
         return DirectX::XMFLOAT2(first.x * second, first.y * second);
     }
+}
+
+namespace std
+{
+    template<>
+    struct hash<DirectX::XMINT2>
+    {
+        size_t operator()(const DirectX::XMINT2& key) const
+        {
+            DirectX::XMINT2 value = key;
+            for (int i = 0; i < 4; i++)
+            {
+                value.x ^= value.y & 255;
+                value.y >>= 8;
+                value.x = (value.x << 24) + value.x * 0x193;
+            }
+            return hash<int32_t>()(value.x);
+        }
+    };
 }
 
 class Math

@@ -1,7 +1,7 @@
 #include "MovementComponent.h"
 #include "../Character.h"
-#include <cmath> // fmax / fmin
 #include "../../../Utils/Math.h" // Lerp
+#include <cmath> // fmax / fmin
 #include "../../../Engine/Physics/TilemapCollider.h" // Checking if is grounded
 
 MovementComponent::MovementComponent(Character* character, MovementComponentSettings settings)

@@ -3,6 +3,7 @@
 #include "GameplayScene.h"
 
 class Game;
+class TileAction;
 struct TilemapAnimation;
 
 class World1L1 : public GameplayScene
@@ -20,5 +21,6 @@ protected:
 
 protected:
 	TilemapAnimation* questionMarkBlock;
+	TileAction* spawnPowerUpAction;
 };
 

@@ -212,6 +212,8 @@
     <ClCompile Include="src\Engine\Graphics\UI\Text.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\UIElement.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\TileAction.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GameObjects\Components\AIMovementComponent.h" />
@@ -263,6 +265,8 @@
     <ClInclude Include="src\Engine\Graphics\UI\Text.h" />
     <ClInclude Include="src\Engine\Graphics\UI\UIElement.h" />
     <ClInclude Include="src\Engine\Graphics\UI\UISprite.h" />
+    <ClInclude Include="src\Game\World\Tilemap\TileAction.h" />
+    <ClInclude Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">
