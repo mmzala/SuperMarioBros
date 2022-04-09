@@ -1,55 +1,33 @@
 #include "Goomba.h"
-#include "Components/Transform.h"
-#include "../../Engine/Graphics/Sprite.h"
-#include "../../Engine/Graphics/Animator.h"
-#include "../../Engine/Physics/RectBounds.h" // Collision
-#include "../World/Tilemap/Tilemap.h" // Tilemap for collision
-#include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
-#include "../Data/Animations.h" // Animations data
-#include "Components/AIMovementComponent.h"
+#include "../../Engine/Graphics/Animator.h" // Setting animations
+#include "../Data/Animations.h" // Animation data
 
 Goomba::Goomba(CharacterSettings settings)
 	:
-	Character::Character(settings),
-	movementComponent(new AIMovementComponent(this)),
-	goombaState(GoombaState::None),
+	Enemy::Enemy(settings),
 	animations(Animations::Goomba::goomba)
 {
-	UpdateState(GoombaState::Walking);
-	animator->SetAnimation(animations[Animations::Goomba::AnimationState::Walking]);
+	UpdateState(EnemyState::Walking);
 }
 
 Goomba::~Goomba()
-{
-	delete movementComponent;
-}
+{}
 
 void Goomba::Update(const float deltaTime)
 {
 	if (IsRightFromCamera()) return;
-	if(goombaState == GoombaState::Walking) Move(deltaTime);
-	animator->Update(deltaTime);
-	sprite->Draw(transform->GetWorldMatrix());
+	Enemy::Update(deltaTime);
 }
 
-void Goomba::Move(const float deltaTime)
+void Goomba::UpdateState(EnemyState state)
 {
-	movementComponent->Update();
-	Character::Move(deltaTime);
-}
+	if (this->state == state) return;
+	this->state = state;
 
-void Goomba::CheckCollision(const float deltaTime)
-{
-	Character::CheckCollision(deltaTime);
-}
-
-void Goomba::OnCharacterHit(Character* other)
-{
-	movementComponent->ChangeMovingDirection();
-}
-
-void Goomba::UpdateState(GoombaState state)
-{
-	if (this->goombaState == state) return;
-	this->goombaState = state;
+	switch (state)
+	{
+	case EnemyState::Walking:
+		animator->SetAnimation(animations[Animations::Goomba::AnimationState::Walking]);
+		break;
+	}
 }

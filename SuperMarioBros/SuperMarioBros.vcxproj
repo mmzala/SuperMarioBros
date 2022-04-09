@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\GameObjects\Enemy.cpp" />
     <ClCompile Include="src\Game\GameObjects\Components\AIMovementComponent.cpp" />
     <ClCompile Include="src\Game\GameObjects\Mushroom.cpp" />
     <ClCompile Include="src\Game\Scoring\ScoreTracker.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\GameObjects\Enemy.h" />
     <ClInclude Include="src\Game\GameObjects\Components\AIMovementComponent.h" />
     <ClInclude Include="src\Game\GameObjects\Mushroom.h" />
     <ClInclude Include="src\Game\Scoring\ScoreTracker.h" />

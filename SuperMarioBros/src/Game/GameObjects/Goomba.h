@@ -1,21 +1,10 @@
 #pragma once
 
-#include "Character.h"
-#include "../Settings/CharacterSettings.h"
-#include <DirectXMath.h> // XMFLOAT2
-#include "../../Engine/Graphics/Animation.h"
-#include <vector>
+#include "Enemy.h"
+#include "../../Engine/Graphics/Animation.h" // Animation vector
+#include <vector> // Animation vector
 
-class AIMovementComponent;
-
-enum class GoombaState
-{
-	None = 0, // None is used only at the start
-	Walking = 1,
-	Dead = 2,
-};
-
-class Goomba : public Character
+class Goomba : public Enemy
 {
 public:
 	Goomba(CharacterSettings settings);
@@ -24,14 +13,9 @@ public:
 	void Update(const float deltaTime) override;
 
 protected:
-	void Move(const float deltaTime) override;
-	void CheckCollision(const float deltaTime) override;
-	void OnCharacterHit(Character* other) override;
-	void UpdateState(GoombaState state);
+	void UpdateState(EnemyState state) override;
 
 private:
-	AIMovementComponent* movementComponent;
-	GoombaState goombaState;
 	std::vector<Animation> animations;
 };
 

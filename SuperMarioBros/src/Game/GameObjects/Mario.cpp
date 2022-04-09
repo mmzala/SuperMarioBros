@@ -25,7 +25,7 @@ Mario::Mario(MarioSettings settings)
 	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
-	marioState(MarioState::None)
+	marioState(MarioState::Dead)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioState, std::vector<Animation>> {
@@ -46,11 +46,14 @@ Mario::~Mario()
 
 void Mario::Update(const float deltaTime)
 {
-	Move(deltaTime);
-	UpdateCameraFollow();
-
-	UpdateAnimations();
-	animator->Update(deltaTime);
+	if (marioState != MarioState::Dead)
+	{
+		Move(deltaTime);
+		UpdateCameraFollow();
+		UpdateAnimations();
+		animator->Update(deltaTime);
+	}
+	
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
@@ -108,7 +111,7 @@ void Mario::OnCharacterHit(Character* other)
 		}
 		else
 		{
-			UpdateState(MarioState::Small);
+			UpdateState((MarioState)((int)marioState - 1));
 		}
 	}
 	else if (dynamic_cast<Mushroom*>(other))
@@ -150,6 +153,13 @@ void Mario::UpdateCameraFollow()
 
 void Mario::UpdateAnimations()
 {
+	// If the players dies (gets hit by enemy) animation update happens once, we set the game over animation
+	if (marioState == MarioState::Dead)
+	{
+		animator->SetAnimation(animations[MarioState::Small][Animations::Mario::Small::SAnimationState::GameOver]);
+		return;
+	}
+
 	switch (movementComponent->GetState())
 	{
 	case MovementState::Standing:

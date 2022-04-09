@@ -10,7 +10,7 @@ class MovementComponent;
 
 enum class MarioState
 {
-	None = -1, // Only used when starting game
+	Dead = -1,
 	Small = 0,
 	Large = 1,
 	Fire = 2,
