@@ -100,7 +100,16 @@ void Mario::OnCharacterHit(Character* other)
 	// Can't use a switch :(
 	if (dynamic_cast<Goomba*>(other))
 	{
-		UpdateState(MarioState::Small);
+		Rect otherBounds = other->bounds->GetBounds();
+		if (bounds->GetBounds().y > (otherBounds.y + otherBounds.height))
+		{
+			other->isActive = false;
+			movementComponent->ForceJump();
+		}
+		else
+		{
+			UpdateState(MarioState::Small);
+		}
 	}
 	else if (dynamic_cast<Mushroom*>(other))
 	{

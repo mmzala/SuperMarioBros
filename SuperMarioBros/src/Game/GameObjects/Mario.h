@@ -29,12 +29,12 @@ protected:
 	void CheckCollision(const float deltaTime) override;
 	void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition) override;
 	void OnCharacterHit(Character* other) override;
+
+private:
 	void HandleHeadCollision();
 	void UpdateCameraFollow();
 	void UpdateAnimations();
 	void UpdateState(MarioState marioState);
-
-private:
 	DirectX::XMINT2 GetHeadCollisionTile();
 
 private:

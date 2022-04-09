@@ -26,6 +26,7 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	jumpDecelaration(settings.jumpDecelaration),
 	jumpTimer(maxJumpTime),
 	isJumping(false),
+	forceJump(false),
 	gravityAccelerationSpeed(settings.gravityAccelerationSpeed)
 {}
 
@@ -38,6 +39,11 @@ void MovementComponent::Update(MovementInput input, const float deltaTime)
 	isGrounded = (collisions & CheckSide::Bottom) == CheckSide::Bottom;
 	MoveHorizontal(input.left, input.right, input.run, deltaTime);
 	MoveVertical(input.jump, deltaTime);
+}
+
+void MovementComponent::ForceJump()
+{
+	forceJump = true;
 }
 
 MovementState MovementComponent::GetState()
@@ -129,9 +135,9 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 		character->velocity.y = std::fmax(character->velocity.y - gravityAccelerationSpeed * deltaTime, -character->gravity);
 	}
 
-	if (jumpInput)
+	if (jumpInput || forceJump)
 	{
-		if (jumpTimer > 0.0f)
+		if (jumpTimer > 0.0f || forceJump)
 		{
 			// If top collision is detected then stop jumping
 			if ((character->tilemapCollider->DetectedCollisions() & CheckSide::Top) == CheckSide::Top)
@@ -144,6 +150,7 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 			}
 
 			isJumping = true;
+			forceJump = false;
 			jumpTimer -= deltaTime;
 		}
 

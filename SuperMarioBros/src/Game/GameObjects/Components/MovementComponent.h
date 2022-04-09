@@ -38,6 +38,7 @@ public:
 	~MovementComponent();
 
 	void Update(MovementInput input, const float deltaTime);
+	void ForceJump();
 	MovementState GetState();
 	int GetMovementDirection();
 
@@ -71,6 +72,7 @@ private:
 	float jumpDecelaration;
 	float jumpTimer;
 	bool isJumping;
+	bool forceJump;
 	
 	float gravityAccelerationSpeed;
 };
