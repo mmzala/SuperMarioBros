@@ -7,9 +7,15 @@ struct MarioSettings : CharacterSettings
 {
 	MovementComponentSettings movementSettings;
 
-	MarioSettings(MovementComponentSettings movementSettings = MovementComponentSettings())
+	/// <summary>
+	/// How long it takes to power up
+	/// </summary>
+	float poweringUpTime;
+
+	MarioSettings(MovementComponentSettings movementSettings = MovementComponentSettings(), float powerinUpTime = 0.0f)
 		:
 		CharacterSettings::CharacterSettings(),
-		movementSettings(movementSettings)
+		movementSettings(movementSettings),
+		poweringUpTime(poweringUpTime)
 	{}
 };

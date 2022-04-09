@@ -25,17 +25,22 @@ Mario::Mario(MarioSettings settings)
 	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
-	marioState(MarioState::Dead)
+	marioState(MarioState::Dead),
+	marioPowerState(MarioPowerState::Dead),
+	poweringUpTime(settings.poweringUpTime),
+	poweringUpTimer(0.0f),
+	poweringUpAnimationSpeedTimer(0.0f)
 {
 	// Getting animations data
-	animations = std::unordered_map<MarioState, std::vector<Animation>> {
-		{MarioState::Small, Animations::Mario::Small::sMario},
-		{MarioState::Large, Animations::Mario::Large::lMario},
-		{MarioState::Fire, Animations::Mario::Large::fMario},
+	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
+		{MarioPowerState::Small, Animations::Mario::Small::sMario},
+		{MarioPowerState::Large, Animations::Mario::Large::lMario},
+		{MarioPowerState::Fire, Animations::Mario::Large::fMario},
 	};
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
-	UpdateState(MarioState::Small);
+	UpdateState(MarioState::Controlling);
+	UpdatePowerState(MarioPowerState::Small);
 	UpdateAnimations();
 }
 
@@ -46,15 +51,30 @@ Mario::~Mario()
 
 void Mario::Update(const float deltaTime)
 {
-	if (marioState != MarioState::Dead)
+	switch (marioState)
 	{
+	case MarioState::Controlling:
 		Move(deltaTime);
 		UpdateCameraFollow();
 		UpdateAnimations();
 		animator->Update(deltaTime);
+		break;
+
+	case MarioState::PowerUp:
+		PowerUpAnimation(deltaTime);
+		break;
+
+	case MarioState::PowerDown: // Temporary state solution
+		UpdateState(MarioState::Controlling);
+		break;
 	}
 	
 	sprite->Draw(transform->GetWorldMatrix());
+}
+
+MarioState Mario::GetMarioState()
+{
+	return marioState;
 }
 
 void Mario::Move(const float deltaTime)
@@ -111,12 +131,12 @@ void Mario::OnCharacterHit(Character* other)
 		}
 		else
 		{
-			UpdateState((MarioState)((int)marioState - 1));
+			UpdatePowerState((MarioPowerState)((int)marioPowerState - 1));
 		}
 	}
 	else if (dynamic_cast<Mushroom*>(other))
 	{
-		UpdateState(MarioState::Large);
+		UpdatePowerState(MarioPowerState::Large);
 		other->isActive = false;
 	}
 }
@@ -129,7 +149,7 @@ void Mario::HandleHeadCollision()
 	switch (tilemap->GetTileType(hitTile))
 	{
 	case 2:
-		if (marioState == MarioState::Small) break;
+		if (marioPowerState == MarioPowerState::Small) break;
 		tilemap->BreakTile(hitTile);
 		break;
 	default:
@@ -154,30 +174,31 @@ void Mario::UpdateCameraFollow()
 void Mario::UpdateAnimations()
 {
 	// If the players dies (gets hit by enemy) animation update happens once, we set the game over animation
-	if (marioState == MarioState::Dead)
+	switch (marioState)
 	{
-		animator->SetAnimation(animations[MarioState::Small][Animations::Mario::Small::SAnimationState::GameOver]);
+	case MarioState::Dead:
+		animator->SetAnimation(animations[MarioPowerState::Small][Animations::Mario::Small::SAnimationState::GameOver]);
+	case MarioState::PowerUp: // Animation for powering up is handled somewhere else
 		return;
 	}
 
+	// Movement animations
 	switch (movementComponent->GetState())
 	{
 	case MovementState::Standing:
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Standing]);
+		animator->SetAnimation(animations[marioPowerState][Animations::Mario::AnimationState::Standing]);
 		break;
 	case MovementState::Running:
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Walking]);
+		animator->SetAnimation(animations[marioPowerState][Animations::Mario::AnimationState::Walking]);
 		break;
 	case MovementState::TurningAround:
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::ChangeDir]);
+		animator->SetAnimation(animations[marioPowerState][Animations::Mario::AnimationState::ChangeDir]);
 		break;
 	case MovementState::Jumping:
-		animator->SetAnimation(animations[marioState][Animations::Mario::AnimationState::Jumping]);
+		animator->SetAnimation(animations[marioPowerState][Animations::Mario::AnimationState::Jumping]);
 		break;
 	}
 
-	// There is a better way to do this most likely, but I don't want to think anymore
-	// REFACTOR THIS LATER
 	switch (movementComponent->GetMovementDirection())
 	{
 	case 1:
@@ -189,22 +210,63 @@ void Mario::UpdateAnimations()
 	}
 }
 
+void Mario::PowerUpAnimation(const float deltaTime)
+{
+	poweringUpTimer -= deltaTime;
+	poweringUpAnimationSpeedTimer += animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].speed * deltaTime;
+
+	if (poweringUpAnimationSpeedTimer > 1.0f)
+	{
+		sprite->GetFrame() == animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame ?
+			sprite->SetFrame(animations[MarioPowerState::Small][Animations::Mario::AnimationState::Standing].startFrame) :
+			sprite->SetFrame(animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame);
+		poweringUpAnimationSpeedTimer = 0.0f;
+	}
+
+	if (poweringUpTimer <= 0.0f) UpdateState(MarioState::Controlling);
+}
+
 void Mario::UpdateState(MarioState marioState)
 {
 	if (this->marioState == marioState) return;
 	this->marioState = marioState;
 
-	// Updating collider size
 	switch (marioState)
 	{
-	case MarioState::Small:
+	case MarioState::PowerUp:
+		poweringUpTimer = poweringUpTime;
+		poweringUpAnimationSpeedTimer = 0.0f;
+
+		break;
+	}
+}
+
+void Mario::UpdatePowerState(MarioPowerState marioPowerState)
+{
+	if (this->marioPowerState == marioPowerState) return;
+
+	switch (marioPowerState)
+	{
+	case MarioPowerState::Dead:
+		UpdateState(MarioState::Dead);
+		return;
+
+	case MarioPowerState::Small:
+		// Updating collider size for small Mario
 		bounds->SetSizeOffset(DirectX::XMFLOAT2(0.0f, -(sprite->GetSize().y / 2)));
 		break;
 
 	default:
+		// Updating collider size for large Mario
 		bounds->SetSizeOffset(DirectX::XMFLOAT2(0.0f, 0.0f));
 		break;
 	}
+
+	if (this->marioPowerState != MarioPowerState::Dead && marioPowerState != MarioPowerState::Dead)
+	{
+		(int)this->marioPowerState > (int)marioPowerState ? UpdateState(MarioState::PowerDown) : UpdateState(MarioState::PowerUp);
+	}
+	this->marioPowerState = marioPowerState;
 }
 
 DirectX::XMINT2 Mario::GetHeadCollisionTile()

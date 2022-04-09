@@ -21,10 +21,14 @@
 #include "../../../Engine/SMBEngine.h"
 #include "../../../Engine/Input/Input.h"
 
+// Scene Characters Update Mode
+#include "../../../Engine/Graphics/Sprite.h"
+
 GameplayScene::GameplayScene(Game* game)
 	:
 	Scene::Scene(game),
 	tilemap(nullptr),
+	player(nullptr),
 	characters(),
 	flag(nullptr)
 {}
@@ -65,10 +69,25 @@ void GameplayScene::Update(const float deltaTime)
 
 	if (tilemap) tilemap->Update(deltaTime);
 	if (flag) flag->Update(deltaTime);
-	for (size_t i = characters.size(); i-- > 0;)
+	
+	switch (player->GetMarioState())
 	{
-		if (!characters[i]->isActive) continue;
-		characters[i]->Update(deltaTime);
+	case MarioState::PowerUp:
+		for (size_t i = characters.size(); i-- > 1;) // Skip player
+		{
+			if (!characters[i]->isActive) continue;
+			characters[i]->sprite->Draw(characters[i]->transform->GetWorldMatrix());
+		}
+		player->Update(deltaTime);
+		break;
+
+	default:
+		for (size_t i = characters.size(); i-- > 0;)
+		{
+			if (!characters[i]->isActive) continue;
+			characters[i]->Update(deltaTime);
+		}
+		break;
 	}
 }
 
@@ -128,8 +147,9 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 1000.0f;
+	marioSettings.poweringUpTime = 1.5f;
 
-	Mario* player = new Mario(marioSettings);
+	player = new Mario(marioSettings);
 	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 	characters.push_back(player);

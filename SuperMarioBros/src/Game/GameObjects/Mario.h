@@ -11,6 +11,14 @@ class MovementComponent;
 enum class MarioState
 {
 	Dead = -1,
+	Controlling = 0, // Means the player can control Mario
+	PowerDown = 1,
+	PowerUp = 2,
+};
+
+enum class MarioPowerState
+{
+	Dead = -1,
 	Small = 0,
 	Large = 1,
 	Fire = 2,
@@ -23,6 +31,7 @@ public:
 	~Mario() override;
 
 	void Update(const float deltaTime) override;
+	MarioState GetMarioState();
 
 protected:
 	void Move(const float deltaTime) override;
@@ -34,7 +43,9 @@ private:
 	void HandleHeadCollision();
 	void UpdateCameraFollow();
 	void UpdateAnimations();
+	void PowerUpAnimation(const float deltaTime);
 	void UpdateState(MarioState marioState);
+	void UpdatePowerState(MarioPowerState marioPowerState);
 	DirectX::XMINT2 GetHeadCollisionTile();
 
 private:
@@ -42,9 +53,14 @@ private:
 	MovementComponent* movementComponent;
 
 	MarioState marioState;
-	std::unordered_map<MarioState, std::vector<Animation>> animations;
+	MarioPowerState marioPowerState;
+	std::unordered_map<MarioPowerState, std::vector<Animation>> animations;
 	
 	// Positions are in tilemap coordinates
 	std::vector<DirectX::XMINT2> headCollisionPositions;
+
+	float poweringUpTime;
+	float poweringUpTimer;
+	float poweringUpAnimationSpeedTimer;
 };
 

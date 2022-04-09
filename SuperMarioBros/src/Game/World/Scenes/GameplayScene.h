@@ -6,6 +6,7 @@
 
 class Game;
 class Character;
+class Mario;
 class Tilemap;
 class Flag;
 
@@ -33,6 +34,7 @@ protected:
 
 protected:
 	Tilemap* tilemap;
+	Mario* player; // This does not have to be deleted (it gets deleted with characters vector)
 	std::vector<Character*> characters;
 	Flag* flag;
 };

@@ -40,7 +40,7 @@ namespace Animations
 			struct LAnimationState : AnimationState
 			{
 				static constexpr int Ducking = 4;
-				static constexpr int GettingHit = 5;
+				static constexpr int Transitional = 5;
 			};
 
 			/// <summary>
@@ -52,7 +52,7 @@ namespace Animations
 				Animation(4, 4, 0.0f), // Changing direction while walking / running
 				Animation(5, 5, 0.0f), // Jumping
 				Animation(14, 14, 0.0f), // Ducking
-				Animation(15, 15, 0.0f), // Getting Hit
+				Animation(15, 15, 5.0f), // Transitional
 			};
 
 			/// <summary>
@@ -64,7 +64,7 @@ namespace Animations
 				Animation(39, 39, 0.0f), // Changing direction while walking / running
 				Animation(40, 40, 0.0f), // Jumping
 				Animation(49, 49, 0.0f), // Ducking
-				Animation(50, 50, 0.0f), // Getting Hit
+				Animation(50, 50, 5.0f), // Transitional
 			};
 		}
 	}
