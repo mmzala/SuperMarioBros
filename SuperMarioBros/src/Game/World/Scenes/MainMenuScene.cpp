@@ -56,6 +56,8 @@ void MainMenuScene::Load()
 	mario->transform->position = tilemap->GetPositionInWorldCoordinates(DirectX::XMINT2(2, 11));
 	mario->transform->position.y -= 22.0f; // Calculate this properly later
 	mario->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
+
+	SetupScoreTracker("1-1", 0.0f, true);
 }
 
 void MainMenuScene::UnLoad()
