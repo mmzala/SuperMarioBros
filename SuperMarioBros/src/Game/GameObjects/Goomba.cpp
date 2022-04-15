@@ -2,12 +2,17 @@
 #include "../../Engine/Graphics/Animator.h" // Setting animations
 #include "../Data/Animations.h" // Animation data
 
+// Ignoring collision
+#include "../../Engine/Physics/CharacterCollider.h"
+#include "Mushroom.h"
+
 Goomba::Goomba(CharacterSettings settings)
 	:
 	Enemy::Enemy(settings),
 	animations(Animations::Goomba::goomba)
 {
 	UpdateState(EnemyState::Walking);
+	characterCollider->AddCharacterTypeToIgnore<Mushroom>();
 }
 
 Goomba::~Goomba()
