@@ -13,8 +13,6 @@ public:
 	Mushroom(CharacterSettings settings);
 	~Mushroom() override;
 
-	void Update(const float deltaTime) override;
-
 protected:
 	void Move(const float deltaTime) override;
 	void OnCharacterHit(Character* other) override;

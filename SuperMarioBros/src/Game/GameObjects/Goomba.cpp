@@ -22,7 +22,7 @@ Goomba::~Goomba()
 
 void Goomba::Update(const float deltaTime)
 {
-	if (IsRightFromCamera()) return;
+	if (!WasSeen()) return;
 	Enemy::Update(deltaTime);
 }
 

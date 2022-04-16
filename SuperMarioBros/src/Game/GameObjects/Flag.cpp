@@ -20,7 +20,7 @@ Flag::~Flag()
 
 void Flag::Update(const float deltaTime)
 {
-	if (IsRightFromCamera()) return;
+	if (!WasSeen()) return;
 	GameObject::Update(deltaTime);
 }
 

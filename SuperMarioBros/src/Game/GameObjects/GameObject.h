@@ -17,7 +17,7 @@ public:
 	virtual ~GameObject();
 
 	virtual void Update(const float deltaTime);
-	bool IsRightFromCamera();
+	bool WasSeen();
 
 public:
 	Transform* transform;
@@ -29,5 +29,11 @@ public:
 	/// If the object is also a character, it prevents from checking collision with other characters
 	/// </summary>
 	bool isActive;
+
+private:
+	/// <summary>
+	/// If the gameObject was seen on the screen
+	/// </summary>
+	bool wasSeen;
 };
 

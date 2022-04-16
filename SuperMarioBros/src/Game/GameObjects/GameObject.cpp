@@ -10,7 +10,8 @@ GameObject::GameObject(SpriteSettings spriteSettings)
 	transform(new Transform()),
 	sprite(new Sprite(SpriteSettings(spriteSettings.textureFile, spriteSettings.spriteSheetSize))),
 	bounds(new RectBounds(sprite->GetSize(), transform)),
-	isActive(true)
+	isActive(true),
+	wasSeen(false)
 {
 	sprite->SetFrame(0);
 }
@@ -27,8 +28,17 @@ void GameObject::Update(const float deltaTime)
 	sprite->Draw(transform->GetWorldMatrix());
 }
 
-bool GameObject::IsRightFromCamera()
+bool GameObject::WasSeen()
 {
+	if (wasSeen) return true;
+
 	Rect viewingFrustum = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
-	return bounds->GetBounds().x > (viewingFrustum.x + viewingFrustum.width);
+	if (bounds->GetBounds().x > (viewingFrustum.x + viewingFrustum.width))
+	{
+		wasSeen = true;
+		return true;
+	}
+
+	return false;
+
 }
