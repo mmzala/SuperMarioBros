@@ -43,7 +43,9 @@ private:
 	void HandleHeadCollision();
 	void UpdateCameraFollow();
 	void UpdateAnimations();
+	void UpdateMovementAnimations(MarioPowerState marioPowerState);
 	void PowerUpAnimation(const float deltaTime);
+	void PowerDownAnimation(const float deltaTime);
 	void UpdateState(MarioState marioState);
 	void UpdatePowerState(MarioPowerState marioPowerState);
 	DirectX::XMINT2 GetHeadCollisionTile();
@@ -59,8 +61,11 @@ private:
 	// Positions are in tilemap coordinates
 	std::vector<DirectX::XMINT2> headCollisionPositions;
 
+	// Changing power states effects
 	float poweringUpTime;
-	float poweringUpTimer;
-	float poweringUpAnimationSpeedTimer;
+	float poweringDownTime;
+	float poweringDownFlickeringSpeed;
+	float powerChangeTimer;
+	float powerChangeAnimationTimer;
 };
 

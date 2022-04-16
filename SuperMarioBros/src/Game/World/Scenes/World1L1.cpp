@@ -25,7 +25,7 @@ void World1L1::Load()
 	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
 	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
 
-	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {15, 9} };
+	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {15, 9}, {20, 9} };
 	spawnPowerUpAction = new TileSpawnPowerUpAction(spawnPowerUpTiles);
 	std::vector<TileAction*> tileActions = { spawnPowerUpAction };
 

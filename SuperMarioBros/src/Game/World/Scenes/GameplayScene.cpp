@@ -147,7 +147,9 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 1000.0f;
-	marioSettings.poweringUpTime = 1.0f;
+	marioSettings.poweringUpTime = 0.8f;
+	marioSettings.poweringDownTime = 1.0f;
+	marioSettings.poweringDownFlickeringSpeed = 3.0f;
 
 	player = new Mario(marioSettings);
 	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);

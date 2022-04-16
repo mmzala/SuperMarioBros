@@ -5,6 +5,7 @@
 // Ignoring collision
 #include "../../Engine/Physics/CharacterCollider.h"
 #include "Mushroom.h"
+#include "Mario.h"
 
 Goomba::Goomba(CharacterSettings settings)
 	:
@@ -13,6 +14,7 @@ Goomba::Goomba(CharacterSettings settings)
 {
 	UpdateState(EnemyState::Walking);
 	characterCollider->AddCharacterTypeToIgnore<Mushroom>();
+	characterCollider->AddCharacterTypeToIgnore<Mario>();
 }
 
 Goomba::~Goomba()

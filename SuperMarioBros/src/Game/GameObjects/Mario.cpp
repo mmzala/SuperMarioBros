@@ -15,6 +15,7 @@
 
 // Collision Checking
 #include "../../Engine/Physics/RectBounds.h" // Getting rect bounds for collision
+#include "../../Engine/Physics/CharacterCollider.h" // Ignoring collision when powering down
 
 // Responses from collision
 #include "Mushroom.h" // Power up
@@ -28,8 +29,10 @@ Mario::Mario(MarioSettings settings)
 	marioState(MarioState::Dead),
 	marioPowerState(MarioPowerState::Dead),
 	poweringUpTime(settings.poweringUpTime),
-	poweringUpTimer(0.0f),
-	poweringUpAnimationSpeedTimer(0.0f)
+	poweringDownTime(settings.poweringDownTime),
+	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
+	powerChangeTimer(0.0f),
+	powerChangeAnimationTimer(0.0f)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -58,18 +61,24 @@ void Mario::Update(const float deltaTime)
 		UpdateCameraFollow();
 		UpdateAnimations();
 		animator->Update(deltaTime);
+		sprite->Draw(transform->GetWorldMatrix());
 		break;
 
 	case MarioState::PowerUp:
 		PowerUpAnimation(deltaTime);
+		sprite->Draw(transform->GetWorldMatrix());
 		break;
 
-	case MarioState::PowerDown: // Temporary state solution
-		UpdateState(MarioState::Controlling);
+	case MarioState::PowerDown:
+		Move(deltaTime);
+		UpdateCameraFollow();
+		PowerDownAnimation(deltaTime);
+		animator->Update(deltaTime);
 		break;
+
+	case MarioState::Dead:
+		sprite->Draw(transform->GetWorldMatrix());
 	}
-	
-	sprite->Draw(transform->GetWorldMatrix());
 }
 
 MarioState Mario::GetMarioState()
@@ -182,7 +191,11 @@ void Mario::UpdateAnimations()
 		return;
 	}
 
-	// Movement animations
+	UpdateMovementAnimations(marioPowerState);
+}
+
+void Mario::UpdateMovementAnimations(MarioPowerState marioPowerState)
+{
 	switch (movementComponent->GetState())
 	{
 	case MovementState::Standing:
@@ -212,18 +225,41 @@ void Mario::UpdateAnimations()
 
 void Mario::PowerUpAnimation(const float deltaTime)
 {
-	poweringUpTimer -= deltaTime;
-	poweringUpAnimationSpeedTimer += animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].speed * deltaTime;
+	powerChangeTimer -= deltaTime;
+	powerChangeAnimationTimer += animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].speed * deltaTime;
 
-	if (poweringUpAnimationSpeedTimer > 1.0f)
+	if (powerChangeAnimationTimer > 1.0f)
 	{
 		sprite->GetFrame() == animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame ?
 			sprite->SetFrame(animations[MarioPowerState::Small][Animations::Mario::AnimationState::Standing].startFrame) :
 			sprite->SetFrame(animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame);
-		poweringUpAnimationSpeedTimer = 0.0f;
+		powerChangeAnimationTimer = 0.0f;
 	}
 
-	if (poweringUpTimer <= 0.0f) UpdateState(MarioState::Controlling);
+	if (powerChangeTimer <= 0.0f) UpdateState(MarioState::Controlling);
+}
+
+void Mario::PowerDownAnimation(const float deltaTime)
+{
+	powerChangeTimer -= deltaTime;
+	powerChangeAnimationTimer += poweringDownFlickeringSpeed * deltaTime;
+
+	if (powerChangeAnimationTimer < 0.5f)
+	{
+		sprite->Draw(transform->GetWorldMatrix());
+	}
+	else if (powerChangeAnimationTimer > 1.0f)
+	{
+		powerChangeAnimationTimer = 0.0f;
+	}
+
+	powerChangeTimer > 0.5f ? UpdateMovementAnimations((MarioPowerState)((int)marioPowerState + 1)) : UpdateAnimations();
+	if (powerChangeTimer <= 0.0f)
+	{
+		characterCollider->RemoveCharacterTypeToIgnore<Goomba>();
+		characterCollider->RemoveCharacterTypeToIgnore<Mushroom>();
+		UpdateState(MarioState::Controlling);
+	}
 }
 
 void Mario::UpdateState(MarioState marioState)
@@ -234,9 +270,15 @@ void Mario::UpdateState(MarioState marioState)
 	switch (marioState)
 	{
 	case MarioState::PowerUp:
-		poweringUpTimer = poweringUpTime;
-		poweringUpAnimationSpeedTimer = 0.0f;
+		powerChangeTimer = poweringUpTime;
+		powerChangeAnimationTimer = 0.0f;
+		break;
 
+	case MarioState::PowerDown:
+		characterCollider->AddCharacterTypeToIgnore<Goomba>();
+		characterCollider->AddCharacterTypeToIgnore<Mushroom>();
+		powerChangeTimer = poweringDownTime;
+		powerChangeAnimationTimer = 0.0f;
 		break;
 	}
 }
