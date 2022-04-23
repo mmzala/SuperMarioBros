@@ -67,26 +67,26 @@ void GameplayScene::Update(const float deltaTime)
 		game->ChangeScene(0);
 	}
 
-	if (tilemap) tilemap->Update(deltaTime);
-	if (flag) flag->Update(deltaTime);
+	tilemap->Update(deltaTime);
+	flag->Update(deltaTime);
 	
 	switch (player->GetMarioState())
 	{
+	case MarioState::TouchedFlagPole:
+		flag->moveDownwards = true;
+		DrawAllCharactersUpdateMario(deltaTime);
+		break;
+
 	case MarioState::PowerUp:
-		for (size_t i = characters.size(); i-- > 1;) // Skip player
-		{
-			if (!characters[i]->isActive) continue;
-			characters[i]->sprite->Draw(characters[i]->transform->GetWorldMatrix());
-		}
-		player->Update(deltaTime);
+		DrawAllCharactersUpdateMario(deltaTime);
+		break;
+
+	case MarioState::InCastle:
+		DrawAllCharactersUpdateMario(deltaTime);
 		break;
 
 	default:
-		for (size_t i = characters.size(); i-- > 0;)
-		{
-			if (!characters[i]->isActive) continue;
-			characters[i]->Update(deltaTime);
-		}
+		UpdateAllCharacters(deltaTime);
 		break;
 	}
 }
@@ -119,7 +119,7 @@ void GameplayScene::CreateUI()
 	Scene::CreateUI();
 }
 
-void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
+void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2 tilemapPolePositionBottom)
 {
 	SpriteSettings marioSpriteSettings = SpriteSettings();
 	marioSpriteSettings.textureFile = "assets/MarioSpriteSheet.png";
@@ -150,6 +150,8 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition)
 	marioSettings.poweringUpTime = 0.8f;
 	marioSettings.poweringDownTime = 1.0f;
 	marioSettings.poweringDownFlickeringSpeed = 3.0f;
+	marioSettings.flagPoleBottomPositionY = tilemap->GetPositionInWorldCoordinates(tilemapPolePositionBottom).y;
+	marioSettings.poleDescendingSpeed = 0.5f;
 
 	player = new Mario(marioSettings);
 	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
@@ -188,8 +190,27 @@ void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::
 	flagSettings.spriteSettings = flagSpriteSettings;
 	flagSettings.poleTopPosition = tilemapPolePositionTop;
 	flagSettings.poleBottomPosition = tilemapPolePositionBottom;
-	flagSettings.descendingSpeed = 150.0f;
+	flagSettings.descendingSpeed = 0.5f;
 
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
+}
+
+void GameplayScene::UpdateAllCharacters(float deltaTime)
+{
+	for (size_t i = characters.size(); i-- > 0;)
+	{
+		if (!characters[i]->isActive) continue;
+		characters[i]->Update(deltaTime);
+	}
+}
+
+void GameplayScene::DrawAllCharactersUpdateMario(float deltaTime)
+{
+	for (size_t i = characters.size(); i-- > 1;) // Skip player
+	{
+		if (!characters[i]->isActive) continue;
+		characters[i]->sprite->Draw(characters[i]->transform->GetWorldMatrix());
+	}
+	if(player->isActive) player->Update(deltaTime);
 }

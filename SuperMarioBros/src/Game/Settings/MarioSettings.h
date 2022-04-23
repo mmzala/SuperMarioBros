@@ -9,14 +9,19 @@ struct MarioSettings : CharacterSettings
 	float poweringUpTime;
 	float poweringDownTime;
 	float poweringDownFlickeringSpeed;
+	float flagPoleBottomPositionY;
+	float poleDescendingSpeed;
 
-	MarioSettings(MovementComponentSettings movementSettings = MovementComponentSettings(), float powerinUpTime = 0.0f,
-		float poweringDownTime = 0.0f, float poweringDownFlickeringSpeed = 0.0f)
+	MarioSettings(MovementComponentSettings movementSettings = MovementComponentSettings(), float poweringUpTime = 0.0f,
+		float poweringDownTime = 0.0f, float poweringDownFlickeringSpeed = 0.0f, float flagPoleBottomPositionY = 0.0f,
+		float poleDescendingSpeed = 0.0f)
 		:
 		CharacterSettings::CharacterSettings(),
 		movementSettings(movementSettings),
 		poweringUpTime(poweringUpTime),
 		poweringDownTime(poweringDownTime),
-		poweringDownFlickeringSpeed(poweringDownFlickeringSpeed)
+		poweringDownFlickeringSpeed(poweringDownFlickeringSpeed),
+		flagPoleBottomPositionY(flagPoleBottomPositionY),
+		poleDescendingSpeed(poleDescendingSpeed)
 	{}
 };

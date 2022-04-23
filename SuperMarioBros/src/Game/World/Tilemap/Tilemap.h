@@ -116,10 +116,16 @@ public:
 	void SetTile(DirectX::XMINT2 tilemapPosition, int tileType);
 
 	/// <summary>
-	/// Breaks tile tile
+	/// Breaks the tile at the given tilemap position
 	/// </summary>
-	/// <param name="tilemapPosition"> Where to break the tile in tilemap coordinates </param>
+	/// <param name="tilemapPosition">: Where to break the tile in tilemap coordinates </param>
 	void BreakTile(DirectX::XMINT2 tilemapPosition);
+
+	/// <summary>
+	/// Removes collision at the given tilemap position
+	/// </summary>
+	/// <param name="tilemapPosition">: Where to remove collision in tilemap coordinates </param>
+	void RemoveCollision(DirectX::XMINT2 tilemapPosition);
 
 private:
 	/// <summary>

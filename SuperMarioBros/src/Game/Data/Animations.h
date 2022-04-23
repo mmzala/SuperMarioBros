@@ -14,13 +14,14 @@ namespace Animations
 			static constexpr int Walking = 1;
 			static constexpr int ChangeDir = 2;
 			static constexpr int Jumping = 3;
+			static constexpr int OnFlagPole = 4;
 		};
 
 		namespace Small
 		{
 			struct SAnimationState : AnimationState
 			{
-				static constexpr int GameOver = 4;
+				static constexpr int GameOver = 5;
 			};
 
 			/// <summary>
@@ -31,6 +32,7 @@ namespace Animations
 				Animation(22, 24, 10.0f), // Walking / Running
 				Animation(25, 25, 0.0f), // Changing direction while walking / running
 				Animation(26, 26, 0.0f), // Jumping
+				Animation(28, 29, 5.0f), // On flag pole
 				Animation(27, 27, 0.0f), // Game over
 			};
 		}
@@ -39,8 +41,8 @@ namespace Animations
 		{
 			struct LAnimationState : AnimationState
 			{
-				static constexpr int Ducking = 4;
-				static constexpr int Transitional = 5;
+				static constexpr int Ducking = 5;
+				static constexpr int Transitional = 6;
 			};
 
 			/// <summary>
@@ -51,6 +53,7 @@ namespace Animations
 				Animation(1, 3, 10.0f), // Walking / Running
 				Animation(4, 4, 0.0f), // Changing direction while walking / running
 				Animation(5, 5, 0.0f), // Jumping
+				Animation(6, 7, 5.0f), // On flag pole
 				Animation(14, 14, 0.0f), // Ducking
 				Animation(15, 15, 5.0f), // Transitional
 			};
@@ -63,6 +66,7 @@ namespace Animations
 				Animation(36, 38, 10.0f), // Walking / Running
 				Animation(39, 39, 0.0f), // Changing direction while walking / running
 				Animation(40, 40, 0.0f), // Jumping
+				Animation(41, 42, 5.0f), // On flag pole
 				Animation(49, 49, 0.0f), // Ducking
 				Animation(50, 50, 5.0f), // Transitional
 			};

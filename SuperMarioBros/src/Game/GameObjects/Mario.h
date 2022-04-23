@@ -14,6 +14,8 @@ enum class MarioState
 	Controlling = 0, // Means the player can control Mario
 	PowerDown = 1,
 	PowerUp = 2,
+	TouchedFlagPole = 3,
+	InCastle = 4,
 };
 
 enum class MarioPowerState
@@ -44,6 +46,8 @@ private:
 	void UpdateCameraFollow();
 	void UpdateAnimations();
 	void UpdateMovementAnimations(MarioPowerState marioPowerState);
+	void OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilemapPosition);
+	void GoToCastle(float deltaTime);
 	void PowerUpAnimation(const float deltaTime);
 	void PowerDownAnimation(const float deltaTime);
 	void UpdateState(MarioState marioState);
@@ -67,5 +71,11 @@ private:
 	float poweringDownFlickeringSpeed;
 	float powerChangeTimer;
 	float powerChangeAnimationTimer;
+
+	// Climbing down the flag pole
+	float flagPoleBottomPositionY;
+	float poleDescendingSpeed;
+	float startPolePositionY;
+	float poleDescentInterpolationValue;
 };
 

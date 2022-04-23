@@ -28,9 +28,13 @@ public:
 
 protected:
 	void CreateUI() override;
-	void CreateMario(DirectX::XMINT2 tilemapPosition);
+	void CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2 tilemapPolePositionBottom);
 	void CreateGoomba(DirectX::XMINT2 tilemapPosition);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
+
+private:
+	void UpdateAllCharacters(float deltaTime);
+	void DrawAllCharactersUpdateMario(float deltaTime);
 
 protected:
 	Tilemap* tilemap;

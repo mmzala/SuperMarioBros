@@ -32,7 +32,11 @@ Mario::Mario(MarioSettings settings)
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
 	powerChangeTimer(0.0f),
-	powerChangeAnimationTimer(0.0f)
+	powerChangeAnimationTimer(0.0f),
+	flagPoleBottomPositionY(settings.flagPoleBottomPositionY),
+	poleDescendingSpeed(settings.poleDescendingSpeed),
+	startPolePositionY(0.0f),
+	poleDescentInterpolationValue(0.0f)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -56,6 +60,10 @@ void Mario::Update(const float deltaTime)
 {
 	switch (marioState)
 	{
+	case MarioState::Dead:
+		sprite->Draw(transform->GetWorldMatrix());
+		break;
+
 	case MarioState::Controlling:
 		Move(deltaTime);
 		UpdateCameraFollow();
@@ -72,12 +80,16 @@ void Mario::Update(const float deltaTime)
 	case MarioState::PowerDown:
 		Move(deltaTime);
 		UpdateCameraFollow();
-		PowerDownAnimation(deltaTime);
+		PowerDownAnimation(deltaTime); // Drawing the sprite is a part of the power down animation
 		animator->Update(deltaTime);
 		break;
 
-	case MarioState::Dead:
+	case MarioState::TouchedFlagPole:
+		GoToCastle(deltaTime);
+		UpdateCameraFollow();
+		animator->Update(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
+		break;
 	}
 }
 
@@ -119,6 +131,20 @@ void Mario::CheckCollision(const float deltaTime)
 
 void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition)
 {
+	switch (tileType)
+	{
+	case 33: // Flagpole bar
+	case 34: // Flagpole top
+		if (transform->position.y < worldPosition.y + tilemap->GetTileSize() / 2) break;
+		OnHitFlagPole(worldPosition, tilemapPosition);
+		break;
+
+	case 11: // Castle brick (used ONLY to check if player should be in castle)
+		UpdateState(MarioState::InCastle);
+		isActive = false;
+		break;
+	}
+
 	switch (side)
 	{
 	case CheckSide::Top:
@@ -187,6 +213,8 @@ void Mario::UpdateAnimations()
 	{
 	case MarioState::Dead:
 		animator->SetAnimation(animations[MarioPowerState::Small][Animations::Mario::Small::SAnimationState::GameOver]);
+		return;
+
 	case MarioState::PowerUp: // Animation for powering up is handled somewhere else
 		return;
 	}
@@ -220,6 +248,45 @@ void Mario::UpdateMovementAnimations(MarioPowerState marioPowerState)
 	case -1:
 		sprite->FlipSpriteX(true);
 		break;
+	}
+}
+
+void Mario::OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilemapPosition)
+{
+	UpdateState(MarioState::TouchedFlagPole);
+
+	startPolePositionY = transform->position.y;
+	transform->position.x = worldPosition.x;
+
+	// Remove 4 collision tiles from the bottom of the pole, so that the player does not get stuck on them
+	float poleTilemapPositionY = tilemap->GetPositionInTilemapCoordinates(DirectX::XMFLOAT2(0.0, flagPoleBottomPositionY)).y;
+	int intPoleTilemapPositionY = static_cast<int>(std::roundf(poleTilemapPositionY));
+	for (int i = 0; i < 4; i++)
+	{
+		tilemap->RemoveCollision(DirectX::XMINT2(tilemapPosition.x, intPoleTilemapPositionY - i));
+	}
+
+	flagPoleBottomPositionY += tilemap->GetTileSize() / 2; // So that player does not get stuck on the block below him
+}
+
+void Mario::GoToCastle(float deltaTime)
+{
+	// First move downwards on the flag pole
+	if (poleDescentInterpolationValue <= 1.0f)
+	{
+		animator->SetAnimation(animations[marioPowerState][Animations::Mario::AnimationState::OnFlagPole]);
+
+		transform->position.y = Math::Lerp(startPolePositionY, flagPoleBottomPositionY, poleDescentInterpolationValue);
+		poleDescentInterpolationValue += poleDescendingSpeed * deltaTime;
+	}
+	else
+	{
+		MovementInput input;
+		input.right = true;
+		movementComponent->Update(input, deltaTime);
+
+		Character::Move(deltaTime);
+		UpdateMovementAnimations(marioPowerState);
 	}
 }
 

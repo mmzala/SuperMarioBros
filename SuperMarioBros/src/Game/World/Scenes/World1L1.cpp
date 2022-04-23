@@ -41,7 +41,7 @@ void World1L1::Load()
 	tilemap = new Tilemap(tilemapSettings);
 
 	// Objects setup
-	CreateMario(DirectX::XMINT2(2, 11));
+	CreateMario(DirectX::XMINT2(2, 11), DirectX::XMINT2(198, 11));
 	CreateGoomba(DirectX::XMINT2(22, 11));
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
 

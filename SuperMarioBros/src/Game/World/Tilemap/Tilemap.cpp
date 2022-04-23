@@ -179,6 +179,12 @@ void Tilemap::BreakTile(DirectX::XMINT2 tilemapPosition)
 	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
 }
 
+void Tilemap::RemoveCollision(DirectX::XMINT2 tilemapPosition)
+{
+	if (IsPositionOutOfBounds(tilemapPosition)) return;
+	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
+}
+
 DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 {
 	Rect viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();

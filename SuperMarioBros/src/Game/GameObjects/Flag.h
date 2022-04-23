@@ -13,9 +13,13 @@ public:
 
 	void Update(const float deltaTime) override;
 
+public:
+	bool moveDownwards;
+
 private:
 	DirectX::XMFLOAT2 topPosition;
 	DirectX::XMFLOAT2 bottomPosition;
 	float descendingSpeed;
+	float interpolationValue;
 };
 
