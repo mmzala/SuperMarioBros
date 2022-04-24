@@ -19,6 +19,14 @@ public:
 	~Character() override;
 
 	void Update(const float deltaTime) override;
+
+	/// <summary>
+	/// Gets the position that can be used to place the character directly on a tile.
+	/// Use one tile above the the tile the character has to stand on.
+	/// </summary>
+	/// <param name="tilemapPosition">: Position in tilemap coordinates </param>
+	/// <returns> Position that the character can stand on a tile </returns>
+	DirectX::XMFLOAT2 GetSpawnPositionOnTile(DirectX::XMINT2 tilemapPosition);
 	DirectX::XMFLOAT2 GetVelocity();
 
 protected:

@@ -15,7 +15,7 @@ TileSpawnPowerUpAction::~TileSpawnPowerUpAction()
 void TileSpawnPowerUpAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapPosition)
 {
 	tilemap->SetTile(tilemapPosition, 9);
-	tilemapPosition.y -= 2; // Setup position to spawn in
+	tilemapPosition.y -= 1; // Spawn above the hit tile
 
 	GameplayScene* scene = (GameplayScene*)SMBEngine::GetInstance()->GetGame()->GetCurrentScene();
 	scene->CreateMushroom(tilemapPosition);

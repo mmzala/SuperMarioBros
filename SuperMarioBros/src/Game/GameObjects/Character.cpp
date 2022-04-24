@@ -5,6 +5,7 @@
 #include "../World/Tilemap/Tilemap.h" // Tilemap for collision
 #include "../../Engine/Physics/TilemapCollider.h" // Tilemap collision
 #include "../../Engine/Physics/CharacterCollider.h" // Character collision
+#include "../../Engine/Physics/RectBounds.h" // Calculating position on a tile to stand on
 
 Character::Character(const CharacterSettings settings)
 	:
@@ -31,6 +32,15 @@ void Character::Update(const float deltaTime)
 	Move(deltaTime);
 	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());
+}
+
+DirectX::XMFLOAT2 Character::GetSpawnPositionOnTile(DirectX::XMINT2 tilemapPosition)
+{
+	DirectX::XMFLOAT2 position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	Rect bounds = this->bounds->GetBounds();
+	position.y += bounds.height;
+
+	return position;
 }
 
 DirectX::XMFLOAT2 Character::GetVelocity()

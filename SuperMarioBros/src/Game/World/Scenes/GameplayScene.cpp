@@ -104,7 +104,7 @@ void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
 	mushroomSettings.gravity = 375.0f;
 
 	Mushroom* mushroom = new Mushroom(mushroomSettings);
-	mushroom->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	mushroom->transform->position = mushroom->GetSpawnPositionOnTile(tilemapPosition);
 	mushroom->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	characters.push_back(mushroom);
 }
@@ -154,7 +154,7 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2
 	marioSettings.poleDescendingSpeed = 0.5f;
 
 	player = new Mario(marioSettings);
-	player->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	player->transform->position = player->GetSpawnPositionOnTile(tilemapPosition);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 	characters.push_back(player);
 }
@@ -172,7 +172,7 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSettings.gravity = 375.0f;
 
 	Goomba* goomba = new Goomba(goombaSettings);
-	goomba->transform->position = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
+	goomba->transform->position = goomba->GetSpawnPositionOnTile(tilemapPosition);
 	goomba->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	characters.push_back(goomba);
 }
