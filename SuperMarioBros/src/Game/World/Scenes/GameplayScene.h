@@ -30,6 +30,7 @@ protected:
 	void CreateUI() override;
 	void CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2 tilemapPolePositionBottom);
 	void CreateGoomba(DirectX::XMINT2 tilemapPosition);
+	void CreateGoombas(const std::vector<DirectX::XMINT2>& tilemapPositions);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
 
 private:

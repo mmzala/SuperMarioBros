@@ -38,8 +38,8 @@ void MainMenuScene::Load()
 	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
 	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
 	TilemapSettings tilemapSettings;
-	tilemapSettings.tilemap = Worlds::world1d1;
-	tilemapSettings.collisionMap = Worlds::Collision::world1d1;
+	tilemapSettings.tilemap = Worlds::World1D1::tilemap;
+	tilemapSettings.collisionMap = Worlds::World1D1::collisionmap;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = DirectX::XMINT2(6, 6);
 	tilemapSettings.animations = tilemapAnimations;

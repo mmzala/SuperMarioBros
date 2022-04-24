@@ -33,12 +33,12 @@ bool GameObject::WasSeen()
 	if (wasSeen) return true;
 
 	Rect viewingFrustum = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
-	if (bounds->GetBounds().x > (viewingFrustum.x + viewingFrustum.width))
+	float a = bounds->GetBounds().x;
+	if (bounds->GetBounds().x < (viewingFrustum.x + viewingFrustum.width))
 	{
 		wasSeen = true;
 		return true;
 	}
 
 	return false;
-
 }

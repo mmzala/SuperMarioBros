@@ -177,6 +177,14 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	characters.push_back(goomba);
 }
 
+void GameplayScene::CreateGoombas(const std::vector<DirectX::XMINT2>& tilemapPositions)
+{
+	for (DirectX::XMINT2 position : tilemapPositions)
+	{
+		CreateGoomba(position);
+	}
+}
+
 void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom)
 {
 	// There can only be 1 flag

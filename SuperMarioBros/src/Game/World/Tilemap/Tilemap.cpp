@@ -191,7 +191,7 @@ DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 
 	// Adding tileSizeScaled to right coordinate, to prevent player from seeing any artifacts when going fast
 	DirectX::XMFLOAT2 worldPosition = DirectX::XMFLOAT2(viewportBounds.x,
-		viewportBounds.width + tileSizeScaled);
+		viewportBounds.x + viewportBounds.width + tileSizeScaled);
 
 	// Both x and y are horizontal coordinates in this case
 	DirectX::XMINT2 mapPosition = DirectX::XMINT2();

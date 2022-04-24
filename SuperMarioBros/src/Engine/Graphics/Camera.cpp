@@ -37,9 +37,9 @@ Rect Camera::GetViewportBounds()
 {
 	Rect bounds = Rect();
 	bounds.x = position.x;
-	bounds.width = clientWidth + position.x;
+	bounds.width = clientWidth;
 	bounds.y = position.y;
-	bounds.height = clientHeight + position.y;
+	bounds.height = clientHeight;
 
 	return bounds;
 }
@@ -56,8 +56,7 @@ DirectX::XMFLOAT2 Camera::GetViewportCenter()
 
 void Camera::FollowPosition(DirectX::XMFLOAT2 position, bool followX, bool followY)
 {
-	Rect viewportBounds = GetViewportBounds();
-	DirectX::XMFLOAT2 finalPosition = this->position;
+	DirectX::XMFLOAT2 finalPosition = DirectX::XMFLOAT2();
 
 	if (followX) finalPosition.x = position.x - clientWidth / 2;
 	if (followY) finalPosition.y = position.y - clientHeight / 2;

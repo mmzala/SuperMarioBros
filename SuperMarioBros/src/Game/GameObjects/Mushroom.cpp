@@ -11,6 +11,7 @@ Mushroom::Mushroom(CharacterSettings settings)
 	movementComponent(new AIMovementComponent(this))
 {
 	characterCollider->AddCharacterTypeToIgnore<Goomba>();
+	movementComponent->ChangeMovingDirection(); // Begin with moving to the right
 }
 
 Mushroom::~Mushroom()

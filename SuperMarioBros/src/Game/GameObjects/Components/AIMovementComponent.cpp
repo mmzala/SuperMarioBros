@@ -5,7 +5,10 @@ AIMovementComponent::AIMovementComponent(Character* character)
 	:
 	character(character),
 	walkingRight(false)
-{}
+{
+	// To prevent changing moving direction on the first update call
+	character->velocity.x = character->walkingSpeed * (walkingRight ? 1 : -1);
+}
 
 AIMovementComponent::~AIMovementComponent()
 {}
