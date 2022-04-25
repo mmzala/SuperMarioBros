@@ -5,13 +5,17 @@
 // World
 #include "../../Data/Worlds.h"
 #include "../Tilemap/Tilemap.h"
-#include "../Tilemap/TileSpawnPowerUpAction.h" // Spawning power up
+
+// Tile actions
+#include "../Tilemap/TileActions/TileSpawnPowerUpAction.h" // Spawning power up
+#include "../Tilemap/TileActions/TileCoinAction.h" // Giving coins
 
 World1L1::World1L1(Game* game)
 	:
 	GameplayScene::GameplayScene(game),
 	questionMarkBlock(nullptr),
-	spawnPowerUpAction(nullptr)
+	spawnPowerUpAction(nullptr),
+	giveCoinAction(nullptr)
 {}
 
 World1L1::~World1L1()
@@ -25,9 +29,13 @@ void World1L1::Load()
 	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
 	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
 
-	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {15, 9}, {20, 9} };
+	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {20, 9} };
 	spawnPowerUpAction = new TileSpawnPowerUpAction(spawnPowerUpTiles);
-	std::vector<TileAction*> tileActions = { spawnPowerUpAction };
+
+	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9} };
+	giveCoinAction = new TileCoinAction(giveCoinTiles);
+
+	std::vector<TileAction*> tileActions = { spawnPowerUpAction, giveCoinAction };
 
 	TilemapSettings tilemapSettings;
 	tilemapSettings.tilemap = Worlds::World1D1::tilemap;
@@ -54,6 +62,7 @@ void World1L1::UnLoad()
 	GameplayScene::UnLoad();
 	delete questionMarkBlock;
 	delete spawnPowerUpAction;
+	delete giveCoinAction;
 }
 
 void World1L1::Update(const float deltaTime)

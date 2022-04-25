@@ -1,8 +1,8 @@
 #include "TileSpawnPowerUpAction.h"
-#include "../../../Engine/SMBEngine.h" // Getting game
-#include "../../Game.h" // Getting scene
-#include "../Scenes/GameplayScene.h" // Spawning power up
-#include "Tilemap.h" // Setting tile
+#include "../../../../Engine/SMBEngine.h" // Getting game
+#include "../../../Game.h" // Getting scene
+#include "../../Scenes/GameplayScene.h" // Spawning power up
+#include "../Tilemap.h" // Setting tile
 
 TileSpawnPowerUpAction::TileSpawnPowerUpAction(std::unordered_set<DirectX::XMINT2> tilePositions)
 	:

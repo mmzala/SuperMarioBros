@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TileAction.h"
+#include "../TileAction.h"
 
 class TileSpawnPowerUpAction : public TileAction
 {

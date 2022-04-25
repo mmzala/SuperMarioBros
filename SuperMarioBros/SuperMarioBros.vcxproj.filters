@@ -129,10 +129,13 @@
     <ClCompile Include="src\Game\World\Tilemap\TileAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.cpp">
+    <ClCompile Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\GameObjects\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -287,10 +290,13 @@
     <ClInclude Include="src\Game\World\Tilemap\TileAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.h">
+    <ClInclude Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\GameObjects\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\World\Tilemap\TileActions\TileCoinAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

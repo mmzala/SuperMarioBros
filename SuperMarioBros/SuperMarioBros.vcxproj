@@ -214,7 +214,8 @@
     <ClCompile Include="src\Engine\Graphics\UI\UIElement.cpp" />
     <ClCompile Include="src\Engine\Graphics\UI\UISprite.cpp" />
     <ClCompile Include="src\Game\World\Tilemap\TileAction.cpp" />
-    <ClCompile Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GameObjects\Enemy.h" />
@@ -268,7 +269,8 @@
     <ClInclude Include="src\Engine\Graphics\UI\UIElement.h" />
     <ClInclude Include="src\Engine\Graphics\UI\UISprite.h" />
     <ClInclude Include="src\Game\World\Tilemap\TileAction.h" />
-    <ClInclude Include="src\Game\World\Tilemap\TileSpawnPowerUpAction.h" />
+    <ClInclude Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.h" />
+    <ClInclude Include="src\Game\World\Tilemap\TileActions\TileCoinAction.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">
