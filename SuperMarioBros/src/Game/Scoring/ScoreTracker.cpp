@@ -30,25 +30,28 @@ void ScoreTracker::Update(const float deltaTime)
 	gameplayUI->Update();
 }
 
+void ScoreTracker::ResetScore()
+{
+	score = 0;
+	UpdateScoreText();
+}
+
 void ScoreTracker::AddScore(int score)
 {
 	this->score += score;
-	std::string scoreString = std::to_string(score);
-
-	// Score always has 6 numbers
-	scoreString = std::string(6 - std::min(6, static_cast<int>(scoreString.length())), '0') + scoreString;
-	gameplayUI->scoreText->SetText(scoreString.c_str());
+	UpdateScoreText();
 }
 
 void ScoreTracker::AddCoin()
 {
 	coins++;
-	std::string coinsString = std::to_string(coins);
+	UpdateCoinText();
+}
 
-	// Coins always has 2 numbers
-	coinsString = std::string(2 - std::min(2, static_cast<int>(coinsString.length())), '0') + coinsString;
-	coinsString = "x" + coinsString;
-	gameplayUI->coinCountText->SetText(coinsString.c_str());
+void ScoreTracker::ResetCoins()
+{
+	coins = 0;
+	UpdateCoinText();
 }
 
 void ScoreTracker::SetWorldText(const char* text)
@@ -69,4 +72,21 @@ void ScoreTracker::SetTime(float time)
 	timeString = std::string(3 - std::min(3, static_cast<int>(timeString.length())), '0') + timeString;
 	const char* timeText = timeString.c_str();
 	gameplayUI->timeCountText->SetText(timeText);
+}
+
+void ScoreTracker::UpdateScoreText()
+{
+	// Score always has 6 numbers
+	std::string scoreString = std::to_string(score);
+	scoreString = std::string(6 - std::min(6, static_cast<int>(scoreString.length())), '0') + scoreString;
+	gameplayUI->scoreText->SetText(scoreString.c_str());
+}
+
+void ScoreTracker::UpdateCoinText()
+{
+	// Coins always has 2 numbers
+	std::string coinsString = std::to_string(coins);
+	coinsString = std::string(2 - std::min(2, static_cast<int>(coinsString.length())), '0') + coinsString;
+	coinsString = "x" + coinsString;
+	gameplayUI->coinCountText->SetText(coinsString.c_str());
 }

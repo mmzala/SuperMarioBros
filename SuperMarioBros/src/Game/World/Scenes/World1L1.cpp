@@ -32,7 +32,7 @@ void World1L1::Load()
 	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {20, 9} };
 	spawnPowerUpAction = new TileSpawnPowerUpAction(spawnPowerUpTiles);
 
-	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9} };
+	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9}, {22, 9}, {21, 5} };
 	giveCoinAction = new TileCoinAction(giveCoinTiles);
 
 	std::vector<TileAction*> tileActions = { spawnPowerUpAction, giveCoinAction };

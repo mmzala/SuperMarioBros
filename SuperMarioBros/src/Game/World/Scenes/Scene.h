@@ -17,7 +17,7 @@ protected:
 	/// Each scene in SMB has the main UI that shows the score, time etc.
 	/// </summary>
 	virtual void CreateUI();
-	void SetupScoreTracker(const char* worldText, float time, bool stopTime);
+	void SetupScoreTracker(const char* worldText, float time, bool stopTime, bool resetScore = false, bool resetCoins = false);
 
 protected:
 	Game* game;

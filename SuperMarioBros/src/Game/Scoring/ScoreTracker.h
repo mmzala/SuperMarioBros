@@ -14,9 +14,15 @@ public:
 	void Update(const float deltaTime);
 
 	void AddScore(int score);
+	void ResetScore();
 	void AddCoin();
+	void ResetCoins();
 	void SetWorldText(const char* text);
 	void SetTime(float time);
+
+private:
+	void UpdateScoreText();
+	void UpdateCoinText();
 
 public:
 	bool stopTime;

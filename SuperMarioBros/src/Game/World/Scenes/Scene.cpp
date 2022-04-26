@@ -34,10 +34,12 @@ void Scene::Update(const float deltaTime)
 void Scene::CreateUI()
 {}
 
-void Scene::SetupScoreTracker(const char* worldText, float time, bool stopTime)
+void Scene::SetupScoreTracker(const char* worldText, float time, bool stopTime, bool resetScore, bool resetCoins)
 {
 	ScoreTracker* scoreTracker = game->GetScoreTracker();
 	scoreTracker->SetWorldText(worldText);
 	scoreTracker->SetTime(time);
 	scoreTracker->stopTime = stopTime;
+	if (resetScore) scoreTracker->ResetScore();
+	if (resetCoins) scoreTracker->ResetCoins();
 }
