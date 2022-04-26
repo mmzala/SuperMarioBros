@@ -1,17 +1,20 @@
 #include "ScoreTracker.h"
 #include "../UI/GameplayUI.h"
 #include "../../Engine/Graphics/UI/Text.h"
+#include "../Data/ScoreData.h" // Scoring data for converting time to score
 #include <iomanip> // std::setprecision
 #include <sstream> // std::stringstream
 
-ScoreTracker::ScoreTracker()
+ScoreTracker::ScoreTracker(float timeConversionSpeed)
 	:
 	stopTime(true),
 	gameplayUI(new GameplayUI()),
 	score(0),
 	coins(0),
 	world(""),
-	time(0.0f)
+	time(0.0f),
+	timeConversionSpeed(timeConversionSpeed),
+	timeConversionTimer(0.0f)
 {}
 
 ScoreTracker::~ScoreTracker()
@@ -34,6 +37,27 @@ void ScoreTracker::ResetScore()
 {
 	score = 0;
 	UpdateScoreText();
+}
+
+bool ScoreTracker::ConvertTimeToScore(const float deltaTime)
+{
+	if (time <= 0.0f)
+	{
+		SetTime(0.0f); // In the last loop the middle character becomes '-', I don't really feel like fixing it, so here is the fix :D
+		return true;
+	}
+
+	stopTime = true;
+
+	timeConversionTimer += timeConversionSpeed * deltaTime;
+	if (timeConversionTimer > 1.0f)
+	{
+		SetTime(time - 1.0f);
+		AddScore(ScoreData::SecondToScore);
+		timeConversionTimer = 0.0f;
+	}
+
+	return false;
 }
 
 void ScoreTracker::AddScore(int score)

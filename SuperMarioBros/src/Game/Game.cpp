@@ -13,7 +13,7 @@ Game::Game()
 	scenes(),
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex),
-	scoreTracker(new ScoreTracker())
+	scoreTracker(new ScoreTracker(50.0f))
 {
 	scenes = std::vector<Scene*>{ new MainMenuScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();

@@ -24,6 +24,9 @@
 // Scene Characters Update Mode
 #include "../../../Engine/Graphics/Sprite.h"
 
+// Converting remaining time to score after Mario is in castle
+#include "../../Scoring/ScoreTracker.h"
+
 GameplayScene::GameplayScene(Game* game)
 	:
 	Scene::Scene(game),
@@ -63,7 +66,6 @@ void GameplayScene::Update(const float deltaTime)
 {
 	if (Input::GetInstance()->GetKey(DIK_ESCAPE))
 	{
-		Game* game = SMBEngine::GetInstance()->GetGame();
 		game->ChangeScene(0);
 	}
 
@@ -83,6 +85,10 @@ void GameplayScene::Update(const float deltaTime)
 
 	case MarioState::InCastle:
 		DrawAllCharactersUpdateMario(deltaTime);
+		if (game->GetScoreTracker()->ConvertTimeToScore(deltaTime))
+		{
+			//game->ChangeScene(game->GetSceneIndex() + 1);
+		}
 		break;
 
 	default:
@@ -155,6 +161,7 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2
 
 	player = new Mario(marioSettings);
 	player->transform->position = player->GetSpawnPositionOnTile(tilemapPosition);
+	player->transform->position = DirectX::XMFLOAT2(7000.0f, 200.0f);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 	characters.push_back(player);
 }

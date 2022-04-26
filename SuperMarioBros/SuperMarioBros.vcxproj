@@ -218,6 +218,7 @@
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\Data\ScoreData.h" />
     <ClInclude Include="src\Game\GameObjects\Enemy.h" />
     <ClInclude Include="src\Game\GameObjects\Components\AIMovementComponent.h" />
     <ClInclude Include="src\Game\GameObjects\Mushroom.h" />

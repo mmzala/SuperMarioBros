@@ -38,8 +38,8 @@ void World1L1::Load()
 	std::vector<TileAction*> tileActions = { spawnPowerUpAction, giveCoinAction };
 
 	TilemapSettings tilemapSettings;
-	tilemapSettings.tilemap = Worlds::World1D1::tilemap;
-	tilemapSettings.collisionMap = Worlds::World1D1::collisionmap;
+	tilemapSettings.tilemap = Worlds::World1D1::Tilemap;
+	tilemapSettings.collisionMap = Worlds::World1D1::Collisionmap;
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = DirectX::XMINT2(6, 6);
 	tilemapSettings.animations = tilemapAnimations;
@@ -50,7 +50,7 @@ void World1L1::Load()
 
 	// Objects setup
 	CreateMario(DirectX::XMINT2(2, 12), DirectX::XMINT2(198, 11));
-	CreateGoombas(Worlds::World1D1::goombaSpawnPoints);
+	CreateGoombas(Worlds::World1D1::GoombaSpawnPoints);
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
 
 	// Scoring UI setup

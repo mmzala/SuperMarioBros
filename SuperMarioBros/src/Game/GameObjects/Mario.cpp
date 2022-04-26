@@ -21,10 +21,16 @@
 #include "Mushroom.h" // Power up
 #include "Goomba.h" // Enemy
 
+// Adding score
+#include "../Game.h" // Getting ScoreTracker
+#include "../Scoring/ScoreTracker.h"
+#include "../Data/ScoreData.h"
+
 Mario::Mario(MarioSettings settings)
 	:
 	Character::Character(settings),
 	camera(SMBEngine::GetInstance()->GetCamera()),
+	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
 	marioPowerState(MarioPowerState::Dead),
@@ -163,6 +169,7 @@ void Mario::OnCharacterHit(Character* other)
 		{
 			other->isActive = false;
 			movementComponent->ForceJump();
+			scoreTracker->AddScore(ScoreData::PowerUpPickUp);
 		}
 		else
 		{
@@ -183,9 +190,10 @@ void Mario::HandleHeadCollision()
 	
 	switch (tilemap->GetTileType(hitTile))
 	{
-	case 2:
+	case 2: // Brick
 		if (marioPowerState == MarioPowerState::Small) break;
 		tilemap->BreakTile(hitTile);
+		scoreTracker->AddScore(ScoreData::BreakingBrick);
 		break;
 	default:
 		tilemap->CheckForTileAction(hitTile);

@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 class Camera;
+class ScoreTracker;
 class MovementComponent;
 
 enum class MarioState
@@ -56,6 +57,7 @@ private:
 
 private:
 	Camera* camera;
+	ScoreTracker* scoreTracker;
 	MovementComponent* movementComponent;
 
 	MarioState marioState;

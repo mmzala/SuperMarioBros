@@ -299,6 +299,9 @@
     <ClInclude Include="src\Game\World\Tilemap\TileActions\TileCoinAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Game\Data\ScoreData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl" />

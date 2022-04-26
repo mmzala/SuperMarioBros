@@ -8,11 +8,12 @@ class GameplayUI;
 class ScoreTracker
 {
 public:
-	ScoreTracker();
+	ScoreTracker(float timeConversionSpeed);
 	~ScoreTracker();
 
 	void Update(const float deltaTime);
 
+	bool ConvertTimeToScore(const float deltaTime);
 	void AddScore(int score);
 	void ResetScore();
 	void AddCoin();
@@ -34,5 +35,8 @@ private:
 	int coins;
 	const char* world;
 	float time;
+
+	float timeConversionSpeed;
+	float timeConversionTimer;
 };
 
