@@ -8,12 +8,16 @@
 // Scoring
 #include "Scoring/ScoreTracker.h"
 
+// Audio Test
+#include "../Engine/Audio/AudioClip.h"
+
 Game::Game()
 	:
 	scenes(),
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex),
-	scoreTracker(new ScoreTracker(50.0f))
+	scoreTracker(new ScoreTracker(50.0f)),
+	clip(new AudioClip("assets/SMBOverworldTheme.wav"))
 {
 	scenes = std::vector<Scene*>{ new MainMenuScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();
@@ -29,6 +33,7 @@ Game::~Game()
 	scenes.clear();
 
 	delete scoreTracker;
+	delete clip;
 }
 
 void Game::Update(float deltaTime)

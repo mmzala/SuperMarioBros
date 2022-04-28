@@ -175,6 +175,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Audio\AudioClip.cpp" />
+    <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="src\Game\GameObjects\Enemy.cpp" />
     <ClCompile Include="src\Game\GameObjects\Components\AIMovementComponent.cpp" />
     <ClCompile Include="src\Game\GameObjects\Mushroom.cpp" />
@@ -218,6 +220,8 @@
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Audio\AudioClip.h" />
+    <ClInclude Include="src\Engine\Audio\AudioManager.h" />
     <ClInclude Include="src\Game\Data\ScoreData.h" />
     <ClInclude Include="src\Game\GameObjects\Enemy.h" />
     <ClInclude Include="src\Game\GameObjects\Components\AIMovementComponent.h" />

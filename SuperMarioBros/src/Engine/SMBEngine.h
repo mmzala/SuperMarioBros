@@ -3,6 +3,7 @@
 #include <Windows.h> // HWND
 
 class DXManager;
+class AudioManager;
 class Game;
 class Camera;
 class Input;
@@ -19,6 +20,7 @@ public:
 
 	static SMBEngine* GetInstance();
 	DXManager* GetGraphics();
+	AudioManager* GetAudioManager();
 	Camera* GetCamera();
 	Game* GetGame();
 
@@ -40,6 +42,7 @@ private:
 	DXManager* graphics;
 	Camera* camera;
 	Input* input;
+	AudioManager* audioManager;
 	Timer* timer;
 	Game* game;
 

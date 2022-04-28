@@ -1,5 +1,6 @@
 #include "SMBEngine.h"
 #include "Graphics/DXManager.h"
+#include "Audio/AudioManager.h"
 #include "../Game/Game.h"
 #include "Graphics/Camera.h"
 #include "Input/Input.h"
@@ -13,6 +14,7 @@ SMBEngine::SMBEngine(HWND hwnd)
 	graphics(nullptr),
 	camera(nullptr),
 	input(nullptr),
+	audioManager(nullptr),
 	timer(nullptr),
 	game(nullptr),
 	spriteShader(nullptr),
@@ -38,6 +40,7 @@ SMBEngine::~SMBEngine()
 	delete input;
 	delete camera;
 	delete game;
+	delete audioManager;
 	delete graphics;
 
 	delete spriteShader;
@@ -61,6 +64,11 @@ SMBEngine* SMBEngine::GetInstance()
 DXManager* SMBEngine::GetGraphics()
 {
 	return graphics;
+}
+
+AudioManager* SMBEngine::GetAudioManager()
+{
+	return audioManager;
 }
 
 Camera* SMBEngine::GetCamera()
@@ -92,6 +100,7 @@ void SMBEngine::Initialize(HWND hwnd)
 	const unsigned int clientHeight = dimensions.bottom - dimensions.top;
 
 	graphics = new DXManager(hwnd, clientWidth, clientHeight);
+	audioManager = new AudioManager();
 	camera = new Camera(clientWidth, clientHeight);
 	input = new Input(hwnd);
 	timer = new Timer();
