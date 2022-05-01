@@ -20,15 +20,29 @@
 #define fourccDPDS 'sdpd'
 #endif
 
-AudioClip::AudioClip(const char* file)
+AudioClip::AudioClip(const char* file, bool loop)
     :
     sourceVoice(nullptr),
     buffer({ 0 }),
     wfx({ 0 })
 {
     InitializeDataFromFile(file);
-    CreateSourceVoice();
 
+    if (loop)
+    {
+        buffer.LoopCount = XAUDIO2_LOOP_INFINITE;
+    }
+
+    CreateSourceVoice();
+}
+
+AudioClip::~AudioClip()
+{
+    sourceVoice->DestroyVoice();
+}
+
+void AudioClip::Play()
+{
     if (FAILED(sourceVoice->Start(0)))
     {
         MessageBox(NULL, L"Failed to play Audio Clip!", L"Error!", MB_OK);
@@ -36,8 +50,19 @@ AudioClip::AudioClip(const char* file)
     }
 }
 
-AudioClip::~AudioClip()
-{}
+void AudioClip::Stop()
+{
+    if (FAILED(sourceVoice->Stop(0)))
+    {
+        MessageBox(NULL, L"Failed to stop Audio Clip!", L"Error!", MB_OK);
+        PostQuitMessage(0);
+    }
+}
+
+void AudioClip::SetVolume(float volume)
+{
+    sourceVoice->SetVolume(volume);
+}
 
 void AudioClip::CreateSourceVoice()
 {

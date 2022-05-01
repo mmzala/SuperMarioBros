@@ -17,10 +17,13 @@ Game::Game()
 	sceneIndex(0),
 	targetSceneIndex(sceneIndex),
 	scoreTracker(new ScoreTracker(50.0f)),
-	clip(new AudioClip("assets/SMBOverworldTheme.wav"))
+	clip(new AudioClip("assets/SMBOverworldTheme.wav", true))
 {
 	scenes = std::vector<Scene*>{ new MainMenuScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();
+
+	clip->SetVolume(0.5f);
+	clip->Play();
 }
 
 Game::~Game()

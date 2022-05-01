@@ -5,8 +5,12 @@
 class AudioClip
 {
 public:
-	AudioClip(const char* file);
+	AudioClip(const char* file, bool loop = false);
 	~AudioClip();
+
+	void Play();
+	void Stop();
+	void SetVolume(float volume);
 
 private:
 	void CreateSourceVoice();
