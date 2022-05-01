@@ -262,6 +262,7 @@ void Mario::UpdateMovementAnimations(MarioPowerState marioPowerState)
 void Mario::OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilemapPosition)
 {
 	UpdateState(MarioState::TouchedFlagPole);
+	sprite->FlipSpriteX(false); // Make sure player is facing the flag pole
 
 	startPolePositionY = transform->position.y;
 	transform->position.x = worldPosition.x;
