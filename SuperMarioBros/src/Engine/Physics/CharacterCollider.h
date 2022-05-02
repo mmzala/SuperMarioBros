@@ -23,6 +23,9 @@ public:
 	template<class T>
 	void RemoveCharacterTypeToIgnore();
 
+public:
+	bool ignoreCollision;
+
 private:
 	Character* character;
 	std::function<void(Character* other)> callback;

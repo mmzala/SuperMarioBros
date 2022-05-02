@@ -162,12 +162,12 @@ void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosit
 void Mario::OnCharacterHit(Character* other)
 {
 	// Can't use a switch :(
-	if (dynamic_cast<Goomba*>(other))
+	if (Enemy* enemy = dynamic_cast<Enemy*>(other))
 	{
 		Rect otherBounds = other->bounds->GetBounds();
 		if (bounds->GetBounds().y > (otherBounds.y + otherBounds.height))
 		{
-			other->isActive = false;
+			enemy->OnHeadStomp();
 			movementComponent->ForceJump();
 			scoreTracker->AddScore(ScoreData::PowerUpPickUp);
 		}

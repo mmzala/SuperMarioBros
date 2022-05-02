@@ -11,6 +11,7 @@
 
 CharacterCollider::CharacterCollider(Character* character, std::function<void(Character* other)> callback)
 	:
+	ignoreCollision(false),
 	character(character),
 	callback(callback),
 	// CharacterCollider is only used in gameplay scenes, so we can always be sure that we can cast to GameplayScene* safely
@@ -23,11 +24,14 @@ CharacterCollider::~CharacterCollider()
 
 void CharacterCollider::Update(const float deltaTime)
 {
+	if (ignoreCollision) return;
+
 	Rect bounds = character->bounds->GetBoundsWithOffset(character->GetVelocity() * deltaTime);
 
 	for (Character* character : characters)
 	{
-		if (this->character == character ||
+		if (character->characterCollider->ignoreCollision ||
+			this->character == character ||
 			!character->isActive ||
 			std::find(ignoreCharacters.begin(), ignoreCharacters.end(), typeid(*character).name()) != ignoreCharacters.end())
 		{

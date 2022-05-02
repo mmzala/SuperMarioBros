@@ -7,7 +7,7 @@
 #include "Mushroom.h"
 #include "Mario.h"
 
-Goomba::Goomba(CharacterSettings settings)
+Goomba::Goomba(EnemySettings settings)
 	:
 	Enemy::Enemy(settings),
 	animations(Animations::Goomba::goomba)
@@ -26,6 +26,12 @@ void Goomba::Update(const float deltaTime)
 	Enemy::Update(deltaTime);
 }
 
+void Goomba::OnHeadStomp()
+{
+	characterCollider->ignoreCollision = true;
+	UpdateState(EnemyState::Dead);
+}
+
 void Goomba::UpdateState(EnemyState state)
 {
 	if (this->state == state) return;
@@ -33,6 +39,10 @@ void Goomba::UpdateState(EnemyState state)
 
 	switch (state)
 	{
+	case EnemyState::Dead:
+		animator->SetAnimation(animations[Animations::Goomba::AnimationState::Dead]);
+		break;
+
 	case EnemyState::Walking:
 		animator->SetAnimation(animations[Animations::Goomba::AnimationState::Walking]);
 		break;

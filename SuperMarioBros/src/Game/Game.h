@@ -4,7 +4,6 @@
 
 class Scene;
 class ScoreTracker;
-class AudioClip;
 
 /// <summary>
 /// Manages the game itself
@@ -29,7 +28,5 @@ private:
 	int sceneIndex;
 	int targetSceneIndex;
 	ScoreTracker* scoreTracker;
-
-	AudioClip* clip;
 };
 

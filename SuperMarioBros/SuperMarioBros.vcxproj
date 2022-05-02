@@ -228,6 +228,7 @@
     <ClInclude Include="src\Game\GameObjects\Mushroom.h" />
     <ClInclude Include="src\Game\Scoring\ScoreTracker.h" />
     <ClInclude Include="src\Engine\Physics\CharacterCollider.h" />
+    <ClInclude Include="src\Game\Settings\EnemySettings.h" />
     <ClInclude Include="src\Game\UI\GameplayUI.h" />
     <ClInclude Include="src\Game\World\Scenes\GameplayScene.h" />
     <ClInclude Include="src\Game\World\Scenes\MainMenuScene.h" />

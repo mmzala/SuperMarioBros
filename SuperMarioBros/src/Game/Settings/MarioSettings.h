@@ -3,7 +3,7 @@
 #include "CharacterSettings.h"
 #include "MovementComponentSettings.h"
 
-struct MarioSettings : CharacterSettings
+struct MarioSettings : public CharacterSettings
 {
 	MovementComponentSettings movementSettings;
 	float poweringUpTime;

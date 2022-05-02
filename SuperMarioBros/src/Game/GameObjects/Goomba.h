@@ -7,10 +7,11 @@
 class Goomba : public Enemy
 {
 public:
-	Goomba(CharacterSettings settings);
+	Goomba(EnemySettings settings);
 	~Goomba() override;
 
 	void Update(const float deltaTime) override;
+	void OnHeadStomp() override;
 
 protected:
 	void UpdateState(EnemyState state) override;

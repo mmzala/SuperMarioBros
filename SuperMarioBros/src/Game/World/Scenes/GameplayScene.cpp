@@ -8,12 +8,6 @@
 #include "../../GameObjects/Flag.h"
 #include "../../GameObjects/Mushroom.h"
 
-// Settings
-#include "../../Settings/MarioSettings.h"
-#include "../../Settings/CharacterSettings.h"
-#include "../../Settings/SpriteSettings.h"
-#include "../../Settings/MovementComponentSettings.h"
-
 // World
 #include "../Tilemap/Tilemap.h"
 
@@ -172,11 +166,12 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSpriteSettings.textureFile = "assets/GoombaSpriteSheet.png";
 	goombaSpriteSettings.spriteSheetSize = DirectX::XMINT2(3, 1);
 
-	CharacterSettings goombaSettings = CharacterSettings();
+	EnemySettings goombaSettings = EnemySettings();
 	goombaSettings.spriteSettings = goombaSpriteSettings;
 	goombaSettings.tilemap = tilemap;
 	goombaSettings.walkingSpeed = 150.0f;
 	goombaSettings.gravity = 375.0f;
+	goombaSettings.timeAfterDeath = 0.5f;
 
 	Goomba* goomba = new Goomba(goombaSettings);
 	goomba->transform->position = goomba->GetSpawnPositionOnTile(tilemapPosition);
