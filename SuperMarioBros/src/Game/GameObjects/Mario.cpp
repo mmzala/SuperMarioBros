@@ -255,14 +255,17 @@ void Mario::UpdateMovementAnimations(MarioPowerState marioPowerState)
 		break;
 	}
 
-	switch (movementComponent->GetMovementDirection())
+	if (movementComponent->IsGrounded())
 	{
-	case 1:
-		sprite->FlipSpriteX(false);
-		break;
-	case -1:
-		sprite->FlipSpriteX(true);
-		break;
+		switch (movementComponent->GetMovementDirection())
+		{
+		case 1:
+			sprite->FlipSpriteX(false);
+			break;
+		case -1:
+			sprite->FlipSpriteX(true);
+			break;
+		}
 	}
 }
 

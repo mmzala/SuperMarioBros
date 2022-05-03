@@ -55,6 +55,11 @@ int MovementComponent::GetMovementDirection()
 	return movementDirection;
 }
 
+bool MovementComponent::IsGrounded()
+{
+	return isGrounded;
+}
+
 // REFACTOR THIS LATER PLS
 void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
 {

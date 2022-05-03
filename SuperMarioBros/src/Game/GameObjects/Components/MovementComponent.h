@@ -41,6 +41,7 @@ public:
 	void ForceJump();
 	MovementState GetState();
 	int GetMovementDirection();
+	bool IsGrounded();
 
 private:
 	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime);
