@@ -42,7 +42,10 @@ Mario::Mario(MarioSettings settings)
 	flagPoleBottomPositionY(settings.flagPoleBottomPositionY),
 	poleDescendingSpeed(settings.poleDescendingSpeed),
 	startPolePositionY(0.0f),
-	poleDescentInterpolationValue(0.0f)
+	poleDescentInterpolationValue(0.0f),
+	deathAnimationSpeed(settings.deathAnimationSpeed),
+	deathJumpSpeed(settings.movementSettings.maxJumpSpeed),
+	deathJumpTime(settings.movementSettings.maxJumpTime)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -67,6 +70,7 @@ void Mario::Update(const float deltaTime)
 	switch (marioState)
 	{
 	case MarioState::Dead:
+		DeathAnimation(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
 		break;
 
@@ -211,7 +215,10 @@ void Mario::UpdateCameraFollow()
 	{
 		camera->FollowPosition(transform->position, true, false);
 	}
+
+#if _DEBUG
 	camera->FollowPosition(transform->position, true, false);
+#endif // _DEBUG
 }
 
 void Mario::UpdateAnimations()
@@ -338,6 +345,28 @@ void Mario::PowerDownAnimation(const float deltaTime)
 	}
 }
 
+void Mario::DeathAnimation(const float deltaTime)
+{
+	constexpr float timeBeforeDeathAnimation = 0.25f;
+	
+	if (powerChangeTimer < timeBeforeDeathAnimation)
+	{
+		powerChangeTimer += deltaTime;
+	}
+	else if (powerChangeTimer < deathJumpTime + timeBeforeDeathAnimation)
+	{
+		velocity.y = std::fmin(velocity.y + gravityAcceleration * deathAnimationSpeed * deltaTime, deathJumpSpeed * deathAnimationSpeed);
+		transform->position.y += velocity.y * deltaTime;
+
+		powerChangeTimer += deltaTime * deathAnimationSpeed;
+	}
+	else
+	{
+		velocity.y = std::fmax(velocity.y - gravityAcceleration * deathAnimationSpeed * deltaTime, -(gravity * deathAnimationSpeed));
+		transform->position.y += velocity.y * deltaTime;
+	}
+}
+
 void Mario::UpdateState(MarioState marioState)
 {
 	if (this->marioState == marioState) return;
@@ -345,6 +374,11 @@ void Mario::UpdateState(MarioState marioState)
 
 	switch (marioState)
 	{
+	case MarioState::Dead:
+		scoreTracker->stopTime = true;
+		powerChangeTimer = 0.0f;
+		break;
+
 	case MarioState::PowerUp:
 		powerChangeTimer = poweringUpTime;
 		powerChangeAnimationTimer = 0.0f;

@@ -13,6 +13,11 @@ public:
 
 	void Update(const float deltaTime);
 
+	/// <summary>
+	/// Converts remaining time to score
+	/// </summary>
+	/// <param name="deltaTime">: DeltaTime </param>
+	/// <returns>If conversion to score is complete (if time is 0)</returns>
 	bool ConvertTimeToScore(const float deltaTime);
 	void AddScore(int score);
 	void ResetScore();

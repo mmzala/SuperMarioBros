@@ -26,8 +26,7 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	jumpDecelaration(settings.jumpDecelaration),
 	jumpTimer(maxJumpTime),
 	isJumping(false),
-	forceJump(false),
-	gravityAccelerationSpeed(settings.gravityAccelerationSpeed)
+	forceJump(false)
 {}
 
 MovementComponent::~MovementComponent()
@@ -132,7 +131,7 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 	}
 	else
 	{
-		character->velocity.y = std::fmax(character->velocity.y - gravityAccelerationSpeed * deltaTime, -character->gravity);
+		character->velocity.y = std::fmax(character->velocity.y - character->gravityAcceleration * deltaTime, -character->gravity);
 	}
 
 	if (jumpInput || forceJump)

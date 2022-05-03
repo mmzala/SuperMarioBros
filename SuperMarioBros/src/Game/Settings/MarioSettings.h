@@ -11,10 +11,11 @@ struct MarioSettings : public CharacterSettings
 	float poweringDownFlickeringSpeed;
 	float flagPoleBottomPositionY;
 	float poleDescendingSpeed;
+	float deathAnimationSpeed;
 
 	MarioSettings(MovementComponentSettings movementSettings = MovementComponentSettings(), float poweringUpTime = 0.0f,
 		float poweringDownTime = 0.0f, float poweringDownFlickeringSpeed = 0.0f, float flagPoleBottomPositionY = 0.0f,
-		float poleDescendingSpeed = 0.0f)
+		float poleDescendingSpeed = 0.0f, float deathAnimationSpeed = 0.0f)
 		:
 		CharacterSettings::CharacterSettings(),
 		movementSettings(movementSettings),
@@ -22,6 +23,7 @@ struct MarioSettings : public CharacterSettings
 		poweringDownTime(poweringDownTime),
 		poweringDownFlickeringSpeed(poweringDownFlickeringSpeed),
 		flagPoleBottomPositionY(flagPoleBottomPositionY),
-		poleDescendingSpeed(poleDescendingSpeed)
+		poleDescendingSpeed(poleDescendingSpeed),
+		deathAnimationSpeed(deathAnimationSpeed)
 	{}
 };

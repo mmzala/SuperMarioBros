@@ -45,5 +45,6 @@ protected:
 	DirectX::XMFLOAT2 velocity;
 	float walkingSpeed;
 	float gravity;
+	float gravityAcceleration;
 };
 

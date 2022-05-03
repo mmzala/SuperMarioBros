@@ -73,6 +73,7 @@ void GameplayScene::Update(const float deltaTime)
 		DrawAllCharactersUpdateMario(deltaTime);
 		break;
 
+	case MarioState::Dead:
 	case MarioState::PowerUp:
 		DrawAllCharactersUpdateMario(deltaTime);
 		break;
@@ -102,6 +103,7 @@ void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
 	mushroomSettings.tilemap = tilemap;
 	mushroomSettings.walkingSpeed = 150.0f;
 	mushroomSettings.gravity = 375.0f;
+	mushroomSettings.gravityAcceleration = 2500.0f;
 
 	Mushroom* mushroom = new Mushroom(mushroomSettings);
 	mushroom->transform->position = mushroom->GetSpawnPositionOnTile(tilemapPosition);
@@ -139,7 +141,6 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2
 	movementSettings.maxJumpSpeed = 600.0f;
 	movementSettings.maxJumpTime = 0.225f;
 	movementSettings.jumpDecelaration = 2500.0f;
-	movementSettings.gravityAccelerationSpeed = 3500.0f;
 
 	MarioSettings marioSettings = MarioSettings();
 	marioSettings.movementSettings = movementSettings;
@@ -147,15 +148,16 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2
 	marioSettings.tilemap = tilemap;
 	marioSettings.walkingSpeed = 230.0f;
 	marioSettings.gravity = 1000.0f;
+	marioSettings.gravityAcceleration = 3500.0f;
 	marioSettings.poweringUpTime = 0.8f;
 	marioSettings.poweringDownTime = 1.0f;
 	marioSettings.poweringDownFlickeringSpeed = 3.0f;
 	marioSettings.flagPoleBottomPositionY = tilemap->GetPositionInWorldCoordinates(tilemapPolePositionBottom).y;
 	marioSettings.poleDescendingSpeed = 0.5f;
+	marioSettings.deathAnimationSpeed = 0.6f;
 
 	player = new Mario(marioSettings);
 	player->transform->position = player->GetSpawnPositionOnTile(tilemapPosition);
-	player->transform->position = DirectX::XMFLOAT2(7000.0f, 200.0f);
 	player->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
 	characters.push_back(player);
 }
@@ -171,6 +173,7 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSettings.tilemap = tilemap;
 	goombaSettings.walkingSpeed = 150.0f;
 	goombaSettings.gravity = 375.0f;
+	goombaSettings.gravityAcceleration = 2500.0f;
 	goombaSettings.timeAfterDeath = 0.5f;
 
 	Goomba* goomba = new Goomba(goombaSettings);

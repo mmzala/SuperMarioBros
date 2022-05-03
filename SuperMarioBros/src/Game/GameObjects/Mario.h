@@ -51,6 +51,7 @@ private:
 	void GoToCastle(float deltaTime);
 	void PowerUpAnimation(const float deltaTime);
 	void PowerDownAnimation(const float deltaTime);
+	void DeathAnimation(const float deltaTime);
 	void UpdateState(MarioState marioState);
 	void UpdatePowerState(MarioPowerState marioPowerState);
 	DirectX::XMINT2 GetHeadCollisionTile();
@@ -79,5 +80,10 @@ private:
 	float poleDescendingSpeed;
 	float startPolePositionY;
 	float poleDescentInterpolationValue;
+
+	// Death animation
+	float deathAnimationSpeed;
+	float deathJumpSpeed;
+	float deathJumpTime;
 };
 

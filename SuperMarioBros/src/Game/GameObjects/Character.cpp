@@ -17,7 +17,8 @@ Character::Character(const CharacterSettings settings)
 	characterCollider(new CharacterCollider(this, std::bind(&Character::OnCharacterHit, this, std::placeholders::_1))),
 	velocity(DirectX::XMFLOAT2(0.0f, 0.0f)),
 	walkingSpeed(settings.walkingSpeed),
-	gravity(settings.gravity)
+	gravity(settings.gravity),
+	gravityAcceleration(settings.gravityAcceleration)
 {}
 
 Character::~Character()

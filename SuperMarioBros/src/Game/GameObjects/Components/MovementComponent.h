@@ -73,7 +73,5 @@ private:
 	float jumpTimer;
 	bool isJumping;
 	bool forceJump;
-	
-	float gravityAccelerationSpeed;
 };
 
