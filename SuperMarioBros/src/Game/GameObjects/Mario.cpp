@@ -379,6 +379,7 @@ void Mario::UpdateState(MarioState marioState)
 	{
 	case MarioState::Dead:
 		scoreTracker->stopTime = true;
+		velocity = DirectX::XMFLOAT2(0.0f, 0.0f);
 		powerChangeTimer = 0.0f;
 		break;
 
