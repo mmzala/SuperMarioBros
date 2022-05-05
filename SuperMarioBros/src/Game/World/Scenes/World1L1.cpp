@@ -43,6 +43,8 @@ void World1L1::Load()
 	tilemapSettings.spriteSheetFile = "assets/LevelTileMap.png";
 	tilemapSettings.spriteSheetSize = DirectX::XMINT2(6, 6);
 	tilemapSettings.animations = tilemapAnimations;
+	tilemapSettings.bounceAnimationSpeed = 3.5f;
+	tilemapSettings.bounceAnimationHeight = 6.5f;
 	tilemapSettings.tileActions = tileActions;
 	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);

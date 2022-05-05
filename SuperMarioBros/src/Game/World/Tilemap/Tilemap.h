@@ -29,6 +29,8 @@ struct TilemapSettings
 	const char* spriteSheetFile;
 	DirectX::XMINT2 spriteSheetSize;
 	std::vector<TilemapAnimation*> animations;
+	float bounceAnimationSpeed;
+	float bounceAnimationHeight;
 	std::vector<TileAction*> tileActions;
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;
@@ -40,6 +42,8 @@ struct TilemapSettings
 		spriteSheetFile(nullptr),
 		spriteSheetSize(DirectX::XMINT2()),
 		animations(),
+		bounceAnimationSpeed(0.0f),
+		bounceAnimationHeight(0.0f),
 		tileActions(),
 		position(DirectX::XMFLOAT2()),
 		scale(DirectX::XMFLOAT2())
@@ -127,6 +131,12 @@ public:
 	/// <param name="tilemapPosition">: Where to remove collision in tilemap coordinates </param>
 	void RemoveCollision(DirectX::XMINT2 tilemapPosition);
 
+	/// <summary>
+	/// Plays a bounce animations on the given tile
+	/// </summary>
+	/// <param name="tilemapPosition">: Tilemap position of tile which you want to animate </param>
+	void AddTileToBounce(DirectX::XMINT2 tilemapPosition);
+
 private:
 	/// <summary>
 	/// Gets first right and left tiles in tilemap coordinates on the screen that appear in the view frustum of the camera
@@ -136,21 +146,30 @@ private:
 	bool IsPositionOutOfBounds(DirectX::XMINT2 tilemapPosition);
 	void Draw();
 	void UpdateAnimations(const float deltaTime);
+	void UpdateTileBounceAnimations(const float deltaTime);
+	float GetTileAnimationPositionY(DirectX::XMINT2 tilemapPosition);
 
 private:
+	// Maps
 	std::vector<std::vector<int>> tilemap;
 	std::vector<std::vector<bool>> collisionMap;
 
+	// Rendering
 	Sprite* sprite;
 	Transform* transform;
 
-	/// <summary>
-	/// Size of one tile in the texture, with already applied transform->size
-	/// </summary>
+	// Size of one tile in the texture, with already applied transform->size
 	float tileSizeScaled;
 
+	// Tile animations
 	std::unordered_map<int, TilemapAnimation*> animations;
 	std::vector<DirectX::XMINT2> tilesToAnimate;
 
+	// Tile actions with bounce animations
 	std::unordered_map<DirectX::XMINT2, TileAction*> tileActions;
+
+	// Bounce animtion
+	std::unordered_map<DirectX::XMINT2, float> tilesToBounceAnimate;
+	float bounceAnimationSpeed;
+	float bounceAnimationHeight;
 };

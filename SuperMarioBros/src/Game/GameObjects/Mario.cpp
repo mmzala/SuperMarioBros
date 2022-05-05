@@ -195,11 +195,16 @@ void Mario::HandleHeadCollision()
 	switch (tilemap->GetTileType(hitTile))
 	{
 	case 2: // Brick
-		if (marioPowerState == MarioPowerState::Small) break;
+		if (marioPowerState == MarioPowerState::Small)
+		{
+			tilemap->AddTileToBounce(hitTile);
+			break;
+		}
 		tilemap->BreakTile(hitTile);
 		scoreTracker->AddScore(ScoreData::BreakingBrick);
 		break;
 	default:
+		tilemap->AddTileToBounce(hitTile);
 		tilemap->CheckForTileAction(hitTile);
 		break;
 	}

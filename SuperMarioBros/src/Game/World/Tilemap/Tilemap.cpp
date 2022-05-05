@@ -6,8 +6,6 @@
 #include <algorithm> // std::clamp
 #include "TileAction.h" // Action for tiles (for example spawning power up)
 
-// Cannot use unordered_map with XMINT2, because it can't read x and y values
-
 Tilemap::Tilemap(TilemapSettings settings)
 	:
 	tilemap(settings.tilemap),
@@ -17,7 +15,10 @@ Tilemap::Tilemap(TilemapSettings settings)
 	tileSizeScaled(sprite->GetSize().x * transform->scale.x), // Size of x and y will be the same anyway :)
 	animations(),
 	tilesToAnimate(),
-	tileActions()
+	tileActions(),
+	tilesToBounceAnimate(),
+	bounceAnimationSpeed(settings.bounceAnimationSpeed),
+	bounceAnimationHeight(settings.bounceAnimationHeight)
 {
 	// Setup animations in unordered_map
 	for (int animation = 0; animation < settings.animations.size(); animation++)
@@ -57,9 +58,10 @@ Tilemap::~Tilemap()
 void Tilemap::Update(const float deltaTime)
 {
 	UpdateAnimations(deltaTime);
+	UpdateTileBounceAnimations(deltaTime);
 	Draw();
 
-	// Reset animation timers if needed
+	// Reset animation timers when needed
 	for (std::unordered_map<int, TilemapAnimation*>::iterator iterator = animations.begin(); iterator != animations.end(); iterator++)
 	{
 		TilemapAnimation* anim = iterator->second;
@@ -185,6 +187,11 @@ void Tilemap::RemoveCollision(DirectX::XMINT2 tilemapPosition)
 	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
 }
 
+void Tilemap::AddTileToBounce(DirectX::XMINT2 tilemapPosition)
+{
+	tilesToBounceAnimate.insert(std::pair<DirectX::XMINT2, float>(tilemapPosition, 0.0f));
+}
+
 DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
 {
 	Rect viewportBounds = SMBEngine::GetInstance()->GetCamera()->GetViewportBounds();
@@ -229,11 +236,11 @@ void Tilemap::Draw()
 			if (tilemap[y][x] == 0) continue;
 
 			transform->position.x = (float)(x * tileSizeScaled + originalPosition.x);
+			transform->position.y = (tilemap.size() - y - 1) * tileSizeScaled + originalPosition.y + GetTileAnimationPositionY(DirectX::XMINT2(x, y));
+
 			sprite->SetFrame(tilemap[y][x]);
 			sprite->Draw(transform->GetWorldMatrix());
 		}
-
-		transform->position.y += tileSizeScaled;
 	}
 
 	transform->position = originalPosition;
@@ -259,4 +266,33 @@ void Tilemap::UpdateAnimations(const float deltaTime)
 			}
 		}
 	}
+}
+
+void Tilemap::UpdateTileBounceAnimations(const float deltaTime)
+{
+	std::vector<DirectX::XMINT2> toRemove;
+	constexpr float halfSineWave = 0.5f;
+
+	for (auto& tile : tilesToBounceAnimate)
+	{
+		tile.second += bounceAnimationSpeed * deltaTime;
+		if (tile.second > halfSineWave) toRemove.push_back(tile.first);
+	}
+
+	// We delete positions after, otherwise we get an error
+	for (DirectX::XMINT2 position : toRemove)
+	{
+		tilesToBounceAnimate.erase(position);
+	}
+}
+
+float Tilemap::GetTileAnimationPositionY(DirectX::XMINT2 tilemapPosition)
+{
+	if (tilesToBounceAnimate.find(tilemapPosition) == tilesToBounceAnimate.end())
+	{
+		return 0.0f;
+	}
+
+	// Calculate sine wave
+	return std::abs(bounceAnimationHeight * std::sin(bounceAnimationHeight * tilesToBounceAnimate[tilemapPosition]));
 }
