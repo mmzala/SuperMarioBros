@@ -22,6 +22,8 @@ public:
 	ID3D11DeviceContext* GetDeviceContext();
 	ID3D11Buffer* GetConstantBuffer();
 
+	void SetBackgroundColor(const float color[4]);
+
 private:
 	bool CreateDeviceAndSwapChain(HWND hwnd, unsigned int width, unsigned int height);
 	bool CreateRenderTargetView();
@@ -41,6 +43,8 @@ private:
 
 	 D3D_DRIVER_TYPE driverType;
 	 D3D_FEATURE_LEVEL featureLevel;
+
+	 float backgroundColor[4];
 };
 
 // Constant buffer data used for sprite rendering
@@ -60,4 +64,11 @@ struct VSConstantBufferData
 		frame(0),
 		flipSpriteX(false)
 	{}
+};
+
+// Colors for background
+struct Colors
+{
+	static constexpr float Black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	static constexpr float Blue[4] = { 0.13f, 0.25f, 1.0f, 1.0f };
 };

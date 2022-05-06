@@ -13,7 +13,8 @@ DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned i
 	constantBuffer(),
 	alphaBlendState(nullptr),
 	driverType(D3D_DRIVER_TYPE_NULL),
-	featureLevel(D3D_FEATURE_LEVEL_11_0)
+	featureLevel(D3D_FEATURE_LEVEL_11_0),
+	backgroundColor()
 {
 	if (!CreateDeviceAndSwapChain(hwnd, clientWidth, clientHeight)) return;
 	if(!CreateRenderTargetView()) return;
@@ -21,6 +22,7 @@ DXManager::DXManager(HWND hwnd, const unsigned int clientWidth, const unsigned i
 
 	CreateBlendState();
 	CreateConstantBuffer();
+	SetBackgroundColor(Colors::Blue);
 }
 
 DXManager::~DXManager()
@@ -42,9 +44,7 @@ DXManager::~DXManager()
 
 void DXManager::BeginFrame()
 {
-	// BLUE: 0.13f, 0.25f, 1.0f, 1.0f
-	float color[4] = { 0.13f, 0.25f, 1.0f, 1.0f };
-	deviceContext->ClearRenderTargetView(backBufferTarget, color);
+	deviceContext->ClearRenderTargetView(backBufferTarget, backgroundColor);
 }
 
 void DXManager::EndFrame()
@@ -65,6 +65,14 @@ ID3D11DeviceContext* DXManager::GetDeviceContext()
 ID3D11Buffer* DXManager::GetConstantBuffer()
 {
 	return constantBuffer;
+}
+
+void DXManager::SetBackgroundColor(const float color[4])
+{
+	for (int i = 0; i < 4; i++)
+	{
+		backgroundColor[i] = color[i];
+	}
 }
 
 #pragma region Creation Methods
