@@ -21,7 +21,7 @@
 // Converting remaining time to score after Mario is in castle
 #include "../../Scoring/ScoreTracker.h"
 
-GameplayScene::GameplayScene(Game* game, const char* worldText, float timeToBeat)
+GameplayScene::GameplayScene(Game* game, const char* worldText, const float timeToBeat)
 	:
 	Scene::Scene(game),
 	tilemap(nullptr),
@@ -29,7 +29,8 @@ GameplayScene::GameplayScene(Game* game, const char* worldText, float timeToBeat
 	characters(),
 	flag(nullptr),
 	worldText(worldText),
-	timeToBeat(timeToBeat)
+	timeToBeat(timeToBeat),
+	delayBeforeNextWorld(0.0f)
 {}
 
 GameplayScene::~GameplayScene()
@@ -39,6 +40,7 @@ void GameplayScene::Load()
 {
 	Scene::Load();
 	SetupScoreTracker(worldText, timeToBeat, false);
+	delayBeforeNextWorld = 2.5f;
 }
 
 void GameplayScene::UnLoad()
@@ -85,7 +87,12 @@ void GameplayScene::Update(const float deltaTime)
 		DrawAllCharactersUpdateMario(deltaTime);
 		if (game->GetScoreTracker()->ConvertTimeToScore(deltaTime))
 		{
-			//game->ChangeScene(game->GetSceneIndex() + 1);
+			delayBeforeNextWorld -= deltaTime;
+			if (delayBeforeNextWorld < 0.0f)
+			{
+				int sceneIndex = game->GetSceneIndex() + 1;
+				sceneIndex == Scenes::WinScene ? game->ChangeScene(sceneIndex) : game->TransitionToScene(sceneIndex);
+			}
 		}
 		break;
 

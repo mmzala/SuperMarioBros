@@ -16,7 +16,7 @@ class Flag;
 class GameplayScene : public Scene
 {
 public:
-	GameplayScene(Game* game, const char* worldText, float timeToBeat);
+	GameplayScene(Game* game, const char* worldText, const float timeToBeat);
 	~GameplayScene() override;
 
 	void Load() override;
@@ -46,6 +46,7 @@ protected:
 	Flag* flag;
 
 	const char* worldText;
-	float timeToBeat;
+	const float timeToBeat;
+	float delayBeforeNextWorld;
 };
 

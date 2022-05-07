@@ -15,7 +15,6 @@
 #include "../../GameObjects/GameObject.h"
 
 // Changing Scene
-#include "../../../Engine/SMBEngine.h"
 #include "../../../Engine/Input/Input.h"
 
 MainMenuScene::MainMenuScene(Game* game)
@@ -78,7 +77,6 @@ void MainMenuScene::Update(const float deltaTime)
 
 	if (Input::GetInstance()->GetKey(DIK_RETURN)) // Enter key
 	{
-		Game* game = SMBEngine::GetInstance()->GetGame();
 		game->TransitionToScene(Scenes::World1d1);
 	}
 
