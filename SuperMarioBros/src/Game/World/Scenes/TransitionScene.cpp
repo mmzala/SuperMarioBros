@@ -26,6 +26,7 @@ TransitionScene::TransitionScene(Game* game)
 	graphics(SMBEngine::GetInstance()->GetGraphics()),
 	mario(nullptr),
 	canvas(nullptr),
+	transitionToWorld(nullptr),
 	transitionToScene(0),
 	timeToTransition(0.0f)
 {}
@@ -48,6 +49,7 @@ void TransitionScene::Load()
 		SetupScoreTracker("", 0.0f, true);
 	}
 
+	Scene::Load(); // We want to call CreateUI after we get transitionToWorld text
 	Camera* camera = SMBEngine::GetInstance()->GetCamera();
 
 	// Mario setup
@@ -57,11 +59,9 @@ void TransitionScene::Load()
 	mario = new GameObject(marioSpriteSettings);
 	mario->sprite->SetFrame(21);
 	DirectX::XMFLOAT2 position = camera->GetViewportCenter();
-	position.x -= mario->sprite->GetSize().x * 1.7f;
+	position.x -= 50.0f;
 	mario->transform->position = position;
 	mario->transform->scale = DirectX::XMFLOAT2(1.2f, 1.2f);
-
-	Scene::Load(); // We want to call CreateUI after this load method
 }
 
 void TransitionScene::UnLoad()
@@ -90,7 +90,7 @@ void TransitionScene::Update(const float deltaTime)
 void TransitionScene::SetSceneToTransitionTo(int sceneIndex)
 {
 	transitionToScene = sceneIndex;
-	timeToTransition = 5.0f;
+	timeToTransition = 3.5f;
 }
 
 void TransitionScene::CreateUI()
@@ -107,9 +107,9 @@ void TransitionScene::CreateUI()
 	livesText->SetText(std::string("x ") + std::to_string(Mario::GetLives()));
 	livesText->transform->position = DirectX::XMFLOAT2(0.0f, -25.0f);
 	livesText->transform->scale = DirectX::XMFLOAT2(1.5f, 1.5f);
-
+	
 	Text* worldText = new Text(textSettings);
-	worldText->SetText(std::string("World ") + transitionToWorld);
+	if (transitionToWorld) worldText->SetText(std::string("World ") + transitionToWorld);
 	worldText->transform->position = DirectX::XMFLOAT2(-120.0f, 50.0f);
 	worldText->transform->scale = DirectX::XMFLOAT2(1.75f, 1.75f);
 

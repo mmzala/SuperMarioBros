@@ -87,5 +87,7 @@ private:
 	float deathAnimationSpeed;
 	float deathJumpSpeed;
 	float deathJumpTime;
+	float timeBeforeDeathAnimation;
+	float timeAfterDeathBeforeSceneChange;
 };
 

@@ -168,6 +168,8 @@ void GameplayScene::CreateMario(DirectX::XMINT2 tilemapPosition, DirectX::XMINT2
 	marioSettings.flagPoleBottomPositionY = tilemap->GetPositionInWorldCoordinates(tilemapPolePositionBottom).y;
 	marioSettings.poleDescendingSpeed = 0.5f;
 	marioSettings.deathAnimationSpeed = 0.6f;
+	marioSettings.timeBeforeDeathAnimation = 0.25f;
+	marioSettings.timeAfterDeathBeforeSceneChange = 3.5f;
 
 	player = new Mario(marioSettings);
 	player->transform->position = player->GetSpawnPositionOnTile(tilemapPosition);

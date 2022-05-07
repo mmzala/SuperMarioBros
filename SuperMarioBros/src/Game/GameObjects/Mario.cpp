@@ -47,7 +47,9 @@ Mario::Mario(MarioSettings settings)
 	poleDescentInterpolationValue(0.0f),
 	deathAnimationSpeed(settings.deathAnimationSpeed),
 	deathJumpSpeed(settings.movementSettings.maxJumpSpeed),
-	deathJumpTime(settings.movementSettings.maxJumpTime)
+	deathJumpTime(settings.movementSettings.maxJumpTime),
+	timeBeforeDeathAnimation(settings.timeBeforeDeathAnimation),
+	timeAfterDeathBeforeSceneChange(settings.timeAfterDeathBeforeSceneChange)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -72,7 +74,6 @@ void Mario::Update(const float deltaTime)
 	switch (marioState)
 	{
 	case MarioState::Dead:
-		lives--;
 		DeathAnimation(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
 		break;
@@ -363,8 +364,6 @@ void Mario::PowerDownAnimation(const float deltaTime)
 
 void Mario::DeathAnimation(const float deltaTime)
 {
-	constexpr float timeBeforeDeathAnimation = 0.25f;
-	
 	if (powerChangeTimer < timeBeforeDeathAnimation)
 	{
 		powerChangeTimer += deltaTime;
@@ -381,6 +380,21 @@ void Mario::DeathAnimation(const float deltaTime)
 		velocity.y = std::fmax(velocity.y - gravityAcceleration * deathAnimationSpeed * deltaTime, -(gravity * deathAnimationSpeed));
 		transform->position.y += velocity.y * deltaTime;
 	}
+
+	timeAfterDeathBeforeSceneChange -= deltaTime;
+	if (timeAfterDeathBeforeSceneChange < 0.0f)
+	{
+		Game* game = SMBEngine::GetInstance()->GetGame();
+		if (lives > 0)
+		{
+			game->TransitionToScene(game->GetSceneIndex());
+		}
+		else
+		{
+			lives = 3;
+			game->ChangeScene(Scenes::MainMenu);
+		}
+	}
 }
 
 void Mario::UpdateState(MarioState marioState)
@@ -391,6 +405,7 @@ void Mario::UpdateState(MarioState marioState)
 	switch (marioState)
 	{
 	case MarioState::Dead:
+		lives--;
 		scoreTracker->stopTime = true;
 		velocity = DirectX::XMFLOAT2(0.0f, 0.0f);
 		powerChangeTimer = 0.0f;
