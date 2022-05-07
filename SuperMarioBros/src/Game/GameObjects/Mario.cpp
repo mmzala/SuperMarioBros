@@ -392,7 +392,7 @@ void Mario::DeathAnimation(const float deltaTime)
 		else
 		{
 			lives = 3;
-			game->ChangeScene(Scenes::MainMenu);
+			game->ChangeScene(Scenes::GameOverScene);
 		}
 	}
 }

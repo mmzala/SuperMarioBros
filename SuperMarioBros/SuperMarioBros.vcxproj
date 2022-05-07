@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\World\Scenes\GameOverScene.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioClip.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="src\Game\GameObjects\Enemy.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="src\Game\World\Scenes\TransitionScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\World\Scenes\GameOverScene.h" />
     <ClInclude Include="src\Engine\Audio\AudioClip.h" />
     <ClInclude Include="src\Engine\Audio\AudioManager.h" />
     <ClInclude Include="src\Game\Data\ScoreData.h" />

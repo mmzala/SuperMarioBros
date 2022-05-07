@@ -47,6 +47,7 @@ struct Scenes
 {
 	static constexpr int MainMenu = 0;
 	static constexpr int TransitionScene = 1;
-	static constexpr int World1d1 = 2;
+	static constexpr int GameOverScene = 2;
+	static constexpr int World1d1 = 3;
 };
 

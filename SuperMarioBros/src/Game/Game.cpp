@@ -4,6 +4,7 @@
 #include "World/Scenes/Scene.h"
 #include "World/Scenes/MainMenuScene.h"
 #include "World//Scenes/TransitionScene.h"
+#include "World/Scenes/GameOverScene.h"
 #include "World/Scenes/World1L1.h"
 
 // Scoring
@@ -16,7 +17,7 @@ Game::Game()
 	targetSceneIndex(sceneIndex),
 	scoreTracker(new ScoreTracker(50.0f))
 {
-	scenes = std::vector<Scene*>{ new MainMenuScene(this), new TransitionScene(this), new World1L1(this) };
+	scenes = std::vector<Scene*>{ new MainMenuScene(this), new TransitionScene(this), new GameOverScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();
 }
 
