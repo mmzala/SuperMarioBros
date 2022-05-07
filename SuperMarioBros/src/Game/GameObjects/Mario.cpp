@@ -196,12 +196,13 @@ void Mario::OnCharacterHit(Character* other)
 	// Can't use a switch :(
 	if (Enemy* enemy = dynamic_cast<Enemy*>(other))
 	{
+		// Check if we are on top of the enemy
 		Rect otherBounds = other->bounds->GetBounds();
 		if (bounds->GetBounds().y > (otherBounds.y + otherBounds.height))
 		{
 			enemy->OnHeadStomp();
 			movementComponent->ForceJump();
-			scoreTracker->AddScore(ScoreData::PowerUpPickUp);
+			scoreTracker->AddScore(ScoreData::EnemyHeadStomp);
 		}
 		else
 		{
@@ -215,6 +216,7 @@ void Mario::OnCharacterHit(Character* other)
 		{
 			UpdatePowerState((MarioPowerState)((int)marioPowerState + 1));
 		}
+		scoreTracker->AddScore(ScoreData::PowerUpPickUp);
 		other->isActive = false;
 	}
 }
@@ -519,6 +521,10 @@ void Mario::UpdateState(MarioState marioState)
 		characterCollider->ignoreCollision = true;
 		powerChangeTimer = poweringDownTime;
 		powerChangeAnimationTimer = 0.0f;
+		break;
+
+	case MarioState::TouchedFlagPole:
+		scoreTracker->stopTime = true;
 		break;
 	}
 }

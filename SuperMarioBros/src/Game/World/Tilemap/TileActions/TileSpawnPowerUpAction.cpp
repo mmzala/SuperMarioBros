@@ -19,5 +19,5 @@ void TileSpawnPowerUpAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapP
 	tilemapPosition.y -= 1; // Spawn above the hit tile
 
 	GameplayScene* scene = (GameplayScene*)SMBEngine::GetInstance()->GetGame()->GetCurrentScene();
-	Mario::GetPowerState() == MarioPowerState::Large ? scene->CreateFireFlower(tilemapPosition) : scene->CreateMushroom(tilemapPosition);
+	Mario::GetPowerState() < MarioPowerState::Large ? scene->CreateMushroom(tilemapPosition) : scene->CreateFireFlower(tilemapPosition);
 }

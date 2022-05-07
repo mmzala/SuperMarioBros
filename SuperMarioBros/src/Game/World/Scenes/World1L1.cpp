@@ -29,10 +29,10 @@ void World1L1::Load()
 	questionMarkBlock = new TilemapAnimation(6, 8, 0.8f);
 	std::vector<TilemapAnimation*> tilemapAnimations = { questionMarkBlock };
 
-	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {20, 9} };
+	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {20, 9}, {78, 9}, {109, 5} };
 	spawnPowerUpAction = new TileSpawnPowerUpAction(spawnPowerUpTiles);
 
-	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9}, {22, 9}, {21, 5} };
+	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9}, {22, 9}, {21, 5}, {94, 5}, {106, 9}, {109, 9}, {112, 9}, {129, 5}, {130, 5}, {171, 9} };
 	giveCoinAction = new TileCoinAction(giveCoinTiles);
 
 	std::vector<TileAction*> tileActions = { spawnPowerUpAction, giveCoinAction };
