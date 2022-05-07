@@ -26,6 +26,8 @@
 #include "../Scoring/ScoreTracker.h"
 #include "../Data/ScoreData.h"
 
+int Mario::lives = 3;
+
 Mario::Mario(MarioSettings settings)
 	:
 	Character::Character(settings),
@@ -70,6 +72,7 @@ void Mario::Update(const float deltaTime)
 	switch (marioState)
 	{
 	case MarioState::Dead:
+		lives--;
 		DeathAnimation(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
 		break;
@@ -106,6 +109,11 @@ void Mario::Update(const float deltaTime)
 MarioState Mario::GetMarioState()
 {
 	return marioState;
+}
+
+int Mario::GetLives()
+{
+	return lives;
 }
 
 void Mario::Move(const float deltaTime)

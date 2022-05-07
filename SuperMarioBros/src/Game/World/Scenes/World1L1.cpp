@@ -12,7 +12,7 @@
 
 World1L1::World1L1(Game* game)
 	:
-	GameplayScene::GameplayScene(game),
+	GameplayScene::GameplayScene(game, "1-1", 400.0f),
 	questionMarkBlock(nullptr),
 	spawnPowerUpAction(nullptr),
 	giveCoinAction(nullptr)
@@ -54,9 +54,6 @@ void World1L1::Load()
 	CreateMario(DirectX::XMINT2(2, 12), DirectX::XMINT2(198, 11));
 	CreateGoombas(Worlds::World1D1::GoombaSpawnPoints);
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
-
-	// Scoring UI setup
-	SetupScoreTracker("1-1", 400.0f, false);
 }
 
 void World1L1::UnLoad()

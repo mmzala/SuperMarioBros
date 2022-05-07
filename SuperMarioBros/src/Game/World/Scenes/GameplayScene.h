@@ -16,7 +16,7 @@ class Flag;
 class GameplayScene : public Scene
 {
 public:
-	GameplayScene(Game* game);
+	GameplayScene(Game* game, const char* worldText, float timeToBeat);
 	~GameplayScene() override;
 
 	void Load() override;
@@ -25,6 +25,8 @@ public:
 
 	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 	std::vector<Character*>& GetCharacters();
+	const char* GetWorldText();
+	float GetTimeToBeat();
 
 protected:
 	void CreateUI() override;
@@ -42,5 +44,8 @@ protected:
 	Mario* player; // This does not have to be deleted (it gets deleted with characters vector)
 	std::vector<Character*> characters;
 	Flag* flag;
+
+	const char* worldText;
+	float timeToBeat;
 };
 

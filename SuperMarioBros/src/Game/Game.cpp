@@ -3,6 +3,7 @@
 // Scenes
 #include "World/Scenes/Scene.h"
 #include "World/Scenes/MainMenuScene.h"
+#include "World//Scenes/TransitionScene.h"
 #include "World/Scenes/World1L1.h"
 
 // Scoring
@@ -15,7 +16,7 @@ Game::Game()
 	targetSceneIndex(sceneIndex),
 	scoreTracker(new ScoreTracker(50.0f))
 {
-	scenes = std::vector<Scene*>{ new MainMenuScene(this), new World1L1(this) };
+	scenes = std::vector<Scene*>{ new MainMenuScene(this), new TransitionScene(this), new World1L1(this) };
 	scenes[sceneIndex]->Load();
 }
 
@@ -44,6 +45,13 @@ void Game::Update(float deltaTime)
 	}
 }
 
+void Game::TransitionToScene(int sceneIndex)
+{
+	TransitionScene* scene = static_cast<TransitionScene*>(scenes[Scenes::TransitionScene]);
+	scene->SetSceneToTransitionTo(sceneIndex);
+	targetSceneIndex = Scenes::TransitionScene;
+}
+
 void Game::ChangeScene(int sceneIndex)
 {
 	targetSceneIndex = sceneIndex;
@@ -52,6 +60,11 @@ void Game::ChangeScene(int sceneIndex)
 int Game::GetSceneIndex()
 {
 	return sceneIndex;
+}
+
+Scene* Game::GetScene(int sceneIndex)
+{
+	return scenes[sceneIndex];
 }
 
 Scene* Game::GetCurrentScene()

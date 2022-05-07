@@ -76,7 +76,7 @@ void MainMenuScene::Update(const float deltaTime)
 	if (Input::GetInstance()->GetKey(DIK_RETURN)) // Enter key
 	{
 		Game* game = SMBEngine::GetInstance()->GetGame();
-		game->ChangeScene(game->GetSceneIndex() + 1);
+		game->TransitionToScene(Scenes::World1d1);
 	}
 
 	tilemap->Update(deltaTime);
@@ -112,7 +112,6 @@ void MainMenuScene::CreateUI()
 	playText->SetText("Start Game");
 	playText->transform->position = DirectX::XMFLOAT2(-120.0f, -50.0f);
 	playText->transform->scale = DirectX::XMFLOAT2(1.5f, 1.5f);
-	
 
 	mainMenuCanvas = new Canvas();
 	mainMenuCanvas->AddElement(optionCursor);

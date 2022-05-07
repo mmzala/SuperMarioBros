@@ -218,6 +218,7 @@
     <ClCompile Include="src\Game\World\Tilemap\TileAction.cpp" />
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.cpp" />
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp" />
+    <ClCompile Include="src\Game\World\Scenes\TransitionScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Audio\AudioClip.h" />
@@ -277,6 +278,7 @@
     <ClInclude Include="src\Game\World\Tilemap\TileAction.h" />
     <ClInclude Include="src\Game\World\Tilemap\TileActions\TileSpawnPowerUpAction.h" />
     <ClInclude Include="src\Game\World\Tilemap\TileActions\TileCoinAction.h" />
+    <ClInclude Include="src\Game\World\Scenes\TransitionScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">

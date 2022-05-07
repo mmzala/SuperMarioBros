@@ -144,6 +144,9 @@
     <ClCompile Include="src\Engine\Audio\AudioClip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\World\Scenes\TransitionScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Graphics\DXManager.h">
@@ -315,6 +318,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Settings\EnemySettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\World\Scenes\TransitionScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

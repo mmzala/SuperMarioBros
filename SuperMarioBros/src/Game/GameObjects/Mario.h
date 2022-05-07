@@ -35,6 +35,7 @@ public:
 
 	void Update(const float deltaTime) override;
 	MarioState GetMarioState();
+	static int GetLives();
 
 protected:
 	void Move(const float deltaTime) override;
@@ -61,6 +62,7 @@ private:
 	ScoreTracker* scoreTracker;
 	MovementComponent* movementComponent;
 
+	static int lives;
 	MarioState marioState;
 	MarioPowerState marioPowerState;
 	std::unordered_map<MarioPowerState, std::vector<Animation>> animations;

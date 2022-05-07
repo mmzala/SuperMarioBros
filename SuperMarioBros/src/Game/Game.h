@@ -15,8 +15,21 @@ public:
 	~Game();
 
 	void Update(float deltaTime);
+
+	/// <summary>
+	/// Changes to the desired scene using the transition scene
+	/// </summary>
+	/// <param name="sceneIndex">: Index of the scene to load </param>
+	void TransitionToScene(int sceneIndex);
+
+	/// <summary>
+	/// Chnages scene without using the transition scene
+	/// </summary>
+	/// <param name="sceneIndex">: Index of the scene to load </param>
 	void ChangeScene(int sceneIndex);
+
 	int GetSceneIndex();
+	Scene* GetScene(int sceneIndex);
 	Scene* GetCurrentScene();
 	ScoreTracker* GetScoreTracker();
 
@@ -28,5 +41,12 @@ private:
 	int sceneIndex;
 	int targetSceneIndex;
 	ScoreTracker* scoreTracker;
+};
+
+struct Scenes
+{
+	static constexpr int MainMenu = 0;
+	static constexpr int TransitionScene = 1;
+	static constexpr int World1d1 = 2;
 };
 
