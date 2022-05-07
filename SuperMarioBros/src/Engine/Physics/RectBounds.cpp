@@ -27,11 +27,18 @@ Rect RectBounds::GetBounds()
 	return bounds;
 }
 
-Rect RectBounds::GetBoundsWithOffset(DirectX::XMFLOAT2 positionOffset)
+Rect RectBounds::GetBoundsWithSizeOffset(DirectX::XMFLOAT2 sizeOffset)
 {
 	Rect bounds = GetBounds();
+	bounds.width += sizeOffset.x;
+	bounds.height += sizeOffset.y;
 
-	// Left and bottom are the position values, so only apply them there
+	return bounds;
+}
+
+Rect RectBounds::GetBoundsWithPositionOffset(DirectX::XMFLOAT2 positionOffset)
+{
+	Rect bounds = GetBounds();
 	bounds.x += positionOffset.x;
 	bounds.y += positionOffset.y;
 

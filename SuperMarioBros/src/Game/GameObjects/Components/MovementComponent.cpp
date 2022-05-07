@@ -36,8 +36,8 @@ void MovementComponent::Update(MovementInput input, const float deltaTime)
 {
 	CheckSide collisions = character->tilemapCollider->DetectedCollisions();
 	isGrounded = (collisions & CheckSide::Bottom) == CheckSide::Bottom;
-	MoveHorizontal(input.left, input.right, input.run, deltaTime);
-	MoveVertical(input.jump, deltaTime);
+	MoveHorizontal(input.left, input.right, input.run, input.duck, deltaTime);
+	MoveVertical(input.jump, input.duck, deltaTime);
 }
 
 void MovementComponent::ForceJump()
@@ -61,59 +61,62 @@ bool MovementComponent::IsGrounded()
 }
 
 // REFACTOR THIS LATER PLS
-void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime)
+void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const bool duckInput, const float deltaTime)
 {
 	float movementSpeed = ShouldRun(runInput, deltaTime) ? runningSpeed : character->walkingSpeed;
 	float movementAccelertion = (runInput ? runningAcceleration : walkingAcceleration) * deltaTime;
 	float turnaroundSpeed = GetTurnaroundSpeed() * deltaTime;
 	movementDirection = rightInput - leftInput;
 
-	if (leftInput && !rightInput)  // Left movement
+	if (!duckInput) // Can't move when ducking
 	{
-		// If velocity is too high then go back to the max velocity slowly
-		if (-movementSpeed > character->velocity.x && isGrounded)
+		if (leftInput && !rightInput)  // Left movement
 		{
-			character->velocity.x = character->velocity.x + releaseDeceleration * deltaTime;
-		}
-		else
-		{
-			if (character->velocity.x > 0.0f)
+			// If velocity is too high then go back to the max velocity slowly
+			if (-movementSpeed > character->velocity.x && isGrounded)
 			{
-				state = MovementState::TurningAround;
-				character->velocity.x = character->velocity.x - turnaroundSpeed;
+				character->velocity.x = character->velocity.x + releaseDeceleration * deltaTime;
 			}
 			else
 			{
-				state = MovementState::Running;
-				character->velocity.x = std::fmax(character->velocity.x - movementAccelertion, -movementSpeed);
+				if (character->velocity.x > 0.0f)
+				{
+					state = MovementState::TurningAround;
+					character->velocity.x = character->velocity.x - turnaroundSpeed;
+				}
+				else
+				{
+					state = MovementState::Running;
+					character->velocity.x = std::fmax(character->velocity.x - movementAccelertion, -movementSpeed);
+				}
+			}
+		}
+
+		if (rightInput && !leftInput) // Right movement
+		{
+			if (movementSpeed < character->velocity.x && isGrounded)
+			{
+				character->velocity.x = character->velocity.x - releaseDeceleration * deltaTime;
+			}
+			else
+			{
+				if (character->velocity.x < 0.0f)
+				{
+					state = MovementState::TurningAround;
+					character->velocity.x = character->velocity.x + turnaroundSpeed;
+				}
+				else
+				{
+					state = MovementState::Running;
+					character->velocity.x = std::fmin(character->velocity.x + movementAccelertion, movementSpeed);
+				}
 			}
 		}
 	}
 
-	if (rightInput && !leftInput) // Right movement
+	if (((!leftInput && !rightInput || leftInput && rightInput)) || duckInput) // No input or both input or duck input
 	{
-		if (movementSpeed < character->velocity.x && isGrounded)
-		{
-			character->velocity.x = character->velocity.x - releaseDeceleration * deltaTime;
-		}
-		else
-		{
-			if (character->velocity.x < 0.0f)
-			{
-				state = MovementState::TurningAround;
-				character->velocity.x = character->velocity.x + turnaroundSpeed;
-			}
-			else
-			{
-				state = MovementState::Running;
-				character->velocity.x = std::fmin(character->velocity.x + movementAccelertion, movementSpeed);
-			}
-		}
-	}
-
-	if ((!leftInput && !rightInput || leftInput && rightInput)) // No input
-	{
-		state = MovementState::Standing;
+		state = duckInput ? MovementState::Ducking : MovementState::Standing;
 		if (!isGrounded) return;
 
 		if (character->velocity.x < 0)
@@ -128,7 +131,7 @@ void MovementComponent::MoveHorizontal(const bool leftInput, const bool rightInp
 }
 
 // REFACTOR THIS LATER PLS
-void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime)
+void MovementComponent::MoveVertical(const bool jumpInput, const bool duckInput, const float deltaTime)
 {
 	if (character->velocity.y > 0.0f)
 	{
@@ -173,7 +176,7 @@ void MovementComponent::MoveVertical(const bool jumpInput, const float deltaTime
 		}
 	}
 
-	if (isJumping) state = MovementState::Jumping;
+	if (isJumping && !duckInput) state = MovementState::Jumping;
 }
 
 bool MovementComponent::ShouldRun(const bool runInput, const float deltaTime)

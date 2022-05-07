@@ -13,13 +13,15 @@ struct MovementInput
 	bool right;
 	bool run;
 	bool jump;
+	bool duck;
 
-	MovementInput(bool left = false, bool right = false, bool run = false, bool jump = false)
+	MovementInput(bool left = false, bool right = false, bool run = false, bool jump = false, bool duck = false)
 		:
 		left(left),
 		right(right),
 		run(run),
-		jump(jump)
+		jump(jump),
+		duck(duck)
 	{}
 };
 
@@ -29,6 +31,7 @@ enum class MovementState
 	Running = 1,
 	TurningAround = 2,
 	Jumping = 3,
+	Ducking = 4,
 };
 
 class MovementComponent
@@ -44,8 +47,8 @@ public:
 	bool IsGrounded();
 
 private:
-	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const float deltaTime);
-	void MoveVertical(const bool jumpInput, const float deltaTime);
+	void MoveHorizontal(const bool leftInput, const bool rightInput, const bool runInput, const bool duckInput, const float deltaTime);
+	void MoveVertical(const bool jumpInput, const bool duckInput, const float deltaTime);
 	bool ShouldRun(const bool runInput, const float deltaTime);
 	float GetTurnaroundSpeed();
 

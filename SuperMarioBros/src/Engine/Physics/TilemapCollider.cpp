@@ -21,7 +21,7 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	Rect bounds = rectBounds->GetBounds();
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
 	deltaVelocity.y -= 0.01f; // Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
-	Rect vBounds = rectBounds->GetBoundsWithOffset(deltaVelocity);
+	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
 
 	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
 	bool collidedTop = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top);
@@ -43,6 +43,22 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	if (collidedLeft) sidesDetected |= CheckSide::Left;
 	if (collidedRight) sidesDetected |= CheckSide::Right;
 	collisions = sidesDetected;
+}
+
+bool TilemapCollider::CheckCollision(Rect bounds, DirectX::XMFLOAT2 velocity, const float deltaTime)
+{
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
+	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
+
+	if(CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
+		CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top) ||
+		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left) ||
+		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 CheckSide TilemapCollider::DetectedCollisions()

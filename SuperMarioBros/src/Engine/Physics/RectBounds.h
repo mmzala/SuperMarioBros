@@ -18,11 +18,18 @@ public:
 	Rect GetBounds();
 
 	/// <summary>
-	/// Gets bounds of the collider with already applied world position, but with an offset applied
+	/// Gets bounds of the collider with already applied world position, but with a size offset applied
+	/// </summary>
+	/// <param name="positionOffset">: Offset for the collider size </param>
+	/// <returns> Bounds of the collider with already applied position with a size offset </returns>
+	Rect GetBoundsWithSizeOffset(DirectX::XMFLOAT2 sizeOffset);
+
+	/// <summary>
+	/// Gets bounds of the collider with already applied world position, but with a position offset applied
 	/// </summary>
 	/// <param name="positionOffset">: Offset for the collider position </param>
-	/// <returns> Bounds of the collider with already applied position with an offset </returns>
-	Rect GetBoundsWithOffset(DirectX::XMFLOAT2 positionOffset);
+	/// <returns> Bounds of the collider with already applied position with a position offset </returns>
+	Rect GetBoundsWithPositionOffset(DirectX::XMFLOAT2 positionOffset);
 
 	void SetSizeOffset(DirectX::XMFLOAT2 offset);
 

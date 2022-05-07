@@ -8,6 +8,7 @@
 class Camera;
 class ScoreTracker;
 class MovementComponent;
+class Input;
 
 enum class MarioState
 {
@@ -44,18 +45,26 @@ protected:
 	void OnCharacterHit(Character* other) override;
 
 private:
+	void UpdateColliderSize();
 	void HandleHeadCollision();
+	DirectX::XMINT2 GetHeadCollisionTile();
+
+	bool GetDuckInput(Input* input, const float deltaTime);
+	bool CanStandUp(const float deltaTime);
+
 	void UpdateCameraFollow();
+
 	void UpdateAnimations();
 	void UpdateMovementAnimations(MarioPowerState marioPowerState);
+
 	void OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilemapPosition);
 	void GoToCastle(float deltaTime);
 	void PowerUpAnimation(const float deltaTime);
 	void PowerDownAnimation(const float deltaTime);
 	void DeathAnimation(const float deltaTime);
+
 	void UpdateState(MarioState marioState);
 	void UpdatePowerState(MarioPowerState marioPowerState);
-	DirectX::XMINT2 GetHeadCollisionTile();
 
 private:
 	Camera* camera;
@@ -89,5 +98,8 @@ private:
 	float deathJumpTime;
 	float timeBeforeDeathAnimation;
 	float timeAfterDeathBeforeSceneChange;
+
+	// Check if can stand up after ducking
+	bool lastDuckInput;
 };
 

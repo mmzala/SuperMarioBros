@@ -18,6 +18,7 @@ public:
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
+	bool CheckCollision(Rect bounds, DirectX::XMFLOAT2 velocity, const float deltaTime);
 	CheckSide DetectedCollisions();
 
 private:

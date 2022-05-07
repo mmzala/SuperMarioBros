@@ -26,7 +26,7 @@ void CharacterCollider::Update(const float deltaTime)
 {
 	if (ignoreCollision) return;
 
-	Rect bounds = character->bounds->GetBoundsWithOffset(character->GetVelocity() * deltaTime);
+	Rect bounds = character->bounds->GetBoundsWithPositionOffset(character->GetVelocity() * deltaTime);
 
 	for (Character* character : characters)
 	{
