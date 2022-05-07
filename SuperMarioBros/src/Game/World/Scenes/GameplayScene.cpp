@@ -7,6 +7,7 @@
 #include "../../GameObjects/Goomba.h"
 #include "../../GameObjects/Flag.h"
 #include "../../GameObjects/Mushroom.h"
+#include "../../GameObjects/FireFlower.h"
 
 // World
 #include "../Tilemap/Tilemap.h"
@@ -112,13 +113,32 @@ void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
 	mushroomSettings.spriteSettings = mushroomSpriteSettings;
 	mushroomSettings.tilemap = tilemap;
 	mushroomSettings.walkingSpeed = 150.0f;
-	mushroomSettings.gravity = 375.0f;
-	mushroomSettings.gravityAcceleration = 2500.0f;
+	mushroomSettings.gravity = 450.0f;
+	mushroomSettings.gravityAcceleration = 2700.0f;
 
 	Mushroom* mushroom = new Mushroom(mushroomSettings);
 	mushroom->transform->position = mushroom->GetSpawnPositionOnTile(tilemapPosition);
 	mushroom->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	characters.push_back(mushroom);
+}
+
+void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
+{
+	SpriteSettings fireFlowerSpriteSettings = SpriteSettings();
+	fireFlowerSpriteSettings.textureFile = "assets/FireFlower.png";
+	fireFlowerSpriteSettings.spriteSheetSize = DirectX::XMINT2(4, 1);
+
+	CharacterSettings fireFlowerSettings = CharacterSettings();
+	fireFlowerSettings.spriteSettings = fireFlowerSpriteSettings;
+	fireFlowerSettings.tilemap = tilemap;
+	fireFlowerSettings.walkingSpeed = 150.0f;
+	fireFlowerSettings.gravity = 450.0f;
+	fireFlowerSettings.gravityAcceleration = 2700.0f;
+
+	FireFlower* fireFlower = new FireFlower(fireFlowerSettings);
+	fireFlower->transform->position = fireFlower->GetSpawnPositionOnTile(tilemapPosition);
+	fireFlower->transform->scale = DirectX::XMFLOAT2(2.0f, 2.0f);
+	characters.push_back(fireFlower);
 }
 
 std::vector<Character*>& GameplayScene::GetCharacters()
@@ -194,8 +214,8 @@ void GameplayScene::CreateGoomba(DirectX::XMINT2 tilemapPosition)
 	goombaSettings.spriteSettings = goombaSpriteSettings;
 	goombaSettings.tilemap = tilemap;
 	goombaSettings.walkingSpeed = 150.0f;
-	goombaSettings.gravity = 375.0f;
-	goombaSettings.gravityAcceleration = 2500.0f;
+	goombaSettings.gravity = 450.0f;
+	goombaSettings.gravityAcceleration = 2700.0f;
 	goombaSettings.timeAfterDeath = 0.5f;
 
 	Goomba* goomba = new Goomba(goombaSettings);

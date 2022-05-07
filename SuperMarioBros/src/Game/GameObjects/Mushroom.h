@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Character.h"
+#include "PowerUp.h"
 
 class AIMovementComponent;
 
 /// <summary>
 /// Mushroom used to power up Mario
 /// </summary>
-class Mushroom : public Character
+class Mushroom : public PowerUp
 {
 public:
 	Mushroom(CharacterSettings settings);

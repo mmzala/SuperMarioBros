@@ -8,7 +8,7 @@ public:
 	AIMovementComponent(Character* character);
 	~AIMovementComponent();
 
-	void Update();
+	void Update(const float deltaTime);
 	void ChangeMovingDirection();
 
 private:

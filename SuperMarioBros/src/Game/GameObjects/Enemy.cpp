@@ -39,7 +39,7 @@ void Enemy::OnHeadStomp()
 
 void Enemy::Move(const float deltaTime)
 {
-	movementComponent->Update();
+	movementComponent->Update(deltaTime);
 	Character::Move(deltaTime);
 }
 

@@ -24,6 +24,7 @@ public:
 	void Update(const float deltaTime) override;
 
 	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
+	void CreateFireFlower(DirectX::XMINT2 tilemapPosition);
 	std::vector<Character*>& GetCharacters();
 	const char* GetWorldText();
 	float GetTimeToBeat();

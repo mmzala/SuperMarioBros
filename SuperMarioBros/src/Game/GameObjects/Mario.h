@@ -37,6 +37,8 @@ public:
 	void Update(const float deltaTime) override;
 	MarioState GetMarioState();
 	static int GetLives();
+	static MarioPowerState GetPowerState();
+	static void ResetStaticVariables();
 
 protected:
 	void Move(const float deltaTime) override;
@@ -73,7 +75,7 @@ private:
 
 	static int lives;
 	MarioState marioState;
-	MarioPowerState marioPowerState;
+	static MarioPowerState marioPowerState;
 	std::unordered_map<MarioPowerState, std::vector<Animation>> animations;
 	
 	// Positions are in tilemap coordinates

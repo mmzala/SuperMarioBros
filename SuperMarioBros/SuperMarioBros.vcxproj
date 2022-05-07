@@ -175,6 +175,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\GameObjects\PowerUp.cpp" />
+    <ClCompile Include="src\Game\GameObjects\FireFlower.cpp" />
     <ClCompile Include="src\Game\World\Scenes\GameOverScene.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioClip.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
@@ -223,6 +225,8 @@
     <ClCompile Include="src\Game\World\Scenes\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\GameObjects\PowerUp.h" />
+    <ClInclude Include="src\Game\GameObjects\FireFlower.h" />
     <ClInclude Include="src\Game\World\Scenes\GameOverScene.h" />
     <ClInclude Include="src\Engine\Audio\AudioClip.h" />
     <ClInclude Include="src\Engine\Audio\AudioManager.h" />

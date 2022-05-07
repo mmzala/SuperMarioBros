@@ -7,7 +7,7 @@
 
 Mushroom::Mushroom(CharacterSettings settings)
 	:
-	Character::Character(settings),
+	PowerUp::PowerUp(settings),
 	movementComponent(new AIMovementComponent(this))
 {
 	characterCollider->AddCharacterTypeToIgnore<Goomba>();
@@ -21,7 +21,7 @@ Mushroom::~Mushroom()
 
 void Mushroom::Move(const float deltaTime)
 {
-	movementComponent->Update();
+	movementComponent->Update(deltaTime);
 	Character::Move(deltaTime);
 }
 

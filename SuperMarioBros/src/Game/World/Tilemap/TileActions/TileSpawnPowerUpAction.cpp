@@ -3,6 +3,7 @@
 #include "../../../Game.h" // Getting scene
 #include "../../Scenes/GameplayScene.h" // Spawning power up
 #include "../Tilemap.h" // Setting tile
+#include "../../../GameObjects/Mario.h" // Checking what power up to spawn
 
 TileSpawnPowerUpAction::TileSpawnPowerUpAction(std::unordered_set<DirectX::XMINT2> tilePositions)
 	:
@@ -18,5 +19,5 @@ void TileSpawnPowerUpAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapP
 	tilemapPosition.y -= 1; // Spawn above the hit tile
 
 	GameplayScene* scene = (GameplayScene*)SMBEngine::GetInstance()->GetGame()->GetCurrentScene();
-	scene->CreateMushroom(tilemapPosition);
+	Mario::GetPowerState() == MarioPowerState::Large ? scene->CreateFireFlower(tilemapPosition) : scene->CreateMushroom(tilemapPosition);
 }

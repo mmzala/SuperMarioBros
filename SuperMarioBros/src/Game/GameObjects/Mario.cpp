@@ -19,15 +19,17 @@
 #include "../../Engine/Physics/TilemapCollider.h" // Checking if can stand up after ducking
 
 // Responses from collision
-#include "Mushroom.h" // Power up
-#include "Goomba.h" // Enemy
+#include "PowerUp.h"
+#include "Enemy.h"
 
 // Adding score
 #include "../Game.h" // Getting ScoreTracker
 #include "../Scoring/ScoreTracker.h"
 #include "../Data/ScoreData.h"
 
+// There static variables are beeing reset in the Main Menu
 int Mario::lives = 3;
+MarioPowerState Mario::marioPowerState = MarioPowerState::Small;
 
 Mario::Mario(MarioSettings settings)
 	:
@@ -36,7 +38,6 @@ Mario::Mario(MarioSettings settings)
 	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
-	marioPowerState(MarioPowerState::Dead),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -62,8 +63,7 @@ Mario::Mario(MarioSettings settings)
 
 	camera->SetBoundary(tilemap->GetTilemapBounds());
 	UpdateState(MarioState::Controlling);
-	UpdatePowerState(MarioPowerState::Small);
-	UpdateAnimations();
+	UpdateColliderSize();
 }
 
 Mario::~Mario()
@@ -117,6 +117,17 @@ MarioState Mario::GetMarioState()
 int Mario::GetLives()
 {
 	return lives;
+}
+
+MarioPowerState Mario::GetPowerState()
+{
+	return marioPowerState;
+}
+
+void Mario::ResetStaticVariables()
+{
+	lives = 3;
+	marioPowerState = MarioPowerState::Small;
 }
 
 void Mario::Move(const float deltaTime)
@@ -197,9 +208,13 @@ void Mario::OnCharacterHit(Character* other)
 			UpdatePowerState((MarioPowerState)((int)marioPowerState - 1));
 		}
 	}
-	else if (dynamic_cast<Mushroom*>(other))
+	else if (dynamic_cast<PowerUp*>(other))
 	{
-		UpdatePowerState(MarioPowerState::Large);
+		// Power up untill Fire Flower state
+		if (marioPowerState != MarioPowerState::Fire)
+		{
+			UpdatePowerState((MarioPowerState)((int)marioPowerState + 1));
+		}
 		other->isActive = false;
 	}
 }
@@ -415,9 +430,15 @@ void Mario::PowerUpAnimation(const float deltaTime)
 
 	if (powerChangeAnimationTimer > 1.0f)
 	{
+		MarioPowerState previousPowerState = (MarioPowerState)((int)marioPowerState - 1);
+		int startAnimation = previousPowerState == MarioPowerState::Small ?
+			Animations::Mario::AnimationState::Standing : 
+			Animations::Mario::Large::LAnimationState::Transitional;
+
 		sprite->GetFrame() == animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame ?
-			sprite->SetFrame(animations[MarioPowerState::Small][Animations::Mario::AnimationState::Standing].startFrame) :
+			sprite->SetFrame(animations[previousPowerState][startAnimation].startFrame) :
 			sprite->SetFrame(animations[marioPowerState][Animations::Mario::Large::LAnimationState::Transitional].startFrame);
+
 		powerChangeAnimationTimer = 0.0f;
 	}
 
@@ -441,8 +462,7 @@ void Mario::PowerDownAnimation(const float deltaTime)
 	powerChangeTimer > 0.5f ? UpdateMovementAnimations((MarioPowerState)((int)marioPowerState + 1)) : UpdateAnimations();
 	if (powerChangeTimer <= 0.0f)
 	{
-		characterCollider->RemoveCharacterTypeToIgnore<Goomba>();
-		characterCollider->RemoveCharacterTypeToIgnore<Mushroom>();
+		characterCollider->ignoreCollision = false;
 		UpdateState(MarioState::Controlling);
 	}
 }
@@ -470,15 +490,7 @@ void Mario::DeathAnimation(const float deltaTime)
 	if (timeAfterDeathBeforeSceneChange < 0.0f)
 	{
 		Game* game = SMBEngine::GetInstance()->GetGame();
-		if (lives > 0)
-		{
-			game->TransitionToScene(game->GetSceneIndex());
-		}
-		else
-		{
-			lives = 3;
-			game->ChangeScene(Scenes::GameOverScene);
-		}
+		lives > 0 ? game->TransitionToScene(game->GetSceneIndex()) : game->ChangeScene(Scenes::GameOverScene);
 	}
 }
 #pragma endregion MovementAnimations
@@ -504,8 +516,7 @@ void Mario::UpdateState(MarioState marioState)
 		break;
 
 	case MarioState::PowerDown:
-		characterCollider->AddCharacterTypeToIgnore<Goomba>();
-		characterCollider->AddCharacterTypeToIgnore<Mushroom>();
+		characterCollider->ignoreCollision = true;
 		powerChangeTimer = poweringDownTime;
 		powerChangeAnimationTimer = 0.0f;
 		break;

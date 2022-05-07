@@ -17,6 +17,9 @@
 // Changing Scene
 #include "../../../Engine/Input/Input.h"
 
+// Resetting static variables
+#include "../../GameObjects/Mario.h"
+
 MainMenuScene::MainMenuScene(Game* game)
 	:
 	Scene::Scene(game),
@@ -77,6 +80,7 @@ void MainMenuScene::Update(const float deltaTime)
 
 	if (Input::GetInstance()->GetKey(DIK_RETURN)) // Enter key
 	{
+		Mario::ResetStaticVariables();
 		game->TransitionToScene(Scenes::World1d1);
 	}
 

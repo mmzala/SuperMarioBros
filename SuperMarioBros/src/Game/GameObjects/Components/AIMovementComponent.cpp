@@ -13,12 +13,12 @@ AIMovementComponent::AIMovementComponent(Character* character)
 AIMovementComponent::~AIMovementComponent()
 {}
 
-void AIMovementComponent::Update()
+void AIMovementComponent::Update(const float deltaTime)
 {
 	// If velocity is 0 that means we hit something, so we change direction
 	if (character->velocity.x == 0.0f) walkingRight = !walkingRight;
 
-	character->velocity.y = -character->gravity;
+	character->velocity.y = std::fmax(character->velocity.y - character->gravityAcceleration * deltaTime, -character->gravity);
 	character->velocity.x = character->walkingSpeed * (walkingRight ? 1 : -1);
 }
 
