@@ -6,6 +6,9 @@
 #include "../../../Engine/Graphics/UI/Canvas.h"
 #include "../../../Engine/Graphics/UI/Text.h"
 
+// Audio
+#include "../../../Engine/Audio/AudioClip.h"
+
 #include "../../../Engine/SMBEngine.h" // Getting graphics
 #include "../../../Engine/Graphics/DXManager.h" // Changing background color
 
@@ -13,6 +16,8 @@ GameOverScene::GameOverScene(Game* game)
 	:
 	Scene::Scene(game),
 	graphics(SMBEngine::GetInstance()->GetGraphics()),
+	canvas(nullptr),
+	gameOverClip(nullptr),
 	timeToTransition(0.0f)
 {}
 
@@ -24,7 +29,9 @@ void GameOverScene::Load()
 	Scene::Load();
 	graphics->SetBackgroundColor(Colors::Black);
 
-	timeToTransition = 3.5f;
+	gameOverClip = new AudioClip("assets/GameOver.wav", false);
+	gameOverClip->Play();
+	timeToTransition = 4.5f;
 }
 
 void GameOverScene::UnLoad()
@@ -33,6 +40,7 @@ void GameOverScene::UnLoad()
 	graphics->SetBackgroundColor(Colors::Blue);
 
 	delete canvas;
+	delete gameOverClip;
 }
 
 void GameOverScene::Update(const float deltaTime)

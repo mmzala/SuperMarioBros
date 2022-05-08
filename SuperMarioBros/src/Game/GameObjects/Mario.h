@@ -83,7 +83,7 @@ private:
 	std::vector<DirectX::XMINT2> headCollisionPositions;
 
 	// Audio
-	AudioClip* marioDies;
+	AudioClip* marioDiesClip;
 
 	// Changing power states effects
 	float poweringUpTime;

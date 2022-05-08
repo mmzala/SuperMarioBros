@@ -41,7 +41,7 @@ Mario::Mario(MarioSettings settings)
 	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
-	marioDies(new AudioClip("assets/MarioDies.wav", false)),
+	marioDiesClip(new AudioClip("assets/MarioDies.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -73,7 +73,7 @@ Mario::Mario(MarioSettings settings)
 Mario::~Mario()
 {
 	delete movementComponent;
-	delete marioDies;
+	delete marioDiesClip;
 }
 
 void Mario::Update(const float deltaTime)
@@ -516,7 +516,7 @@ void Mario::UpdateState(MarioState marioState)
 		scoreTracker->stopTime = true;
 		velocity = DirectX::XMFLOAT2(0.0f, 0.0f);
 		powerChangeTimer = 0.0f;
-		marioDies->Play();
+		marioDiesClip->Play();
 		break;
 
 	case MarioState::PowerUp:

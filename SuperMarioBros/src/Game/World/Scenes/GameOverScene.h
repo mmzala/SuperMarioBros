@@ -5,6 +5,7 @@
 class Game;
 class DXManager;
 class Canvas;
+class AudioClip;
 
 class GameOverScene : public Scene
 {
@@ -22,6 +23,7 @@ protected:
 private:
 	DXManager* graphics;
 	Canvas* canvas;
+	AudioClip* gameOverClip;
 
 	float timeToTransition;
 };
