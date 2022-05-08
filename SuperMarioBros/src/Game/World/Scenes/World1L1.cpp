@@ -12,7 +12,7 @@
 
 World1L1::World1L1(Game* game)
 	:
-	GameplayScene::GameplayScene(game, "1-1", 400.0f),
+	GameplayScene::GameplayScene(game, "1-1", 200.0f),
 	questionMarkBlock(nullptr),
 	spawnPowerUpAction(nullptr),
 	giveCoinAction(nullptr)

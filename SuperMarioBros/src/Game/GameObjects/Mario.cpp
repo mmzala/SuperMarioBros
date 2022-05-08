@@ -99,6 +99,7 @@ void Mario::Update(const float deltaTime)
 		break;
 
 	case MarioState::Controlling:
+		CheckForTimeOut();
 		Move(deltaTime);
 		UpdateCameraFollow();
 		UpdateAnimations();
@@ -107,11 +108,13 @@ void Mario::Update(const float deltaTime)
 		break;
 
 	case MarioState::PowerUp:
+		CheckForTimeOut();
 		PowerUpAnimation(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
 		break;
 
 	case MarioState::PowerDown:
+		CheckForTimeOut();
 		Move(deltaTime);
 		UpdateCameraFollow();
 		PowerDownAnimation(deltaTime); // Drawing the sprite is a part of the power down animation
@@ -593,4 +596,10 @@ void Mario::UpdatePowerState(MarioPowerState marioPowerState)
 }
 #pragma endregion MarioState
 
-
+void Mario::CheckForTimeOut()
+{
+	if (scoreTracker->GetTime() < 0.0f)
+	{
+		UpdateState(MarioState::Dead);
+	}
+}

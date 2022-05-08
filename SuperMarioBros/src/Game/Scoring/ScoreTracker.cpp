@@ -29,8 +29,8 @@ void ScoreTracker::Update(const float deltaTime)
 {
 	if (!stopTime && time > 0.0f)
 	{
-		time -= deltaTime;
 		SetTime(time);
+		time -= deltaTime;
 	}
 
 	gameplayUI->Update();
@@ -100,6 +100,11 @@ void ScoreTracker::SetTime(float time)
 	timeString = std::string(3 - (int)std::fmin(3, static_cast<int>(timeString.length())), '0') + timeString;
 	const char* timeText = timeString.c_str();
 	gameplayUI->timeCountText->SetText(timeText);
+}
+
+float ScoreTracker::GetTime()
+{
+	return time;
 }
 
 void ScoreTracker::UpdateScoreText()

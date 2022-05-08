@@ -26,6 +26,7 @@ public:
 	void ResetCoins();
 	void SetWorldText(const char* text);
 	void SetTime(float time);
+	float GetTime();
 
 private:
 	void UpdateScoreText();

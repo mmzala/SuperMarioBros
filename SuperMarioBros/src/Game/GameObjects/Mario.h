@@ -70,6 +70,8 @@ private:
 	void UpdateState(MarioState marioState);
 	void UpdatePowerState(MarioPowerState marioPowerState);
 
+	void CheckForTimeOut();
+
 private:
 	Camera* camera;
 	ScoreTracker* scoreTracker;
