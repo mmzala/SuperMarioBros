@@ -1,6 +1,7 @@
 #pragma once
 
 class GameplayUI;
+class AudioClip;
 
 /// <summary>
 /// Keeps track of the score, amount of coins and all other things needed for the UI
@@ -35,6 +36,7 @@ public:
 
 private:
 	GameplayUI* gameplayUI;
+	AudioClip* coinAddClip;
 
 	int score;
 	int coins;

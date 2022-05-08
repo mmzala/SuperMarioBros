@@ -2,6 +2,8 @@
 
 #include "../TileAction.h"
 
+class AudioClip;
+
 class TileSpawnPowerUpAction : public TileAction
 {
 public:
@@ -9,5 +11,8 @@ public:
 	~TileSpawnPowerUpAction() override;
 
 	void DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapPosition) override;
+
+private:
+	AudioClip* appearingPowerUpClip;
 };
 

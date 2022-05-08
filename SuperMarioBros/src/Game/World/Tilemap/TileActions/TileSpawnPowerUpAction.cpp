@@ -4,14 +4,18 @@
 #include "../../Scenes/GameplayScene.h" // Spawning power up
 #include "../Tilemap.h" // Setting tile
 #include "../../../GameObjects/Mario.h" // Checking what power up to spawn
+#include "../../../../Engine/Audio/AudioClip.h" // Audio
 
 TileSpawnPowerUpAction::TileSpawnPowerUpAction(std::unordered_set<DirectX::XMINT2> tilePositions)
 	:
-	TileAction::TileAction(tilePositions)
+	TileAction::TileAction(tilePositions),
+	appearingPowerUpClip(new AudioClip("assets/AppearingPowerUp.wav", false))
 {}
 
 TileSpawnPowerUpAction::~TileSpawnPowerUpAction()
-{}
+{
+	delete appearingPowerUpClip;
+}
 
 void TileSpawnPowerUpAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapPosition)
 {
@@ -20,4 +24,5 @@ void TileSpawnPowerUpAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapP
 
 	GameplayScene* scene = (GameplayScene*)SMBEngine::GetInstance()->GetGame()->GetCurrentScene();
 	Mario::GetPowerState() < MarioPowerState::Large ? scene->CreateMushroom(tilemapPosition) : scene->CreateFireFlower(tilemapPosition);
+	appearingPowerUpClip->Play();
 }

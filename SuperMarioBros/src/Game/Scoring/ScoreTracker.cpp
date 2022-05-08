@@ -2,6 +2,7 @@
 #include "../UI/GameplayUI.h"
 #include "../../Engine/Graphics/UI/Text.h"
 #include "../Data/ScoreData.h" // Scoring data for converting time to score
+#include "../../Engine/Audio/AudioClip.h" // Audio
 #include <iomanip> // std::setprecision
 #include <sstream> // std::stringstream
 
@@ -9,6 +10,7 @@ ScoreTracker::ScoreTracker(float timeConversionSpeed)
 	:
 	stopTime(true),
 	gameplayUI(new GameplayUI()),
+	coinAddClip(new AudioClip("assets/CoinPickUp.wav", false)),
 	score(0),
 	coins(0),
 	world(""),
@@ -20,6 +22,7 @@ ScoreTracker::ScoreTracker(float timeConversionSpeed)
 ScoreTracker::~ScoreTracker()
 {
 	delete gameplayUI;
+	delete coinAddClip;
 }
 
 void ScoreTracker::Update(const float deltaTime)
@@ -69,6 +72,7 @@ void ScoreTracker::AddScore(int score)
 void ScoreTracker::AddCoin()
 {
 	coins++;
+	coinAddClip->Play();
 	UpdateCoinText();
 }
 
@@ -93,7 +97,7 @@ void ScoreTracker::SetTime(float time)
 	std::string timeString = stream.str();
 
 	// Time always has 3 numbers
-	timeString = std::string(3 - std::min(3, static_cast<int>(timeString.length())), '0') + timeString;
+	timeString = std::string(3 - (int)std::fmin(3, static_cast<int>(timeString.length())), '0') + timeString;
 	const char* timeText = timeString.c_str();
 	gameplayUI->timeCountText->SetText(timeText);
 }
@@ -102,7 +106,7 @@ void ScoreTracker::UpdateScoreText()
 {
 	// Score always has 6 numbers
 	std::string scoreString = std::to_string(score);
-	scoreString = std::string(6 - std::min(6, static_cast<int>(scoreString.length())), '0') + scoreString;
+	scoreString = std::string(6 - (int)std::fmin(6, static_cast<int>(scoreString.length())), '0') + scoreString;
 	gameplayUI->scoreText->SetText(scoreString.c_str());
 }
 
@@ -110,7 +114,7 @@ void ScoreTracker::UpdateCoinText()
 {
 	// Coins always has 2 numbers
 	std::string coinsString = std::to_string(coins);
-	coinsString = std::string(2 - std::min(2, static_cast<int>(coinsString.length())), '0') + coinsString;
+	coinsString = std::string(2 - (int)std::fmin(2, static_cast<int>(coinsString.length())), '0') + coinsString;
 	coinsString = "x" + coinsString;
 	gameplayUI->coinCountText->SetText(coinsString.c_str());
 }
