@@ -67,3 +67,15 @@ void Character::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapP
 
 void Character::OnCharacterHit(Character* other)
 {}
+
+bool Character::CheckFalledOffMap(bool deactivateCharacter)
+{
+	constexpr float minPositionY = -150.0f;
+	if (transform->position.y < minPositionY)
+	{
+		if (deactivateCharacter) isActive = false;
+		return true;
+	}
+
+	return false;
+}

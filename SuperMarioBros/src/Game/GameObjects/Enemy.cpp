@@ -46,6 +46,7 @@ void Enemy::Move(const float deltaTime)
 void Enemy::CheckCollision(const float deltaTime)
 {
 	Character::CheckCollision(deltaTime);
+	CheckFalledOffMap(true);
 }
 
 void Enemy::OnCharacterHit(Character* other)

@@ -7,3 +7,9 @@ PowerUp::PowerUp(CharacterSettings settings)
 
 PowerUp::~PowerUp()
 {}
+
+void PowerUp::CheckCollision(const float deltaTime)
+{
+	Character::CheckCollision(deltaTime);
+	CheckFalledOffMap(true);
+}

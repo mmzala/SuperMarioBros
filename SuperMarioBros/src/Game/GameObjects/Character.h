@@ -35,6 +35,7 @@ protected:
 	virtual void CheckCollision(const float deltaTime);
 	virtual void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition);
 	virtual void OnCharacterHit(Character* other);
+	virtual bool CheckFalledOffMap(bool deactivateCharacter);
 
 protected:
 	Animator* animator;

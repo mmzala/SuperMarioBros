@@ -43,6 +43,7 @@ Mario::Mario(MarioSettings settings)
 	marioState(MarioState::Dead),
 	marioDiesClip(new AudioClip("assets/MarioDies.wav", false)),
 	powerUpClip(new AudioClip("assets/PowerUp.wav", false)),
+	powerDownClip(new AudioClip("assets/PowerDown.wav", false)),
 	stompEnemyClip(new AudioClip("assets/StompEnemy.wav", false)),
 	climbingFlagPoleClip(new AudioClip("assets/ClimbingFlagPole.wav", false)),
 	levelClearedClip(new AudioClip("assets/LevelCleared.wav", false)),
@@ -81,6 +82,7 @@ Mario::~Mario()
 
 	delete marioDiesClip;
 	delete powerUpClip;
+	delete powerDownClip;
 	delete stompEnemyClip;
 	delete climbingFlagPoleClip;
 	delete levelClearedClip;
@@ -181,6 +183,18 @@ void Mario::CheckCollision(const float deltaTime)
 	}
 
 	HandleHeadCollision();
+	CheckFalledOffMap(false);
+}
+
+bool Mario::CheckFalledOffMap(bool deactivateCharacter)
+{
+	if (Character::CheckFalledOffMap(deactivateCharacter))
+	{
+		UpdateState(MarioState::Dead);
+		return true;
+	}
+
+	return false;
 }
 
 void Mario::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition)
@@ -542,6 +556,7 @@ void Mario::UpdateState(MarioState marioState)
 		characterCollider->ignoreCollision = true;
 		powerChangeTimer = poweringDownTime;
 		powerChangeAnimationTimer = 0.0f;
+		powerDownClip->Play();
 		break;
 
 	case MarioState::TouchedFlagPole:

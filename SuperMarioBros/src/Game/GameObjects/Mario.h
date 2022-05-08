@@ -44,6 +44,7 @@ public:
 protected:
 	void Move(const float deltaTime) override;
 	void CheckCollision(const float deltaTime) override;
+	bool CheckFalledOffMap(bool deactivateCharacter) override;
 	void OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPosition, DirectX::XMFLOAT2 worldPosition) override;
 	void OnCharacterHit(Character* other) override;
 
@@ -85,6 +86,7 @@ private:
 	// Audio
 	AudioClip* marioDiesClip;
 	AudioClip* powerUpClip;
+	AudioClip* powerDownClip;
 	AudioClip* stompEnemyClip;
 	AudioClip* climbingFlagPoleClip;
 	AudioClip* levelClearedClip;
