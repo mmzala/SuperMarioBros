@@ -5,6 +5,7 @@
 class Game;
 class DXManager;
 class Canvas;
+class AudioClip;
 
 class WinScene : public Scene
 {
@@ -22,5 +23,6 @@ protected:
 private:
 	DXManager* graphics;
 	Canvas* canvas;
+	AudioClip* winClip;
 };
 

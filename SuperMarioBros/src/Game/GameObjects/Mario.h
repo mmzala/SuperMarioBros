@@ -86,6 +86,8 @@ private:
 	AudioClip* marioDiesClip;
 	AudioClip* powerUpClip;
 	AudioClip* stompEnemyClip;
+	AudioClip* climbingFlagPoleClip;
+	AudioClip* levelClearedClip;
 
 	// Changing power states effects
 	float poweringUpTime;

@@ -6,6 +6,9 @@
 #include "../../../Engine/Graphics/UI/Canvas.h"
 #include "../../../Engine/Graphics/UI/Text.h"
 
+// Audio
+#include "../../../Engine/Audio/AudioClip.h"
+
 #include "../../../Engine/SMBEngine.h" // Getting graphics
 #include "../../../Engine/Graphics/DXManager.h" // Changing background color
 #include "../../../Engine/Input/Input.h" // Changing scene
@@ -14,7 +17,8 @@ WinScene::WinScene(Game* game)
 	:
 	Scene::Scene(game),
 	graphics(SMBEngine::GetInstance()->GetGraphics()),
-	canvas(nullptr)
+	canvas(nullptr),
+	winClip(nullptr)
 {}
 
 WinScene::~WinScene()
@@ -24,6 +28,8 @@ void WinScene::Load()
 {
 	Scene::Load();
 	graphics->SetBackgroundColor(Colors::Black);
+	winClip = new AudioClip("assets/YouWin.wav", false);
+	winClip->Play();
 }
 
 void WinScene::UnLoad()
@@ -32,6 +38,7 @@ void WinScene::UnLoad()
 	graphics->SetBackgroundColor(Colors::Blue);
 
 	delete canvas;
+	delete winClip;
 }
 
 void WinScene::Update(const float deltaTime)

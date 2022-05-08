@@ -44,6 +44,8 @@ Mario::Mario(MarioSettings settings)
 	marioDiesClip(new AudioClip("assets/MarioDies.wav", false)),
 	powerUpClip(new AudioClip("assets/PowerUp.wav", false)),
 	stompEnemyClip(new AudioClip("assets/StompEnemy.wav", false)),
+	climbingFlagPoleClip(new AudioClip("assets/ClimbingFlagPole.wav", false)),
+	levelClearedClip(new AudioClip("assets/LevelCleared.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -78,6 +80,8 @@ Mario::~Mario()
 	delete marioDiesClip;
 	delete powerUpClip;
 	delete stompEnemyClip;
+	delete climbingFlagPoleClip;
+	delete levelClearedClip;
 }
 
 void Mario::Update(const float deltaTime)
@@ -538,6 +542,11 @@ void Mario::UpdateState(MarioState marioState)
 
 	case MarioState::TouchedFlagPole:
 		scoreTracker->stopTime = true;
+		climbingFlagPoleClip->Play();
+		break;
+
+	case MarioState::InCastle:
+		levelClearedClip->Play();
 		break;
 	}
 }
