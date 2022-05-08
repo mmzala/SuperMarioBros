@@ -10,6 +10,7 @@
 class Sprite;
 class Transform;
 class TileAction;
+class AudioClip;
 
 struct TilemapAnimation : Animation
 {
@@ -157,6 +158,9 @@ private:
 	// Rendering
 	Sprite* sprite;
 	Transform* transform;
+
+	// Audio
+	AudioClip* blockBreakClip;
 
 	// Size of one tile in the texture, with already applied transform->size
 	float tileSizeScaled;

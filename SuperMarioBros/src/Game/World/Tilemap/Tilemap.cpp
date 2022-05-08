@@ -5,6 +5,7 @@
 #include "../../../Engine/Graphics/Camera.h"
 #include <algorithm> // std::clamp
 #include "TileAction.h" // Action for tiles (for example spawning power up)
+#include "../../../Engine/Audio/AudioClip.h" // Audio
 
 Tilemap::Tilemap(TilemapSettings settings)
 	:
@@ -12,6 +13,7 @@ Tilemap::Tilemap(TilemapSettings settings)
 	collisionMap(settings.collisionMap),
 	sprite(new Sprite(SpriteSettings(settings.spriteSheetFile, settings.spriteSheetSize))),
 	transform(new Transform(settings.position, 0.0f, settings.scale)),
+	blockBreakClip(new AudioClip("assets/BlockBreak.wav", false)),
 	tileSizeScaled(sprite->GetSize().x * transform->scale.x), // Size of x and y will be the same anyway :)
 	animations(),
 	tilesToAnimate(),
@@ -53,6 +55,7 @@ Tilemap::~Tilemap()
 {
 	delete sprite;
 	delete transform;
+	delete blockBreakClip;
 }
 
 void Tilemap::Update(const float deltaTime)
@@ -177,6 +180,7 @@ void Tilemap::BreakTile(DirectX::XMINT2 tilemapPosition)
 	std::pair<bool, int> foundAnimatedTile = Math::FindInVector(tilesToAnimate, tilemapPosition);
 	if (foundAnimatedTile.first) tilesToAnimate.erase(tilesToAnimate.begin() + foundAnimatedTile.second);
 
+	blockBreakClip->Play();
 	tilemap[tilemapPosition.y][tilemapPosition.x] = 0;
 	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
 }
