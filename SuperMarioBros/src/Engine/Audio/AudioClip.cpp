@@ -38,6 +38,7 @@ AudioClip::AudioClip(const char* file, bool loop)
 
 AudioClip::~AudioClip()
 {
+    delete buffer.pAudioData;
     sourceVoice->DestroyVoice();
 }
 
