@@ -54,6 +54,7 @@ void World1L1::Load()
 	CreateMario(DirectX::XMINT2(2, 12), DirectX::XMINT2(198, 11));
 	CreateGoombas(Worlds::World1D1::GoombaSpawnPoints);
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
+	CreateBackgroundMusic("assets/OverworldTheme.wav");
 }
 
 void World1L1::UnLoad()

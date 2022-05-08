@@ -9,6 +9,7 @@ class Character;
 class Mario;
 class Tilemap;
 class Flag;
+class AudioClip;
 
 /// <summary>
 /// Base scene that is used for gameplay
@@ -35,6 +36,7 @@ protected:
 	void CreateGoomba(DirectX::XMINT2 tilemapPosition);
 	void CreateGoombas(const std::vector<DirectX::XMINT2>& tilemapPositions);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
+	void CreateBackgroundMusic(const char* file);
 
 private:
 	void UpdateAllCharacters(float deltaTime);
@@ -45,6 +47,8 @@ protected:
 	Mario* player; // This does not have to be deleted (it gets deleted with characters vector)
 	std::vector<Character*> characters;
 	Flag* flag;
+
+	AudioClip* backgroundMusic;
 
 	const char* worldText;
 	const float timeToBeat;

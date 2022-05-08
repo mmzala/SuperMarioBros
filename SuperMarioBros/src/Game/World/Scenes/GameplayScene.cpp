@@ -22,6 +22,9 @@
 // Converting remaining time to score after Mario is in castle
 #include "../../Scoring/ScoreTracker.h"
 
+// Background music
+#include "../../../Engine/Audio/AudioClip.h"
+
 GameplayScene::GameplayScene(Game* game, const char* worldText, const float timeToBeat)
 	:
 	Scene::Scene(game),
@@ -29,6 +32,7 @@ GameplayScene::GameplayScene(Game* game, const char* worldText, const float time
 	player(nullptr),
 	characters(),
 	flag(nullptr),
+	backgroundMusic(nullptr),
 	worldText(worldText),
 	timeToBeat(timeToBeat),
 	delayBeforeNextWorld(0.0f)
@@ -50,6 +54,7 @@ void GameplayScene::UnLoad()
 
 	delete tilemap;
 	delete flag;
+	delete backgroundMusic;
 
 	tilemap = 0;
 	flag = 0;
@@ -75,11 +80,16 @@ void GameplayScene::Update(const float deltaTime)
 	switch (player->GetMarioState())
 	{
 	case MarioState::TouchedFlagPole:
-		flag->moveDownwards = true;
 		DrawAllCharactersUpdateMario(deltaTime);
+		flag->moveDownwards = true;
+		backgroundMusic->Stop();
 		break;
 
 	case MarioState::Dead:
+		DrawAllCharactersUpdateMario(deltaTime);
+		backgroundMusic->Stop();
+		break;
+
 	case MarioState::PowerUp:
 		DrawAllCharactersUpdateMario(deltaTime);
 		break;
@@ -249,6 +259,12 @@ void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::
 
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
+}
+
+void GameplayScene::CreateBackgroundMusic(const char* file)
+{
+	backgroundMusic = new AudioClip(file, true);
+	backgroundMusic->Play();
 }
 
 void GameplayScene::UpdateAllCharacters(float deltaTime)
