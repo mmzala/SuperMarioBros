@@ -15,6 +15,7 @@ public:
 private:
 	void CreateSourceVoice();
 	void InitializeDataFromFile(const char* file);
+	void SubmitSourceBuffer();
 	HRESULT CreateFile(const char* file, HANDLE& hFile);
 	HRESULT FindChunk(HANDLE file, DWORD type, DWORD& chunkSize, DWORD& chunkDataPosition);
 	HRESULT ReadChunkData(HANDLE file, void* buffer, DWORD bufferSize, DWORD bufferOffset);

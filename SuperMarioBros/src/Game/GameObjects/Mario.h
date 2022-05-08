@@ -84,6 +84,8 @@ private:
 
 	// Audio
 	AudioClip* marioDiesClip;
+	AudioClip* powerUpClip;
+	AudioClip* stompEnemyClip;
 
 	// Changing power states effects
 	float poweringUpTime;

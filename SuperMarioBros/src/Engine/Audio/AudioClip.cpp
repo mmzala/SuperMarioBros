@@ -43,6 +43,10 @@ AudioClip::~AudioClip()
 
 void AudioClip::Play()
 {
+    // We have to submit the buffer everytime we play the audio
+    // https://gamedev.net/forums/topic/577468-xaudio2-how-come-i-am-only-able-to-play-sound-once-with-out-reloading-audio-data/4680833/
+    SubmitSourceBuffer();
+
     if (FAILED(sourceVoice->Start(0)))
     {
         MessageBox(NULL, L"Failed to play Audio Clip!", L"Error!", MB_OK);
@@ -73,13 +77,6 @@ void AudioClip::CreateSourceVoice()
     if (FAILED(result))
     {
         MessageBox(NULL, L"Could not create Source Voice for an Audio Clip!", L"Error!", MB_OK);
-        PostQuitMessage(0);
-    }
-
-    result = sourceVoice->SubmitSourceBuffer(&buffer);
-    if (FAILED(result))
-    {
-        MessageBox(NULL, L"Failed to submit buffer to Source Voice in an Audio Clip!", L"Error!", MB_OK);
         PostQuitMessage(0);
     }
 }
@@ -116,6 +113,26 @@ void AudioClip::InitializeDataFromFile(const char* file)
     buffer.AudioBytes = chunkSize;  // Size of the audio buffer in bytes
     buffer.pAudioData = dataBuffer;  // Buffer containing audio data
     buffer.Flags = XAUDIO2_END_OF_STREAM; // Tell the source voice not to expect any data after this buffer
+}
+
+void AudioClip::SubmitSourceBuffer()
+{
+    HRESULT result;
+
+    // We flush the buffer to make sure the buffer is empty before submitting
+    result = sourceVoice->FlushSourceBuffers();
+    if (FAILED(result))
+    {
+        MessageBox(NULL, L"Failed to flush the buffer of the Audio Clip!", L"Error!", MB_OK);
+        PostQuitMessage(0);
+    }
+
+    result = sourceVoice->SubmitSourceBuffer(&buffer);
+    if (FAILED(result))
+    {
+        MessageBox(NULL, L"Failed to submit buffer to Source Voice in an Audio Clip!", L"Error!", MB_OK);
+        PostQuitMessage(0);
+    }
 }
 
 HRESULT AudioClip::CreateFile(const char* file, HANDLE& hFile)

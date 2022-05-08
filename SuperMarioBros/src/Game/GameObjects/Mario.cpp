@@ -42,6 +42,8 @@ Mario::Mario(MarioSettings settings)
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
 	marioDiesClip(new AudioClip("assets/MarioDies.wav", false)),
+	powerUpClip(new AudioClip("assets/PowerUp.wav", false)),
+	stompEnemyClip(new AudioClip("assets/StompEnemy.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -74,6 +76,8 @@ Mario::~Mario()
 {
 	delete movementComponent;
 	delete marioDiesClip;
+	delete powerUpClip;
+	delete stompEnemyClip;
 }
 
 void Mario::Update(const float deltaTime)
@@ -208,6 +212,7 @@ void Mario::OnCharacterHit(Character* other)
 			enemy->OnHeadStomp();
 			movementComponent->ForceJump();
 			scoreTracker->AddScore(ScoreData::EnemyHeadStomp);
+			stompEnemyClip->Play();
 		}
 		else
 		{
@@ -522,6 +527,7 @@ void Mario::UpdateState(MarioState marioState)
 	case MarioState::PowerUp:
 		powerChangeTimer = poweringUpTime;
 		powerChangeAnimationTimer = 0.0f;
+		powerUpClip->Play();
 		break;
 
 	case MarioState::PowerDown:
