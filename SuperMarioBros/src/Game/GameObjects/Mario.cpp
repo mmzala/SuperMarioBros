@@ -46,6 +46,7 @@ Mario::Mario(MarioSettings settings)
 	stompEnemyClip(new AudioClip("assets/StompEnemy.wav", false)),
 	climbingFlagPoleClip(new AudioClip("assets/ClimbingFlagPole.wav", false)),
 	levelClearedClip(new AudioClip("assets/LevelCleared.wav", false)),
+	blockBumpClip(new AudioClip("assets/BlockBump.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -77,11 +78,13 @@ Mario::Mario(MarioSettings settings)
 Mario::~Mario()
 {
 	delete movementComponent;
+
 	delete marioDiesClip;
 	delete powerUpClip;
 	delete stompEnemyClip;
 	delete climbingFlagPoleClip;
 	delete levelClearedClip;
+	delete blockBumpClip;
 }
 
 void Mario::Update(const float deltaTime)
@@ -267,6 +270,7 @@ void Mario::HandleHeadCollision()
 		if (marioPowerState == MarioPowerState::Small)
 		{
 			tilemap->AddTileToBounce(hitTile);
+			blockBumpClip->Play();
 			break;
 		}
 		tilemap->BreakTile(hitTile);
