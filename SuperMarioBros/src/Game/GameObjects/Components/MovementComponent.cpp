@@ -3,10 +3,12 @@
 #include "../../../Utils/Math.h" // Lerp
 #include <cmath> // fmax / fmin
 #include "../../../Engine/Physics/TilemapCollider.h" // Checking if is grounded
+#include "../../../Engine/Audio/AudioClip.h" // Audio
 
 MovementComponent::MovementComponent(Character* character, MovementComponentSettings settings)
 	:
 	character(character),
+	jumpClip(new AudioClip("assets/Jump.wav", false)),
 	state(MovementState::Standing),
 	isGrounded((character->tilemapCollider->DetectedCollisions()& CheckSide::Bottom) == CheckSide::Bottom),
 	movementDirection(0),
@@ -26,11 +28,14 @@ MovementComponent::MovementComponent(Character* character, MovementComponentSett
 	jumpDecelaration(settings.jumpDecelaration),
 	jumpTimer(maxJumpTime),
 	isJumping(false),
-	forceJump(false)
+	forceJump(false),
+	jumpClipPlayed(false)
 {}
 
 MovementComponent::~MovementComponent()
-{}
+{
+	delete jumpClip;
+}
 
 void MovementComponent::Update(MovementInput input, const float deltaTime)
 {
@@ -153,6 +158,12 @@ void MovementComponent::MoveVertical(const bool jumpInput, const bool duckInput,
 			}
 			else
 			{
+				if (!jumpClipPlayed)
+				{
+					jumpClip->Play();
+					jumpClipPlayed = true;
+				}
+
 				character->velocity.y = Math::Lerp(maxJumpSpeed, minJumpSpeed, jumpTimer / maxJumpTime);
 			}
 
@@ -161,7 +172,11 @@ void MovementComponent::MoveVertical(const bool jumpInput, const bool duckInput,
 			jumpTimer -= deltaTime;
 		}
 
-		if (isGrounded) isJumping = false;
+		if (isGrounded)
+		{
+			isJumping = false;
+			jumpClipPlayed = false;
+		}
 	}
 	else
 	{

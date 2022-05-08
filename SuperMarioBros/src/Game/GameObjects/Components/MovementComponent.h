@@ -6,6 +6,7 @@
 #include "../../Settings/MovementComponentSettings.h"
 
 class Character;
+class AudioClip;
 
 struct MovementInput
 {
@@ -54,6 +55,8 @@ private:
 
 private:
 	Character* character;
+	AudioClip* jumpClip;
+
 	MovementState state;
 	bool isGrounded;
 	int movementDirection;
@@ -77,5 +80,7 @@ private:
 	float jumpTimer;
 	bool isJumping;
 	bool forceJump;
+
+	bool jumpClipPlayed;
 };
 
