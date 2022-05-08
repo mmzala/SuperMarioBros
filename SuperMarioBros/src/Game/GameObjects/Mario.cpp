@@ -27,7 +27,10 @@
 #include "../Scoring/ScoreTracker.h"
 #include "../Data/ScoreData.h"
 
-// There static variables are beeing reset in the Main Menu
+// Audio
+#include "../../Engine/Audio/AudioClip.h"
+
+// These static variables are beeing reset in the Main Menu
 int Mario::lives = 3;
 MarioPowerState Mario::marioPowerState = MarioPowerState::Small;
 
@@ -38,6 +41,7 @@ Mario::Mario(MarioSettings settings)
 	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
+	marioDies(new AudioClip("assets/MarioDies.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -69,6 +73,7 @@ Mario::Mario(MarioSettings settings)
 Mario::~Mario()
 {
 	delete movementComponent;
+	delete marioDies;
 }
 
 void Mario::Update(const float deltaTime)
@@ -507,9 +512,11 @@ void Mario::UpdateState(MarioState marioState)
 	{
 	case MarioState::Dead:
 		lives--;
+		marioPowerState = MarioPowerState::Small; // Make sure the player isn't dead next time he spawns in
 		scoreTracker->stopTime = true;
 		velocity = DirectX::XMFLOAT2(0.0f, 0.0f);
 		powerChangeTimer = 0.0f;
+		marioDies->Play();
 		break;
 
 	case MarioState::PowerUp:

@@ -9,6 +9,7 @@ class Camera;
 class ScoreTracker;
 class MovementComponent;
 class Input;
+class AudioClip;
 
 enum class MarioState
 {
@@ -80,6 +81,9 @@ private:
 	
 	// Positions are in tilemap coordinates
 	std::vector<DirectX::XMINT2> headCollisionPositions;
+
+	// Audio
+	AudioClip* marioDies;
 
 	// Changing power states effects
 	float poweringUpTime;
