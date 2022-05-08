@@ -106,8 +106,7 @@ void SMBEngine::Initialize(HWND hwnd)
 	timer = new Timer();
 	game = new Game();
 
-	spriteShader = new Shader(L"src/Engine/Graphics/Shaders/Precompiled/SpriteVS.cso",
-		L"src/Engine/Graphics/Shaders/Precompiled/SpritePS.cso");
+	spriteShader = new Shader(L"assets/SpriteVS.cso", L"assets/SpritePS.cso");
 
 	// Set graphics settings for primitive type
 	ID3D11DeviceContext* deviceContext = graphics->GetDeviceContext();
