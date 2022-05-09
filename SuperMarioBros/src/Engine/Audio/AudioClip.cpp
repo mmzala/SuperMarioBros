@@ -34,6 +34,7 @@ AudioClip::AudioClip(const char* file, bool loop)
     }
 
     CreateSourceVoice();
+    SetVolume(0.5f); // Prevents the player from being earraped
 }
 
 AudioClip::~AudioClip()
@@ -44,6 +45,9 @@ AudioClip::~AudioClip()
 
 void AudioClip::Play()
 {
+    // Make sure the audio is stopped before playing again
+    Stop();
+
     // We have to submit the buffer everytime we play the audio
     // https://gamedev.net/forums/topic/577468-xaudio2-how-come-i-am-only-able-to-play-sound-once-with-out-reloading-audio-data/4680833/
     SubmitSourceBuffer();
