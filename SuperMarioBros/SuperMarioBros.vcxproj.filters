@@ -350,10 +350,10 @@
     <ClInclude Include="src\Game\GameObjects\PowerUp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils\ObjectPool.h">
+    <ClInclude Include="src\Game\GameObjects\FireBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\GameObjects\FireBall.h">
+    <ClInclude Include="src\Utils\PoolableObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

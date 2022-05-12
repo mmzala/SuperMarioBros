@@ -5,7 +5,7 @@
 FireBall::FireBall(CharacterSettings settings)
 	:
 	Character::Character(settings),
-	rotationSpeed(5.0f),
+	rotationSpeed(7.5f),
 	resetVelocity(false)
 {}
 
@@ -16,6 +16,12 @@ void FireBall::Update(const float deltaTime)
 {
 	Character::Update(deltaTime);
 	Rotate(deltaTime);
+}
+
+void FireBall::SetInUse(bool value)
+{
+	PoolableObject::SetInUse(value);
+	isActive = value;
 }
 
 void FireBall::Move(const float deltaTime)
@@ -40,7 +46,7 @@ void FireBall::OnTileHit(CheckSide side, int tileType, DirectX::XMINT2 tilemapPo
 	// If we hit any other side, the fireball dissapears
 	if (side != CheckSide::Bottom)
 	{
-		isActive = false;
+		SetInUse(false);
 	}
 
 	resetVelocity = true;
@@ -51,7 +57,7 @@ void FireBall::OnCharacterHit(Character* other)
 	if (Enemy* enemy = dynamic_cast<Enemy*>(other))
 	{
 		enemy->isActive = false;
-		isActive = false;
+		SetInUse(false);
 	}
 }
 

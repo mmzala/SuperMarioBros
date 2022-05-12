@@ -32,6 +32,7 @@ GameplayScene::GameplayScene(Game* game, const char* worldText, const float time
 	tilemap(nullptr),
 	player(nullptr),
 	characters(),
+	fireBallsPool(),
 	flag(nullptr),
 	backgroundMusic(nullptr),
 	worldText(worldText),
@@ -47,6 +48,12 @@ void GameplayScene::Load()
 	Scene::Load();
 	SetupScoreTracker(worldText, timeToBeat, false);
 	delayBeforeNextWorld = 2.5f;
+
+	// Create 2 fire balls for pool
+	for (int i = 0; i < 2; i++)
+	{
+		CreateFireBall();
+	}
 }
 
 void GameplayScene::UnLoad()
@@ -152,23 +159,17 @@ void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
 	characters.push_back(fireFlower);
 }
 
-void GameplayScene::CreateFireBall(DirectX::XMFLOAT2 worldPosition)
+void GameplayScene::SpawnFireBall(DirectX::XMFLOAT2 worldPosition)
 {
-	SpriteSettings fireBallSpriteSettings = SpriteSettings();
-	fireBallSpriteSettings.textureFile = "assets/FireBall.png";
-	fireBallSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
-
-	CharacterSettings fireBallSettings = CharacterSettings();
-	fireBallSettings.spriteSettings = fireBallSpriteSettings;
-	fireBallSettings.tilemap = tilemap;
-	fireBallSettings.walkingSpeed = 400.0f;
-	fireBallSettings.gravity = 350.0f;
-	fireBallSettings.gravityAcceleration = 2500.0f;
-
-	FireBall* fireBall = new FireBall(fireBallSettings);
-	fireBall->transform->position = worldPosition;
-	fireBall->transform->scale = DirectX::XMFLOAT2(2.0f, 2.0f);
-	characters.push_back(fireBall);
+	for (FireBall* fireBall : fireBallsPool)
+	{
+		if (!fireBall->isInUse())
+		{
+			fireBall->SetInUse(true);
+			fireBall->transform->position = worldPosition;
+			return;
+		}
+	}
 }
 
 std::vector<Character*>& GameplayScene::GetCharacters()
@@ -279,6 +280,26 @@ void GameplayScene::CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::
 
 	flag = new Flag(flagSettings, tilemap);
 	flag->transform->scale = DirectX::XMFLOAT2(2.2f, 2.2f);
+}
+
+void GameplayScene::CreateFireBall()
+{
+	SpriteSettings fireBallSpriteSettings = SpriteSettings();
+	fireBallSpriteSettings.textureFile = "assets/FireBall.png";
+	fireBallSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+
+	CharacterSettings fireBallSettings = CharacterSettings();
+	fireBallSettings.spriteSettings = fireBallSpriteSettings;
+	fireBallSettings.tilemap = tilemap;
+	fireBallSettings.walkingSpeed = 400.0f;
+	fireBallSettings.gravity = 350.0f;
+	fireBallSettings.gravityAcceleration = 2500.0f;
+
+	FireBall* fireBall = new FireBall(fireBallSettings);
+	fireBall->transform->scale = DirectX::XMFLOAT2(1.0f, 1.0f);
+
+	characters.push_back(fireBall);
+	fireBallsPool.push_back(fireBall);
 }
 
 void GameplayScene::CreateBackgroundMusic(const char* file)

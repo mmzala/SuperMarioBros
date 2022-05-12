@@ -7,6 +7,7 @@
 class Game;
 class Character;
 class Mario;
+class FireBall;
 class Tilemap;
 class Flag;
 class AudioClip;
@@ -26,7 +27,7 @@ public:
 
 	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 	void CreateFireFlower(DirectX::XMINT2 tilemapPosition);
-	void CreateFireBall(DirectX::XMFLOAT2 worldPosition);
+	void SpawnFireBall(DirectX::XMFLOAT2 worldPosition);
 
 	std::vector<Character*>& GetCharacters();
 	const char* GetWorldText();
@@ -38,6 +39,7 @@ protected:
 	void CreateGoomba(DirectX::XMINT2 tilemapPosition);
 	void CreateGoombas(const std::vector<DirectX::XMINT2>& tilemapPositions);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
+	void CreateFireBall();
 	void CreateBackgroundMusic(const char* file);
 
 private:
@@ -48,6 +50,7 @@ protected:
 	Tilemap* tilemap;
 	Mario* player; // This does not have to be deleted (it gets deleted with characters vector)
 	std::vector<Character*> characters;
+	std::vector<FireBall*> fireBallsPool; // FireBalls are also a part of characters vector, so nothing here has to be deleted
 	Flag* flag;
 
 	AudioClip* backgroundMusic;

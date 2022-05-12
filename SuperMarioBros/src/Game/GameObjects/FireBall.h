@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Character.h"
+#include "../../Utils/PoolableObject.h"
 
-class FireBall : public Character
+class FireBall : public Character, public PoolableObject
 {
 public:
 	FireBall(CharacterSettings settings);
 	~FireBall() override;
 
 	void Update(const float deltaTime) override;
+	void SetInUse(bool value) override;
 
 protected:
 	void Move(const float deltaTime) override;

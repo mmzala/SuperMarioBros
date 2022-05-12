@@ -226,8 +226,8 @@
     <ClCompile Include="src\Game\World\Scenes\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utils\PoolableObject.h" />
     <ClInclude Include="src\Game\GameObjects\FireBall.h" />
-    <ClInclude Include="src\Utils\ObjectPool.h" />
     <ClInclude Include="src\Game\GameObjects\PowerUp.h" />
     <ClInclude Include="src\Game\GameObjects\FireFlower.h" />
     <ClInclude Include="src\Game\World\Scenes\GameOverScene.h" />
