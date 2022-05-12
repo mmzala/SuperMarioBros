@@ -30,6 +30,7 @@ Character::~Character()
 
 void Character::Update(const float deltaTime)
 {
+	CheckFalledOffMap(true);
 	Move(deltaTime);
 	animator->Update(deltaTime);
 	sprite->Draw(transform->GetWorldMatrix());

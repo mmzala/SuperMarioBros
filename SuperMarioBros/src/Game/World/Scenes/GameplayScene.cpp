@@ -8,6 +8,7 @@
 #include "../../GameObjects/Flag.h"
 #include "../../GameObjects/Mushroom.h"
 #include "../../GameObjects/FireFlower.h"
+#include "../../GameObjects/FireBall.h"
 
 // World
 #include "../Tilemap/Tilemap.h"
@@ -149,6 +150,25 @@ void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
 	fireFlower->transform->position = fireFlower->GetSpawnPositionOnTile(tilemapPosition);
 	fireFlower->transform->scale = DirectX::XMFLOAT2(2.0f, 2.0f);
 	characters.push_back(fireFlower);
+}
+
+void GameplayScene::CreateFireBall(DirectX::XMFLOAT2 worldPosition)
+{
+	SpriteSettings fireBallSpriteSettings = SpriteSettings();
+	fireBallSpriteSettings.textureFile = "assets/FireBall.png";
+	fireBallSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+
+	CharacterSettings fireBallSettings = CharacterSettings();
+	fireBallSettings.spriteSettings = fireBallSpriteSettings;
+	fireBallSettings.tilemap = tilemap;
+	fireBallSettings.walkingSpeed = 400.0f;
+	fireBallSettings.gravity = 350.0f;
+	fireBallSettings.gravityAcceleration = 2500.0f;
+
+	FireBall* fireBall = new FireBall(fireBallSettings);
+	fireBall->transform->position = worldPosition;
+	fireBall->transform->scale = DirectX::XMFLOAT2(2.0f, 2.0f);
+	characters.push_back(fireBall);
 }
 
 std::vector<Character*>& GameplayScene::GetCharacters()

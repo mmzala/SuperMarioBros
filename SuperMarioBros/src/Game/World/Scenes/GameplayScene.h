@@ -26,6 +26,8 @@ public:
 
 	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 	void CreateFireFlower(DirectX::XMINT2 tilemapPosition);
+	void CreateFireBall(DirectX::XMFLOAT2 worldPosition);
+
 	std::vector<Character*>& GetCharacters();
 	const char* GetWorldText();
 	float GetTimeToBeat();
