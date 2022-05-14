@@ -3,6 +3,8 @@
 #include "Character.h"
 #include "../../Utils/PoolableObject.h"
 
+class ScoreTracker;
+
 class FireBall : public Character, public PoolableObject
 {
 public:
@@ -22,6 +24,8 @@ private:
 	void Rotate(const float deltaTime);
 
 private:
+	ScoreTracker* scoreTracker;
+
 	float rotationSpeed;
 	bool travelingDirection; // true = right / false = left
 	bool resetVelocity;

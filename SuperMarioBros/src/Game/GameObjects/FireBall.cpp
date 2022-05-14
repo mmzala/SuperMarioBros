@@ -2,9 +2,16 @@
 #include "Components/Transform.h"
 #include "Enemy.h" // Collision checking
 
+// Adding score
+#include "../../Engine/SMBEngine.h" // Getting Game
+#include "../Game.h" // Getting ScoreTracker
+#include "../Scoring/ScoreTracker.h"
+#include "../Data/ScoreData.h"
+
 FireBall::FireBall(CharacterSettings settings)
 	:
 	Character::Character(settings),
+	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	rotationSpeed(7.5f),
 	travelingDirection(true),
 	resetVelocity(false)
@@ -69,6 +76,7 @@ void FireBall::OnCharacterHit(Character* other)
 	{
 		enemy->isActive = false;
 		SetInUse(false);
+		scoreTracker->AddScore(ScoreData::EnemyHeadStomp);
 	}
 }
 
