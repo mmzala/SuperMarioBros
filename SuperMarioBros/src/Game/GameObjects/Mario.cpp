@@ -52,6 +52,7 @@ Mario::Mario(MarioSettings settings)
 	climbingFlagPoleClip(new AudioClip("assets/ClimbingFlagPole.wav", false)),
 	levelClearedClip(new AudioClip("assets/LevelCleared.wav", false)),
 	blockBumpClip(new AudioClip("assets/BlockBump.wav", false)),
+	throwFireBall(new AudioClip("assets/ThrowFireBall.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -92,6 +93,7 @@ Mario::~Mario()
 	delete climbingFlagPoleClip;
 	delete levelClearedClip;
 	delete blockBumpClip;
+	delete throwFireBall;
 }
 
 void Mario::Update(const float deltaTime)
@@ -559,6 +561,7 @@ void Mario::CheckForThrowFireBall(const float deltaTime)
 
 		if (scene->SpawnFireBall(transform->position, facingRight))
 		{
+			throwFireBall->Play();
 			fileBallThrown = true;
 		}
 	}
