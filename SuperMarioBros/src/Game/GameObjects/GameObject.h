@@ -17,6 +17,7 @@ public:
 	virtual ~GameObject();
 
 	virtual void Update(const float deltaTime);
+	bool IsInFrustum();
 	bool WasSeen();
 
 public:

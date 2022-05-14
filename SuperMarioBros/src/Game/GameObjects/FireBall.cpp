@@ -15,6 +15,11 @@ FireBall::~FireBall()
 
 void FireBall::Update(const float deltaTime)
 {
+	if (!IsInFrustum())
+	{
+		SetInUse(false);
+	}
+
 	Character::Update(deltaTime);
 	Rotate(deltaTime);
 }
