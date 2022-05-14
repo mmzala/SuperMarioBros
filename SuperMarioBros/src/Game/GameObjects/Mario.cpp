@@ -30,6 +30,9 @@
 // Audio
 #include "../../Engine/Audio/AudioClip.h"
 
+// Spawning fire balls
+#include "../World/Scenes/GameplayScene.h"
+
 // These static variables are beeing reset in the Main Menu
 int Mario::lives = 3;
 MarioPowerState Mario::marioPowerState = MarioPowerState::Small;
@@ -41,6 +44,7 @@ Mario::Mario(MarioSettings settings)
 	scoreTracker(SMBEngine::GetInstance()->GetGame()->GetScoreTracker()),
 	movementComponent(new MovementComponent(this, settings.movementSettings)),
 	marioState(MarioState::Dead),
+	facingRight(true),
 	marioDiesClip(new AudioClip("assets/MarioDies.wav", false)),
 	powerUpClip(new AudioClip("assets/PowerUp.wav", false)),
 	powerDownClip(new AudioClip("assets/PowerDown.wav", false)),
@@ -62,7 +66,8 @@ Mario::Mario(MarioSettings settings)
 	deathJumpTime(settings.movementSettings.maxJumpTime),
 	timeBeforeDeathAnimation(settings.timeBeforeDeathAnimation),
 	timeAfterDeathBeforeSceneChange(settings.timeAfterDeathBeforeSceneChange),
-	lastDuckInput(false)
+	lastDuckInput(false),
+	fileBallThrown(false)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -101,6 +106,7 @@ void Mario::Update(const float deltaTime)
 	case MarioState::Controlling:
 		CheckForTimeOut();
 		Move(deltaTime);
+		CheckForThrowFireBall(deltaTime);
 		UpdateCameraFollow();
 		UpdateAnimations();
 		animator->Update(deltaTime);
@@ -409,10 +415,12 @@ void Mario::UpdateMovementAnimations(MarioPowerState marioPowerState)
 		{
 		case 1:
 			sprite->FlipSpriteX(false);
+			facingRight = true;
 			break;
 
 		case -1:
 			sprite->FlipSpriteX(true);
+			facingRight = false;
 			break;
 		}
 	}
@@ -532,6 +540,34 @@ void Mario::DeathAnimation(const float deltaTime)
 }
 #pragma endregion MovementAnimations
 
+void Mario::CheckForThrowFireBall(const float deltaTime)
+{
+	if (marioPowerState != MarioPowerState::Fire)
+	{
+		return;
+	}
+
+	Input* input = Input::GetInstance();
+	if (input->GetKey(DIK_Z) || input->GetKey(DIK_M))
+	{
+		Game* game = SMBEngine::GetInstance()->GetGame();
+		GameplayScene* scene = static_cast<GameplayScene*>(game->GetCurrentScene());
+		if (!scene || fileBallThrown)
+		{
+			return;
+		}
+
+		if (scene->SpawnFireBall(transform->position, facingRight))
+		{
+			fileBallThrown = true;
+		}
+	}
+	else
+	{
+		fileBallThrown = false;
+	}
+}
+
 #pragma region MarioState
 void Mario::UpdateState(MarioState marioState)
 {
@@ -588,6 +624,10 @@ void Mario::UpdatePowerState(MarioPowerState marioPowerState)
 	case MarioPowerState::Dead:
 		UpdateState(MarioState::Dead);
 		return;
+
+	case MarioPowerState::Fire:
+		fileBallThrown = true; // Makes sure player does not throw fire ball when powering up
+		break;
 
 	default:
 		UpdateColliderSize();

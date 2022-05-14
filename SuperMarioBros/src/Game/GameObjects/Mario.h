@@ -67,6 +67,8 @@ private:
 	void PowerDownAnimation(const float deltaTime);
 	void DeathAnimation(const float deltaTime);
 
+	void CheckForThrowFireBall(const float deltaTime);
+
 	void UpdateState(MarioState marioState);
 	void UpdatePowerState(MarioPowerState marioPowerState);
 
@@ -81,6 +83,7 @@ private:
 	MarioState marioState;
 	static MarioPowerState marioPowerState;
 	std::unordered_map<MarioPowerState, std::vector<Animation>> animations;
+	bool facingRight;
 	
 	// Positions are in tilemap coordinates
 	std::vector<DirectX::XMINT2> headCollisionPositions;
@@ -116,5 +119,8 @@ private:
 
 	// Check if can stand up after ducking
 	bool lastDuckInput;
+
+	// Fire ball throwing
+	bool fileBallThrown;
 };
 

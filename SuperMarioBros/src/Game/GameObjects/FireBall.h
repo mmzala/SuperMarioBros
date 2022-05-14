@@ -10,6 +10,7 @@ public:
 	~FireBall() override;
 
 	void Update(const float deltaTime) override;
+	void SetTravelingDirection(bool right);
 	void SetInUse(bool value) override;
 
 protected:
@@ -22,6 +23,7 @@ private:
 
 private:
 	float rotationSpeed;
+	bool travelingDirection; // true = right / false = left
 	bool resetVelocity;
 };
 

@@ -27,7 +27,14 @@ public:
 
 	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
 	void CreateFireFlower(DirectX::XMINT2 tilemapPosition);
-	void SpawnFireBall(DirectX::XMFLOAT2 worldPosition);
+
+	/// <summary>
+	/// Spawns fire ball in given world position.
+	/// </summary>
+	/// <param name="worldPosition">: Position in the world to spawn fire ball </param>
+	/// <param name="travelingDirectionRight">: If the fire ball should be traveling to the right </param>
+	/// <returns> If succesfully spawned a fire ball </returns>
+	bool SpawnFireBall(DirectX::XMFLOAT2 worldPosition, bool travelingDirectionRight);
 
 	std::vector<Character*>& GetCharacters();
 	const char* GetWorldText();

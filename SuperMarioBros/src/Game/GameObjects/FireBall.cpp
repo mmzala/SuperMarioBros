@@ -6,6 +6,7 @@ FireBall::FireBall(CharacterSettings settings)
 	:
 	Character::Character(settings),
 	rotationSpeed(7.5f),
+	travelingDirection(true),
 	resetVelocity(false)
 {}
 
@@ -18,6 +19,11 @@ void FireBall::Update(const float deltaTime)
 	Rotate(deltaTime);
 }
 
+void FireBall::SetTravelingDirection(bool right)
+{
+	travelingDirection = right;
+}
+
 void FireBall::SetInUse(bool value)
 {
 	PoolableObject::SetInUse(value);
@@ -26,7 +32,7 @@ void FireBall::SetInUse(bool value)
 
 void FireBall::Move(const float deltaTime)
 {
-	velocity.x = walkingSpeed;
+	velocity.x = walkingSpeed * (travelingDirection ? 1.0f : -1.0f);
 
 	if (resetVelocity)
 	{

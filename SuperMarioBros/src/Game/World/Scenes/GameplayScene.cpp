@@ -153,17 +153,20 @@ void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
 	characters.push_back(fireFlower);
 }
 
-void GameplayScene::SpawnFireBall(DirectX::XMFLOAT2 worldPosition)
+bool GameplayScene::SpawnFireBall(DirectX::XMFLOAT2 worldPosition, bool travelingDirectionRight)
 {
 	for (FireBall* fireBall : fireBallsPool)
 	{
 		if (!fireBall->isInUse())
 		{
 			fireBall->SetInUse(true);
+			fireBall->SetTravelingDirection(travelingDirectionRight);
 			fireBall->transform->position = worldPosition;
-			return;
+			return true;
 		}
 	}
+
+	return false;
 }
 
 std::vector<Character*>& GameplayScene::GetCharacters()
@@ -290,7 +293,7 @@ void GameplayScene::CreateFireBall()
 	fireBallSettings.gravityAcceleration = 2500.0f;
 
 	FireBall* fireBall = new FireBall(fireBallSettings);
-	fireBall->transform->scale = DirectX::XMFLOAT2(1.0f, 1.0f);
+	fireBall->transform->scale = DirectX::XMFLOAT2(1.25f, 1.25f);
 
 	characters.push_back(fireBall);
 	fireBallsPool.push_back(fireBall);
