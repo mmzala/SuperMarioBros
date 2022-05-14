@@ -68,7 +68,8 @@ Mario::Mario(MarioSettings settings)
 	timeBeforeDeathAnimation(settings.timeBeforeDeathAnimation),
 	timeAfterDeathBeforeSceneChange(settings.timeAfterDeathBeforeSceneChange),
 	lastDuckInput(false),
-	fileBallThrown(false)
+	fileBallThrown(false),
+	fireBallThrowAnimationDuration(0.4f)
 {
 	// Getting animations data
 	animations = std::unordered_map<MarioPowerState, std::vector<Animation>> {
@@ -110,7 +111,7 @@ void Mario::Update(const float deltaTime)
 		Move(deltaTime);
 		CheckForThrowFireBall(deltaTime);
 		UpdateCameraFollow();
-		UpdateAnimations();
+		UpdateAnimations(deltaTime);
 		animator->Update(deltaTime);
 		sprite->Draw(transform->GetWorldMatrix());
 		break;
@@ -156,7 +157,7 @@ MarioPowerState Mario::GetPowerState()
 void Mario::ResetStaticVariables()
 {
 	lives = 3;
-	marioPowerState = MarioPowerState::Small;
+	marioPowerState = MarioPowerState::Fire;
 }
 
 void Mario::Move(const float deltaTime)
@@ -370,7 +371,7 @@ void Mario::UpdateCameraFollow()
 }
 
 #pragma region SpriteAnimations
-void Mario::UpdateAnimations()
+void Mario::UpdateAnimations(const float deltaTime)
 {
 	// If the players dies (gets hit by enemy) animation update happens once, we set the game over animation
 	switch (marioState)
@@ -380,6 +381,28 @@ void Mario::UpdateAnimations()
 		return;
 
 	case MarioState::PowerUp: // Animation for powering up is handled somewhere else
+		return;
+	}
+
+	// Check if throwing fire ball and update animations based on that
+	// We reuse a timer that isn't running
+	if (powerChangeAnimationTimer > 0.0f && marioPowerState == MarioPowerState::Fire) // Make sure mario is still in correct power state
+	{
+		switch (movementComponent->GetState())
+		{
+		case MovementState::Running:
+			animator->SetAnimation(animations[marioPowerState][Animations::Mario::Large::FAnimationState::ThorwingFireBallRunning]);
+			break;
+
+		case MovementState::Jumping:
+			animator->SetAnimation(animations[marioPowerState][Animations::Mario::Large::FAnimationState::ThorwingFireBallJump]);
+			break;
+
+		default:
+			animator->SetAnimation(animations[marioPowerState][Animations::Mario::Large::FAnimationState::ThorwingFireBallStanding]);
+		}
+
+		powerChangeAnimationTimer -= deltaTime;
 		return;
 	}
 
@@ -506,7 +529,7 @@ void Mario::PowerDownAnimation(const float deltaTime)
 		powerChangeAnimationTimer = 0.0f;
 	}
 
-	powerChangeTimer > 0.5f ? UpdateMovementAnimations((MarioPowerState)((int)marioPowerState + 1)) : UpdateAnimations();
+	powerChangeTimer > 0.5f ? UpdateMovementAnimations((MarioPowerState)((int)marioPowerState + 1)) : UpdateAnimations(deltaTime);
 	if (powerChangeTimer <= 0.0f)
 	{
 		characterCollider->ignoreCollision = false;
@@ -544,7 +567,8 @@ void Mario::DeathAnimation(const float deltaTime)
 
 void Mario::CheckForThrowFireBall(const float deltaTime)
 {
-	if (marioPowerState != MarioPowerState::Fire)
+	if (marioPowerState != MarioPowerState::Fire ||
+		movementComponent->GetState() == MovementState::Ducking)
 	{
 		return;
 	}
@@ -559,10 +583,12 @@ void Mario::CheckForThrowFireBall(const float deltaTime)
 			return;
 		}
 
-		if (scene->SpawnFireBall(transform->position, facingRight))
+		const DirectX::XMFLOAT2 headPosition = DirectX::XMFLOAT2(transform->position.x, transform->position.y + (sprite->GetSize().y / 4));
+		if (scene->SpawnFireBall(headPosition, facingRight))
 		{
 			throwFireBall->Play();
 			fileBallThrown = true;
+			powerChangeAnimationTimer = fireBallThrowAnimationDuration; // We reuse a timer that isn't running
 		}
 	}
 	else

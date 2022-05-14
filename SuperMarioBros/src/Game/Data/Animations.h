@@ -58,6 +58,13 @@ namespace Animations
 				Animation(15, 15, 5.0f), // Transitional
 			};
 
+			struct FAnimationState : LAnimationState
+			{
+				static constexpr int ThorwingFireBallStanding = 7;
+				static constexpr int ThorwingFireBallRunning = 8;
+				static constexpr int ThorwingFireBallJump = 9;
+			};
+
 			/// <summary>
 			/// Fire Mario animations
 			/// </summary>
@@ -69,6 +76,9 @@ namespace Animations
 				Animation(41, 42, 5.0f), // On flag pole
 				Animation(49, 49, 0.0f), // Ducking
 				Animation(50, 50, 5.0f), // Transitional
+				Animation(51, 51, 0.0f), // Throwing fire ball while standing
+				Animation(51, 53, 10.0f), // Throwing fire ball while running
+				Animation(55, 55, 0.0f), // Throwing fire ball while jumping
 			};
 		}
 	}

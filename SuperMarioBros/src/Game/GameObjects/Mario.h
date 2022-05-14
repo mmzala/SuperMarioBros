@@ -58,7 +58,7 @@ private:
 
 	void UpdateCameraFollow();
 
-	void UpdateAnimations();
+	void UpdateAnimations(const float deltaTime);
 	void UpdateMovementAnimations(MarioPowerState marioPowerState);
 
 	void OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilemapPosition);
@@ -123,5 +123,6 @@ private:
 
 	// Fire ball throwing
 	bool fileBallThrown;
+	float fireBallThrowAnimationDuration;
 };
 
