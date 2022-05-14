@@ -48,12 +48,6 @@ void GameplayScene::Load()
 	Scene::Load();
 	SetupScoreTracker(worldText, timeToBeat, false);
 	delayBeforeNextWorld = 2.5f;
-
-	// Create 2 fire balls for pool
-	for (int i = 0; i < 2; i++)
-	{
-		CreateFireBall();
-	}
 }
 
 void GameplayScene::UnLoad()

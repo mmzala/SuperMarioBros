@@ -55,6 +55,12 @@ void World1L1::Load()
 	CreateGoombas(Worlds::World1D1::GoombaSpawnPoints);
 	CreateFlag(DirectX::XMINT2(198, 3), DirectX::XMINT2(198, 11));
 	CreateBackgroundMusic("assets/OverworldTheme.wav");
+
+	// Create 2 fire balls for pool
+	for (int i = 0; i < 2; i++)
+	{
+		CreateFireBall();
+	}
 }
 
 void World1L1::UnLoad()
