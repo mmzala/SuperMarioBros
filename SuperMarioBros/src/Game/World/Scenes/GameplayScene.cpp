@@ -8,6 +8,7 @@
 #include "../../GameObjects/Flag.h"
 #include "../../GameObjects/Mushroom.h"
 #include "../../GameObjects/FireFlower.h"
+#include "../../GameObjects/OneUp.h"
 #include "../../GameObjects/FireBall.h"
 
 // World
@@ -115,7 +116,7 @@ void GameplayScene::Update(const float deltaTime)
 	}
 }
 
-void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
+void GameplayScene::CreateMushroom(const DirectX::XMINT2& tilemapPosition)
 {
 	SpriteSettings mushroomSpriteSettings = SpriteSettings();
 	mushroomSpriteSettings.textureFile = "assets/Mushroom.png";
@@ -134,7 +135,7 @@ void GameplayScene::CreateMushroom(DirectX::XMINT2 tilemapPosition)
 	characters.push_back(mushroom);
 }
 
-void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
+void GameplayScene::CreateFireFlower(const DirectX::XMINT2& tilemapPosition)
 {
 	SpriteSettings fireFlowerSpriteSettings = SpriteSettings();
 	fireFlowerSpriteSettings.textureFile = "assets/FireFlower.png";
@@ -151,6 +152,25 @@ void GameplayScene::CreateFireFlower(DirectX::XMINT2 tilemapPosition)
 	fireFlower->transform->position = fireFlower->GetSpawnPositionOnTile(tilemapPosition);
 	fireFlower->transform->scale = DirectX::XMFLOAT2(2.0f, 2.0f);
 	characters.push_back(fireFlower);
+}
+
+void GameplayScene::CreateOneUp(const DirectX::XMINT2& tilemapPosition)
+{
+	SpriteSettings oneUpSpriteSettings = SpriteSettings();
+	oneUpSpriteSettings.textureFile = "assets/OneUp.png";
+	oneUpSpriteSettings.spriteSheetSize = DirectX::XMINT2(1, 1);
+
+	CharacterSettings oneUpSettings = CharacterSettings();
+	oneUpSettings.spriteSettings = oneUpSpriteSettings;
+	oneUpSettings.tilemap = tilemap;
+	oneUpSettings.walkingSpeed = 150.0f;
+	oneUpSettings.gravity = 450.0f;
+	oneUpSettings.gravityAcceleration = 2700.0f;
+
+	OneUp* oneUp = new OneUp(oneUpSettings);
+	oneUp->transform->position = oneUp->GetSpawnPositionOnTile(tilemapPosition);
+	oneUp->transform->scale = DirectX::XMFLOAT2(2.5f, 2.5f);
+	characters.push_back(oneUp);
 }
 
 bool GameplayScene::SpawnFireBall(DirectX::XMFLOAT2 worldPosition, bool travelingDirectionRight)

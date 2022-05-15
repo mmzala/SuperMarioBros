@@ -25,8 +25,9 @@ public:
 	void UnLoad() override;
 	void Update(const float deltaTime) override;
 
-	void CreateMushroom(DirectX::XMINT2 tilemapPosition);
-	void CreateFireFlower(DirectX::XMINT2 tilemapPosition);
+	void CreateMushroom(const DirectX::XMINT2& tilemapPosition);
+	void CreateFireFlower(const DirectX::XMINT2& tilemapPosition);
+	void CreateOneUp(const DirectX::XMINT2& tilemapPosition);
 
 	/// <summary>
 	/// Spawns fire ball in given world position.

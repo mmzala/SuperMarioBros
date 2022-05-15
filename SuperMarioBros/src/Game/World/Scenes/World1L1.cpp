@@ -9,12 +9,14 @@
 // Tile actions
 #include "../Tilemap/TileActions/TileSpawnPowerUpAction.h" // Spawning power up
 #include "../Tilemap/TileActions/TileCoinAction.h" // Giving coins
+#include "../Tilemap/TileActions/TileSpawnOneUpAction.h" // Spawning one up
 
 World1L1::World1L1(Game* game)
 	:
 	GameplayScene::GameplayScene(game, "1-1", 200.0f),
 	questionMarkBlock(nullptr),
 	spawnPowerUpAction(nullptr),
+	spawnOneUpAction(nullptr),
 	giveCoinAction(nullptr)
 {}
 
@@ -32,10 +34,13 @@ void World1L1::Load()
 	std::unordered_set<DirectX::XMINT2> spawnPowerUpTiles = { {20, 9}, {78, 9}, {109, 5} };
 	spawnPowerUpAction = new TileSpawnPowerUpAction(spawnPowerUpTiles);
 
+	std::unordered_set<DirectX::XMINT2> spawnOneUpTiles = { {64, 8} };
+	spawnOneUpAction = new TileSpawnOneUpAction(spawnOneUpTiles);
+
 	std::unordered_set<DirectX::XMINT2> giveCoinTiles = { {15, 9}, {22, 9}, {21, 5}, {94, 5}, {106, 9}, {109, 9}, {112, 9}, {129, 5}, {130, 5}, {171, 9} };
 	giveCoinAction = new TileCoinAction(giveCoinTiles);
 
-	std::vector<TileAction*> tileActions = { spawnPowerUpAction, giveCoinAction };
+	std::vector<TileAction*> tileActions = { spawnPowerUpAction, spawnOneUpAction, giveCoinAction };
 
 	TilemapSettings tilemapSettings;
 	tilemapSettings.tilemap = Worlds::World1D1::Tilemap;
@@ -46,6 +51,7 @@ void World1L1::Load()
 	tilemapSettings.bounceAnimationSpeed = 3.5f;
 	tilemapSettings.bounceAnimationHeight = 6.5f;
 	tilemapSettings.tileActions = tileActions;
+	tilemapSettings.invisibleTiles = std::vector<DirectX::XMINT2>{ {64, 8} };
 	tilemapSettings.position = DirectX::XMFLOAT2(40.0f, 20.0f);
 	tilemapSettings.scale = DirectX::XMFLOAT2(2.5f, 2.5f);
 	tilemap = new Tilemap(tilemapSettings);
@@ -68,6 +74,7 @@ void World1L1::UnLoad()
 	GameplayScene::UnLoad();
 	delete questionMarkBlock;
 	delete spawnPowerUpAction;
+	delete spawnOneUpAction;
 	delete giveCoinAction;
 }
 

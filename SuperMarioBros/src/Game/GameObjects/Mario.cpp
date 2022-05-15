@@ -157,7 +157,7 @@ MarioPowerState Mario::GetPowerState()
 void Mario::ResetStaticVariables()
 {
 	lives = 3;
-	marioPowerState = MarioPowerState::Fire;
+	marioPowerState = MarioPowerState::Small;
 }
 
 void Mario::Move(const float deltaTime)
@@ -303,6 +303,12 @@ void Mario::HandleHeadCollision()
 		tilemap->BreakTile(hitTile);
 		scoreTracker->AddScore(ScoreData::BreakingBrick);
 		break;
+
+	case 0: // Invisble block
+		tilemap->HitInvisibleTile(hitTile);
+		blockBumpClip->Play();
+		break;
+
 	default:
 		tilemap->AddTileToBounce(hitTile);
 		tilemap->CheckForTileAction(hitTile);
@@ -468,7 +474,7 @@ void Mario::OnHitFlagPole(DirectX::XMFLOAT2 worldPosition, DirectX::XMINT2 tilem
 	int intPoleTilemapPositionY = static_cast<int>(std::roundf(poleTilemapPositionY));
 	for (int i = 0; i < 4; i++)
 	{
-		tilemap->RemoveCollision(DirectX::XMINT2(tilemapPosition.x, intPoleTilemapPositionY - i));
+		tilemap->SetCollision(DirectX::XMINT2(tilemapPosition.x, intPoleTilemapPositionY - i), false);
 	}
 
 	flagPoleBottomPositionY += tilemap->GetTileSize() / 2; // So that player does not get stuck on the block below him

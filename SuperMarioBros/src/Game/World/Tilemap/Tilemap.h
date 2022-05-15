@@ -33,6 +33,7 @@ struct TilemapSettings
 	float bounceAnimationSpeed;
 	float bounceAnimationHeight;
 	std::vector<TileAction*> tileActions;
+	std::vector<DirectX::XMINT2> invisibleTiles;
 	DirectX::XMFLOAT2 position;
 	DirectX::XMFLOAT2 scale;
 
@@ -46,6 +47,7 @@ struct TilemapSettings
 		bounceAnimationSpeed(0.0f),
 		bounceAnimationHeight(0.0f),
 		tileActions(),
+		invisibleTiles(),
 		position(DirectX::XMFLOAT2()),
 		scale(DirectX::XMFLOAT2())
 	{}
@@ -134,16 +136,23 @@ public:
 	void BreakTile(DirectX::XMINT2 tilemapPosition);
 
 	/// <summary>
-	/// Removes collision at the given tilemap position
+	/// Sets collision at the given tilemap position
 	/// </summary>
-	/// <param name="tilemapPosition">: Where to remove collision in tilemap coordinates </param>
-	void RemoveCollision(DirectX::XMINT2 tilemapPosition);
+	/// <param name="tilemapPosition">: Where to set collision in tilemap coordinates </param>
+	/// /// <param name="value">: If there should be collision in the given tile </param>
+	void SetCollision(const DirectX::XMINT2& tilemapPosition, bool value);
 
 	/// <summary>
 	/// Plays a bounce animations on the given tile
 	/// </summary>
 	/// <param name="tilemapPosition">: Tilemap position of tile which you want to animate </param>
 	void AddTileToBounce(DirectX::XMINT2 tilemapPosition);
+
+	/// <summary>
+	/// Call this when hit a invisible tile, this will manage all things that should happen when hit invisible tile
+	/// </summary>
+	/// <param name="tilemapPosition">: Tilemap position of the invisible tile </param>
+	void HitInvisibleTile(const DirectX::XMINT2& tilemapPosition);
 
 private:
 	/// <summary>

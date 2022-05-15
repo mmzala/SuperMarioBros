@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\GameObjects\OneUp.cpp" />
     <ClCompile Include="src\Game\GameObjects\FireBall.cpp" />
     <ClCompile Include="src\Game\GameObjects\PowerUp.cpp" />
     <ClCompile Include="src\Game\GameObjects\FireFlower.cpp" />
@@ -224,8 +225,10 @@
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileCoinAction.cpp" />
     <ClCompile Include="src\Game\World\Scenes\TransitionScene.cpp" />
     <ClCompile Include="src\Game\World\Scenes\WinScene.cpp" />
+    <ClCompile Include="src\Game\World\Tilemap\TileActions\TileSpawnOneUpAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\GameObjects\OneUp.h" />
     <ClInclude Include="src\Utils\PoolableObject.h" />
     <ClInclude Include="src\Game\GameObjects\FireBall.h" />
     <ClInclude Include="src\Game\GameObjects\PowerUp.h" />
@@ -290,6 +293,7 @@
     <ClInclude Include="src\Game\World\Tilemap\TileActions\TileCoinAction.h" />
     <ClInclude Include="src\Game\World\Scenes\TransitionScene.h" />
     <ClInclude Include="src\Game\World\Scenes\WinScene.h" />
+    <ClInclude Include="src\Game\World\Tilemap\TileActions\TileSpawnOneUpAction.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Engine\Graphics\Shaders\SpritePS.hlsl">

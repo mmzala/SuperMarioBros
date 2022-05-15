@@ -67,8 +67,12 @@ void TilemapCollider::CheckInvisibleBlocksCollision(DirectX::XMFLOAT2& velocity,
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
 	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
 
-	if (CheckInvisibleSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top) &&
-		!CheckInvisibleSideCollision(bounds, bounds.x, bounds.x + bounds.width, bounds.y + bounds.height, CheckSide::Top))
+	// Make sure we only hit the tile from the bottom
+	if (!CheckInvisibleSideCollision(bounds, bounds.x, bounds.x + bounds.width, bounds.y + bounds.height, CheckSide::Top, false) &&
+		!CheckInvisibleSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left, false) &&
+		!CheckInvisibleSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right, false) &&
+		!CheckInvisibleSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom, false) &&
+		CheckInvisibleSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top, true))
 	{
 		velocity.y = 0.0f;
 		collisions |= CheckSide::Top;
@@ -105,7 +109,7 @@ bool TilemapCollider::CheckSideCollision(Rect bounds, float fromPosition, float 
 	return hit;
 }
 
-bool TilemapCollider::CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
+bool TilemapCollider::CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side, bool callCallback)
 {
 	float tileSize = tilemap->GetTileSize();
 	int iterations = static_cast<int>((toPosition - fromPosition) / tileSize); // Calculate how many checks it takes to check for all tiles that can be in proximity
@@ -122,7 +126,10 @@ bool TilemapCollider::CheckInvisibleSideCollision(Rect bounds, float fromPositio
 
 		if (CheckInvisibleTileCollision(bounds, tilemapPosition, side))
 		{
-			callback(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
+			if (callCallback)
+			{
+				callback(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
+			}
 			hit = true;
 		}
 	}

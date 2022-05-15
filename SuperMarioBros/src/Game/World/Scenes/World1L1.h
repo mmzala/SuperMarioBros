@@ -22,6 +22,7 @@ protected:
 protected:
 	TilemapAnimation* questionMarkBlock;
 	TileAction* spawnPowerUpAction;
+	TileAction* spawnOneUpAction;
 	TileAction* giveCoinAction;
 };
 

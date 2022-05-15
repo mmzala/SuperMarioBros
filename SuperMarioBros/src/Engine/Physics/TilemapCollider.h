@@ -24,7 +24,7 @@ public:
 
 private:
 	bool CheckSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
-	bool CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
+	bool CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side, bool callCallback);
 	bool CheckTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side);
 	bool CheckInvisibleTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side);
 	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);

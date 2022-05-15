@@ -18,7 +18,7 @@ Tilemap::Tilemap(TilemapSettings settings)
 	animations(),
 	tilesToAnimate(),
 	tileActions(),
-	invisibleQuestionBlocks({ {13, 9} }),
+	invisibleQuestionBlocks(settings.invisibleTiles),
 	tilesToBounceAnimate(),
 	bounceAnimationSpeed(settings.bounceAnimationSpeed),
 	bounceAnimationHeight(settings.bounceAnimationHeight)
@@ -168,7 +168,6 @@ bool Tilemap::CheckInvisibleCollisionTile(DirectX::XMINT2 tilemapPosition)
 		return false;
 	}
 
-	SetTile(tilemapPosition, 9);
 	return true;
 }
 
@@ -203,15 +202,26 @@ void Tilemap::BreakTile(DirectX::XMINT2 tilemapPosition)
 	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
 }
 
-void Tilemap::RemoveCollision(DirectX::XMINT2 tilemapPosition)
+void Tilemap::SetCollision(const DirectX::XMINT2& tilemapPosition, bool value)
 {
 	if (IsPositionOutOfBounds(tilemapPosition)) return;
-	collisionMap[tilemapPosition.y][tilemapPosition.x] = false;
+	collisionMap[tilemapPosition.y][tilemapPosition.x] = value;
 }
 
 void Tilemap::AddTileToBounce(DirectX::XMINT2 tilemapPosition)
 {
 	tilesToBounceAnimate.insert(std::pair<DirectX::XMINT2, float>(tilemapPosition, 0.0f));
+}
+
+void Tilemap::HitInvisibleTile(const DirectX::XMINT2& tilemapPosition)
+{
+	invisibleQuestionBlocks.erase(std::find(invisibleQuestionBlocks.begin(), invisibleQuestionBlocks.end(), tilemapPosition));
+
+	SetCollision(tilemapPosition, true);
+	SetTile(tilemapPosition, 9); // Invisible tiles are always empty question blocks
+
+	AddTileToBounce(tilemapPosition);
+	CheckForTileAction(tilemapPosition);
 }
 
 DirectX::XMINT2 Tilemap::GetHorizontalTilesInFrustum()
