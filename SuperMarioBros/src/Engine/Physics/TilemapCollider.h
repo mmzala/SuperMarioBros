@@ -18,12 +18,15 @@ public:
 	~TilemapCollider();
 
 	void Update(DirectX::XMFLOAT2& velocity, const float deltaTime);
-	bool CheckCollision(Rect bounds, DirectX::XMFLOAT2 velocity, const float deltaTime);
+	bool CheckCollision(const Rect& bounds, const DirectX::XMFLOAT2& velocity, const float deltaTime);
+	void CheckInvisibleBlocksCollision(DirectX::XMFLOAT2& velocity, const float deltaTime);
 	CheckSide DetectedCollisions();
 
 private:
-	bool CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
+	bool CheckSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
+	bool CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side);
 	bool CheckTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side);
+	bool CheckInvisibleTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side);
 	DirectX::XMFLOAT2 GetCheckPosition(float positionProgress, float sidePosition, CheckSide side);
 
 private:

@@ -107,6 +107,13 @@ public:
 	bool CheckCollisionTile(DirectX::XMINT2 tilemapPosition);
 
 	/// <summary>
+	/// Checks if there is an invisible tile on the given tilemap position
+	/// </summary>
+	/// <param name="tilemapPosition">: Position in tilemap coordinates </param>
+	/// <returns> If the tile has collision </returns>
+	bool CheckInvisibleCollisionTile(DirectX::XMINT2 tilemapPosition);
+
+	/// <summary>
 	/// Return what tile it is
 	/// </summary>
 	/// <param name="tilemapPsoition">: Position in tilemap coordinates </param>
@@ -169,8 +176,9 @@ private:
 	std::unordered_map<int, TilemapAnimation*> animations;
 	std::vector<DirectX::XMINT2> tilesToAnimate;
 
-	// Tile actions with bounce animations
+	// Tile actions
 	std::unordered_map<DirectX::XMINT2, TileAction*> tileActions;
+	std::vector<DirectX::XMINT2> invisibleQuestionBlocks;
 
 	// Bounce animtion
 	std::unordered_map<DirectX::XMINT2, float> tilesToBounceAnimate;

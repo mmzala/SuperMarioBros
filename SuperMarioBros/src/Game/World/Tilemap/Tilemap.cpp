@@ -18,6 +18,7 @@ Tilemap::Tilemap(TilemapSettings settings)
 	animations(),
 	tilesToAnimate(),
 	tileActions(),
+	invisibleQuestionBlocks({ {13, 9} }),
 	tilesToBounceAnimate(),
 	bounceAnimationSpeed(settings.bounceAnimationSpeed),
 	bounceAnimationHeight(settings.bounceAnimationHeight)
@@ -152,6 +153,23 @@ bool Tilemap::CheckCollisionTile(DirectX::XMINT2 tilemapPosition)
 	}
 
 	return collisionMap[tilemapPosition.y][tilemapPosition.x];
+}
+
+bool Tilemap::CheckInvisibleCollisionTile(DirectX::XMINT2 tilemapPosition)
+{
+	if (IsPositionOutOfBounds(tilemapPosition))
+	{
+		return false;
+	}
+
+	auto iterator = std::find(invisibleQuestionBlocks.begin(), invisibleQuestionBlocks.end(), tilemapPosition);
+	if (iterator == invisibleQuestionBlocks.end())
+	{
+		return false;
+	}
+
+	SetTile(tilemapPosition, 9);
+	return true;
 }
 
 int Tilemap::GetTileType(DirectX::XMINT2 tilemapPosition)

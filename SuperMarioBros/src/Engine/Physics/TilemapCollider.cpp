@@ -23,15 +23,15 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	deltaVelocity.y -= 0.01f; // Sometimes Mario would get stuck after jumping, but subtracting 0.01f fixed it :)
 	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
 
-	bool collidedBottom = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
-	bool collidedTop = CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top);
+	bool collidedBottom = CheckSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom);
+	bool collidedTop = CheckSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top);
 	if (collidedBottom || collidedTop)
 	{
 		velocity.y = 0.0f;
 	}
 
-	bool collidedLeft = CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left);
-	bool collidedRight = CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right);
+	bool collidedLeft = CheckSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left);
+	bool collidedRight = CheckSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right);
 	if (collidedLeft || collidedRight)
 	{
 		velocity.x = 0.0f;
@@ -45,15 +45,15 @@ void TilemapCollider::Update(DirectX::XMFLOAT2& velocity, const float deltaTime)
 	collisions = sidesDetected;
 }
 
-bool TilemapCollider::CheckCollision(Rect bounds, DirectX::XMFLOAT2 velocity, const float deltaTime)
+bool TilemapCollider::CheckCollision(const Rect& bounds, const DirectX::XMFLOAT2& velocity, const float deltaTime)
 {
 	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
 	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
 
-	if(CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
-		CheckSideCollision(bounds, vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top) ||
-		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left) ||
-		CheckSideCollision(bounds, vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right))
+	if(CheckSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y, CheckSide::Bottom) ||
+		CheckSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top) ||
+		CheckSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x, CheckSide::Left) ||
+		CheckSideCollision(vBounds, bounds.y, bounds.y + bounds.height, vBounds.x + vBounds.width, CheckSide::Right))
 	{
 		return true;
 	}
@@ -61,12 +61,26 @@ bool TilemapCollider::CheckCollision(Rect bounds, DirectX::XMFLOAT2 velocity, co
 	return false;
 }
 
+void TilemapCollider::CheckInvisibleBlocksCollision(DirectX::XMFLOAT2& velocity, const float deltaTime)
+{
+	Rect bounds = rectBounds->GetBounds();
+	DirectX::XMFLOAT2 deltaVelocity = DirectX::XMFLOAT2(velocity * deltaTime);
+	Rect vBounds = rectBounds->GetBoundsWithPositionOffset(deltaVelocity);
+
+	if (CheckInvisibleSideCollision(vBounds, bounds.x, bounds.x + bounds.width, vBounds.y + vBounds.height, CheckSide::Top) &&
+		!CheckInvisibleSideCollision(bounds, bounds.x, bounds.x + bounds.width, bounds.y + bounds.height, CheckSide::Top))
+	{
+		velocity.y = 0.0f;
+		collisions |= CheckSide::Top;
+	}
+}
+
 CheckSide TilemapCollider::DetectedCollisions()
 {
 	return collisions;
 }
 
-bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
+bool TilemapCollider::CheckSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
 {
 	float tileSize = tilemap->GetTileSize();
 	int iterations = static_cast<int>((toPosition - fromPosition) / tileSize); // Calculate how many checks it takes to check for all tiles that can be in proximity
@@ -81,7 +95,32 @@ bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPo
 		DirectX::XMFLOAT2 fTilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
 		DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
 
-		if (CheckTileCollision(vBounds, tilemapPosition, side))
+		if (CheckTileCollision(bounds, tilemapPosition, side))
+		{
+			callback(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
+			hit = true;
+		}
+	}
+
+	return hit;
+}
+
+bool TilemapCollider::CheckInvisibleSideCollision(Rect bounds, float fromPosition, float toPosition, float sidePosition, CheckSide side)
+{
+	float tileSize = tilemap->GetTileSize();
+	int iterations = static_cast<int>((toPosition - fromPosition) / tileSize); // Calculate how many checks it takes to check for all tiles that can be in proximity
+	iterations += 2; // We always want to check atleast the corners
+	bool hit = false;
+
+	for (int i = 0; i < iterations; i++)
+	{
+		float checkProgress = static_cast<float>(i) / (iterations - 1);
+		float positionProgress = Math::Lerp(fromPosition, toPosition, checkProgress);
+		DirectX::XMFLOAT2 checkPosition = GetCheckPosition(positionProgress, sidePosition, side);
+		DirectX::XMFLOAT2 fTilemapPosition = tilemap->GetPositionInTilemapCoordinates(checkPosition);
+		DirectX::XMINT2 tilemapPosition = DirectX::XMINT2((int32_t)std::round(fTilemapPosition.x), (int32_t)std::round(fTilemapPosition.y));
+
+		if (CheckInvisibleTileCollision(bounds, tilemapPosition, side))
 		{
 			callback(side, tilemap->GetTileType(tilemapPosition), tilemapPosition, checkPosition);
 			hit = true;
@@ -93,8 +132,13 @@ bool TilemapCollider::CheckSideCollision(Rect bounds, Rect vBounds, float fromPo
 
 bool TilemapCollider::CheckTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side)
 {
-	
 	if (!tilemap->CheckCollisionTile(tilemapPosition)) return false;
+	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
+}
+
+bool TilemapCollider::CheckInvisibleTileCollision(Rect bounds, DirectX::XMINT2 tilemapPosition, CheckSide side)
+{
+	if (!tilemap->CheckInvisibleCollisionTile(tilemapPosition)) return false;
 	return Collision::TilemapCheck(tilemap->GetTileBounds(tilemapPosition), bounds, side);
 }
 

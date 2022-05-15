@@ -47,7 +47,7 @@ void GameplayScene::Load()
 {
 	Scene::Load();
 	SetupScoreTracker(worldText, timeToBeat, false);
-	delayBeforeNextWorld = 2.5f;
+	delayBeforeNextWorld = 3.5f;
 }
 
 void GameplayScene::UnLoad()

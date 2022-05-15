@@ -183,6 +183,7 @@ void Mario::Move(const float deltaTime)
 void Mario::CheckCollision(const float deltaTime)
 {
 	Character::CheckCollision(deltaTime);
+	tilemapCollider->CheckInvisibleBlocksCollision(velocity, deltaTime);
 
 	// Making sure the player cannot go back
 	Rect viewport = camera->GetViewportBounds();
@@ -305,6 +306,7 @@ void Mario::HandleHeadCollision()
 	default:
 		tilemap->AddTileToBounce(hitTile);
 		tilemap->CheckForTileAction(hitTile);
+		blockBumpClip->Play();
 		break;
 	}
 
