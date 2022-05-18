@@ -96,7 +96,8 @@ private:
 	AudioClip* climbingFlagPoleClip;
 	AudioClip* levelClearedClip;
 	AudioClip* blockBumpClip;
-	AudioClip* throwFireBall;
+	AudioClip* throwFireBallClip;
+	AudioClip* oneUpClip;
 
 	// Changing power states effects
 	float poweringUpTime;

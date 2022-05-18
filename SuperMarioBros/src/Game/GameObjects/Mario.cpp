@@ -21,6 +21,7 @@
 // Responses from collision
 #include "PowerUp.h"
 #include "Enemy.h"
+#include "OneUp.h"
 
 // Adding score
 #include "../Game.h" // Getting ScoreTracker
@@ -52,7 +53,8 @@ Mario::Mario(MarioSettings settings)
 	climbingFlagPoleClip(new AudioClip("assets/ClimbingFlagPole.wav", false)),
 	levelClearedClip(new AudioClip("assets/LevelCleared.wav", false)),
 	blockBumpClip(new AudioClip("assets/BlockBump.wav", false)),
-	throwFireBall(new AudioClip("assets/ThrowFireBall.wav", false)),
+	throwFireBallClip(new AudioClip("assets/ThrowFireBall.wav", false)),
+	oneUpClip(new AudioClip("assets/OneUp.wav", false)),
 	poweringUpTime(settings.poweringUpTime),
 	poweringDownTime(settings.poweringDownTime),
 	poweringDownFlickeringSpeed(settings.poweringDownFlickeringSpeed),
@@ -94,7 +96,8 @@ Mario::~Mario()
 	delete climbingFlagPoleClip;
 	delete levelClearedClip;
 	delete blockBumpClip;
-	delete throwFireBall;
+	delete throwFireBallClip;
+	delete oneUpClip;
 }
 
 void Mario::Update(const float deltaTime)
@@ -261,6 +264,12 @@ void Mario::OnCharacterHit(Character* other)
 			UpdatePowerState((MarioPowerState)((int)marioPowerState + 1));
 		}
 		scoreTracker->AddScore(ScoreData::PowerUpPickUp);
+		other->isActive = false;
+	}
+	else if (dynamic_cast<OneUp*>(other))
+	{
+		lives++;
+		oneUpClip->Play();
 		other->isActive = false;
 	}
 }
@@ -594,7 +603,7 @@ void Mario::CheckForThrowFireBall(const float deltaTime)
 		const DirectX::XMFLOAT2 headPosition = DirectX::XMFLOAT2(transform->position.x, transform->position.y + (sprite->GetSize().y / 4));
 		if (scene->SpawnFireBall(headPosition, facingRight))
 		{
-			throwFireBall->Play();
+			throwFireBallClip->Play();
 			fileBallThrown = true;
 			powerChangeAnimationTimer = fireBallThrowAnimationDuration; // We reuse a timer that isn't running
 		}
