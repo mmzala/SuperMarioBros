@@ -248,7 +248,7 @@ void Mario::OnCharacterHit(Character* other)
 		{
 			enemy->OnHeadStomp();
 			movementComponent->ForceJump();
-			scoreTracker->AddScore(ScoreData::EnemyHeadStomp);
+			scoreTracker->AddScore(ScoreData::EnemyHeadStomp, transform->position.x, transform->position.y);
 			stompEnemyClip->Play();
 		}
 		else
@@ -263,7 +263,7 @@ void Mario::OnCharacterHit(Character* other)
 		{
 			UpdatePowerState((MarioPowerState)((int)marioPowerState + 1));
 		}
-		scoreTracker->AddScore(ScoreData::PowerUpPickUp);
+		scoreTracker->AddScore(ScoreData::PowerUpPickUp, transform->position.x, transform->position.y);
 		other->isActive = false;
 	}
 	else if (dynamic_cast<OneUp*>(other))

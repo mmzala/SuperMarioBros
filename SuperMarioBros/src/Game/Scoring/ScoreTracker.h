@@ -1,5 +1,6 @@
 #pragma once
 
+class Game;
 class GameplayUI;
 class AudioClip;
 
@@ -9,7 +10,7 @@ class AudioClip;
 class ScoreTracker
 {
 public:
-	ScoreTracker(float timeConversionSpeed);
+	ScoreTracker(Game* game, float timeConversionSpeed);
 	~ScoreTracker();
 
 	void Update(const float deltaTime);
@@ -21,6 +22,7 @@ public:
 	/// <returns>If conversion to score is complete (if time is 0)</returns>
 	bool ConvertTimeToScore(const float deltaTime);
 	void AddScore(int score);
+	void AddScore(int score, float textPosX, float textPosY);
 	void ResetScore();
 	void AddCoin();
 	void ResetCoins();
@@ -36,6 +38,7 @@ public:
 	bool stopTime;
 
 private:
+	Game* game;
 	GameplayUI* gameplayUI;
 	AudioClip* coinAddClip;
 

@@ -17,7 +17,7 @@ UISprite::~UISprite()
 	delete animator;
 }
 
-void UISprite::Draw(DirectX::XMFLOAT2 anchor)
+void UISprite::Draw(const DirectX::XMFLOAT2& anchor)
 {
 	DirectX::XMFLOAT2 originalPosition = transform->position;
 	transform->position.x += anchor.x;

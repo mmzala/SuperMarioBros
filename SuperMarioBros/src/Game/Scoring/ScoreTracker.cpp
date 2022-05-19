@@ -1,14 +1,17 @@
 #include "ScoreTracker.h"
+#include "../Game.h"
 #include "../UI/GameplayUI.h"
 #include "../../Engine/Graphics/UI/Text.h"
 #include "../Data/ScoreData.h" // Scoring data for converting time to score
 #include "../../Engine/Audio/AudioClip.h" // Audio
 #include <iomanip> // std::setprecision
 #include <sstream> // std::stringstream
+#include "../World/Scenes/GameplayScene.h" // Spawning scoring text
 
-ScoreTracker::ScoreTracker(float timeConversionSpeed)
+ScoreTracker::ScoreTracker(Game* game, float timeConversionSpeed)
 	:
 	stopTime(true),
+	game(game),
 	gameplayUI(new GameplayUI()),
 	coinAddClip(new AudioClip("assets/CoinPickUp.wav", false)),
 	score(0),
@@ -67,6 +70,18 @@ void ScoreTracker::AddScore(int score)
 {
 	this->score += score;
 	UpdateScoreText();
+}
+
+void ScoreTracker::AddScore(int score, float textPosX, float textPosY)
+{
+	GameplayScene* scene = static_cast<GameplayScene*>(game->GetCurrentScene());
+	if (scene)
+	{
+		std::string scoreString = std::to_string(score);
+		scene->SpawnScoringText({ textPosX, textPosY }, scoreString.c_str());
+	}
+
+	AddScore(score);
 }
 
 void ScoreTracker::AddCoin()

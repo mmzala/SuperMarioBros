@@ -11,7 +11,7 @@ public:
 	Text(TextSettings settings);
 	~Text() override;
 
-	void Draw(DirectX::XMFLOAT2 anchor) override;
+	void Draw(const DirectX::XMFLOAT2& anchor) override;
 	void SetText(std::string text);
 
 private:

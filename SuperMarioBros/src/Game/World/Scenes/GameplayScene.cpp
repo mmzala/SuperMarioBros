@@ -11,6 +11,9 @@
 #include "../../GameObjects/OneUp.h"
 #include "../../GameObjects/FireBall.h"
 
+// UI
+#include "../../UI/ScoringText.h"
+
 // World
 #include "../Tilemap/Tilemap.h"
 
@@ -49,6 +52,12 @@ void GameplayScene::Load()
 	Scene::Load();
 	SetupScoreTracker(worldText, timeToBeat, false);
 	delayBeforeNextWorld = 3.5f;
+
+	// Create 4 scoring texts
+	for (int i = 0; i < 4; i++)
+	{
+		CreateScoringText();
+	}
 }
 
 void GameplayScene::UnLoad()
@@ -68,6 +77,13 @@ void GameplayScene::UnLoad()
 		character = 0;
 	}
 	characters.clear();
+
+	for (ScoringText* scoringText : scoringTextPool)
+	{
+		delete scoringText;
+		scoringText = 0;
+	}
+	scoringTextPool.clear();
 }
 
 void GameplayScene::Update(const float deltaTime)
@@ -114,6 +130,8 @@ void GameplayScene::Update(const float deltaTime)
 		UpdateAllCharacters(deltaTime);
 		break;
 	}
+
+	DrawScoringTexts();
 }
 
 void GameplayScene::CreateMushroom(const DirectX::XMINT2& tilemapPosition)
@@ -182,6 +200,22 @@ bool GameplayScene::SpawnFireBall(DirectX::XMFLOAT2 worldPosition, bool travelin
 			fireBall->SetInUse(true);
 			fireBall->SetTravelingDirection(travelingDirectionRight);
 			fireBall->transform->position = worldPosition;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool GameplayScene::SpawnScoringText(const DirectX::XMFLOAT2& worldPosition, const char* text)
+{
+	for (ScoringText* scoringText : scoringTextPool)
+	{
+		if (!scoringText->isInUse())
+		{
+			scoringText->SetInUse(true);
+			scoringText->transform->position = worldPosition;
+			scoringText->SetText(text);
 			return true;
 		}
 	}
@@ -319,6 +353,20 @@ void GameplayScene::CreateFireBall()
 	fireBallsPool.push_back(fireBall);
 }
 
+void GameplayScene::CreateScoringText()
+{
+	TextSettings textSettings;
+	textSettings.textureFile = "assets/Font.png";
+	textSettings.spriteSheetSize = DirectX::XMINT2(16, 6);
+	textSettings.minAsciiCode = 32;
+	textSettings.maxAsciiCode = 126;
+	textSettings.spacing = 2.0f;
+
+	ScoringText* scoringText = new ScoringText(textSettings);
+	scoringText->transform->scale = DirectX::XMFLOAT2(0.8f, 0.8f);
+	scoringTextPool.push_back(scoringText);
+}
+
 void GameplayScene::CreateBackgroundMusic(const char* file)
 {
 	backgroundMusic = new AudioClip(file, true);
@@ -342,4 +390,17 @@ void GameplayScene::DrawAllCharactersUpdateMario(float deltaTime)
 		characters[i]->sprite->Draw(characters[i]->transform->GetWorldMatrix());
 	}
 	if(player->isActive) player->Update(deltaTime);
+}
+
+void GameplayScene::DrawScoringTexts()
+{
+	constexpr DirectX::XMFLOAT2 anchor{};
+
+	for (ScoringText* scoringText : scoringTextPool)
+	{
+		if (scoringText->isInUse())
+		{
+			scoringText->Draw(anchor);
+		}
+	}
 }

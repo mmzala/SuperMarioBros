@@ -15,7 +15,7 @@ public:
 	UISprite(UISpriteSettings settings);
 	~UISprite() override;
 
-	void Draw(DirectX::XMFLOAT2 anchor) override;
+	void Draw(const DirectX::XMFLOAT2& anchor) override;
 
 private:
 	Animator* animator;

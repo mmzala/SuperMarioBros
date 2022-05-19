@@ -11,5 +11,5 @@ UIElement::~UIElement()
 	delete transform;
 }
 
-void UIElement::Draw(DirectX::XMFLOAT2 anchor)
+void UIElement::Draw(const DirectX::XMFLOAT2& anchor)
 {}

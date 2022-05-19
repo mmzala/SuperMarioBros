@@ -16,8 +16,9 @@ TileCoinAction::~TileCoinAction()
 void TileCoinAction::DoAction(Tilemap* tilemap, DirectX::XMINT2 tilemapPosition)
 {
 	tilemap->SetTile(tilemapPosition, 9);
+	DirectX::XMFLOAT2 worldPosition = tilemap->GetPositionInWorldCoordinates(tilemapPosition);
 
 	ScoreTracker* scoreTracker = SMBEngine::GetInstance()->GetGame()->GetScoreTracker();
 	scoreTracker->AddCoin();
-	scoreTracker->AddScore(ScoreData::CoinPickUp);
+	scoreTracker->AddScore(ScoreData::CoinPickUp, worldPosition.x, worldPosition.y);
 }

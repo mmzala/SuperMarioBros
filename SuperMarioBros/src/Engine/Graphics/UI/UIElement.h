@@ -10,7 +10,7 @@ public:
 	UIElement();
 	virtual ~UIElement();
 
-	virtual void Draw(DirectX::XMFLOAT2 anchor);
+	virtual void Draw(const DirectX::XMFLOAT2& anchor);
 
 public:
 	Transform* transform;

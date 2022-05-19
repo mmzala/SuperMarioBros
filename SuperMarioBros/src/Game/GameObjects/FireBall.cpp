@@ -76,7 +76,7 @@ void FireBall::OnCharacterHit(Character* other)
 	{
 		enemy->isActive = false;
 		SetInUse(false);
-		scoreTracker->AddScore(ScoreData::EnemyHeadStomp);
+		scoreTracker->AddScore(ScoreData::EnemyHeadStomp, transform->position.x, transform->position.y);
 	}
 }
 

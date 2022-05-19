@@ -15,7 +15,7 @@ Text::Text(TextSettings settings)
 Text::~Text()
 {}
 
-void Text::Draw(DirectX::XMFLOAT2 anchor)
+void Text::Draw(const DirectX::XMFLOAT2& anchor)
 {
 	DirectX::XMFLOAT2 originalPosition = transform->position;
 	float spriteSizeX = GetSize().x * transform->scale.x;

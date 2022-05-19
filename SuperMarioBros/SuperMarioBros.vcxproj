@@ -175,6 +175,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\UI\ScoringText.cpp" />
     <ClCompile Include="src\Game\GameObjects\OneUp.cpp" />
     <ClCompile Include="src\Game\GameObjects\FireBall.cpp" />
     <ClCompile Include="src\Game\GameObjects\PowerUp.cpp" />
@@ -228,6 +229,7 @@
     <ClCompile Include="src\Game\World\Tilemap\TileActions\TileSpawnOneUpAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\UI\ScoringText.h" />
     <ClInclude Include="src\Game\GameObjects\OneUp.h" />
     <ClInclude Include="src\Utils\PoolableObject.h" />
     <ClInclude Include="src\Game\GameObjects\FireBall.h" />

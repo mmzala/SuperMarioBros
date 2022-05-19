@@ -8,6 +8,7 @@ class Game;
 class Character;
 class Mario;
 class FireBall;
+class ScoringText;
 class Tilemap;
 class Flag;
 class AudioClip;
@@ -37,6 +38,13 @@ public:
 	/// <returns> If succesfully spawned a fire ball </returns>
 	bool SpawnFireBall(DirectX::XMFLOAT2 worldPosition, bool travelingDirectionRight);
 
+	/// <summary>
+	/// Spawns scoring text in given world position.
+	/// </summary>
+	/// <param name="worldPosition">: Position in the world to spawn scoring text </param>
+	/// <returns> If succesfully spawned a fire ball </returns>
+	bool SpawnScoringText(const DirectX::XMFLOAT2& worldPosition, const char* text);
+
 	std::vector<Character*>& GetCharacters();
 	const char* GetWorldText();
 	float GetTimeToBeat();
@@ -48,17 +56,20 @@ protected:
 	void CreateGoombas(const std::vector<DirectX::XMINT2>& tilemapPositions);
 	void CreateFlag(DirectX::XMINT2 tilemapPolePositionTop, DirectX::XMINT2 tilemapPolePositionBottom);
 	void CreateFireBall();
+	void CreateScoringText();
 	void CreateBackgroundMusic(const char* file);
 
 private:
 	void UpdateAllCharacters(float deltaTime);
 	void DrawAllCharactersUpdateMario(float deltaTime);
+	void DrawScoringTexts();
 
 protected:
 	Tilemap* tilemap;
 	Mario* player; // This does not have to be deleted (it gets deleted with characters vector)
 	std::vector<Character*> characters;
 	std::vector<FireBall*> fireBallsPool; // FireBalls are also a part of characters vector, so nothing here has to be deleted
+	std::vector<ScoringText*> scoringTextPool;
 	Flag* flag;
 
 	AudioClip* backgroundMusic;
